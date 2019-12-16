@@ -1,1 +1,48 @@
 
+server:
+  port: 8080
+  servlet:
+    context-path: /ChildSchool
+spring:
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://120.27.247.16/childSchool?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8
+    username: yanjunjie
+    password: abc123
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      initial-size: 8 #��ʼ��ʱ�����������ӵĸ���
+      min-idle: 1  #��С���ӳ�����
+      max-active: 20 #������ӳ�����
+      max-wait: 60000 #��ȡ����ʱ���ȴ�ʱ�䣬��λ����
+      time-between-eviction-runsMillis: 60000 #1) Destroy�̻߳������ӵļ��ʱ��2) testWhileIdle���ж�����
+      min-evictable-idle-timeMillis: 300000 #Destory�߳��������⵽��ǰ���ӵ�����Ծʱ��͵�ǰʱ��Ĳ�ֵ����minEvictableIdleTimeMillis����رյ�ǰ���ӡ�
+      validation-query: select 'x' FROM DUAL
+      test-while-idle: true #�������ӵ�ʱ���⣬�������ʱ�����timeBetweenEvictionRunsMillis��ִ��validationQuery��������Ƿ���Ч��
+      test-on-borrow: false #��������ʱִ��validationQuery��������Ƿ���Ч������������ûή�����ܡ�
+      test-on-return: false #�黹����ʱִ��validationQuery��������Ƿ���Ч������������ûή������
+      pool-prepared-statements: true #�Ƿ񻺴�preparedStatement
+      max-open-prepared-statements: 20 #Ҫ����PSCache���������ô���0
+      max-pool-prepared-statement-per-connection-size: 20
+      filters: stat #�����������ַ�����ͨ�������ķ�ʽ������չ��������õĲ���У�
+        #���ͳ���õ�filter:stat
+      #��־�õ�filter:log4j
+      #����sqlע���filter:wall
+      connection-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000 #ͨ��connectProperties��������mergeSql���ܣ���SQL��¼
+      use-global-data-source-stat: true #�ϲ����DruidDataSource�ļ������
+
+
+
+  mvc:
+    view:
+      prefix: /WEB-INF/pages/
+      suffix: .jsp
+    pathmatch:
+      #�����Ƿ��Ǻ�׺ģʽƥ�䣬�硰/user���Ƿ�ƥ��/user.*��Ĭ���漴ƥ�䣻
+      #���˲�������Ϊtrue��ʱ����ô/user.html��/user.aa��/user.*�������������ʵ�
+      use-suffix-pattern: true
+
+mybatis:
+  config-location: classpath:SqlMapConfig.xml
+  mapper-locations: classpath:/mapper/*.xml
