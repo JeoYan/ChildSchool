@@ -6,5 +6,4 @@
     <typeAliases>
         <package name="com.great.childschool.entity"/><!--这是给javabean包下所有类取别名，在用完全限定命名的情况下可以通过类名直接调用，在这不区分大小写 -->
     </typeAliases>
-
 </configuration>
