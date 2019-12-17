@@ -57,7 +57,7 @@
 				</div>
 			</div>
 			<div class="layui-form-item" style="margin-bottom: 20px;">
-				<input type="checkbox" name="remember" lay-skin="primary" title="记住密码">
+<%--				<input type="checkbox" name="remember" lay-skin="primary" title="记住密码">--%>
 				<a class="layadmin-user-jump-change layadmin-link" style="margin-top: 7px;"  href=<%=path+"/parentLogin/parentForgetPage.action"%> >忘记密码？</a>
 			</div>
 			<div class="layui-form-item">
