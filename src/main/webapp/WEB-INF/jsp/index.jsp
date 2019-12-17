@@ -32,7 +32,7 @@
 	<div class="layadmin-user-login-main">
 		<div class="layadmin-user-login-box layadmin-user-login-header">
 			<h2>智慧幼儿园</h2>
-<%--			<p>layui 官方出品的单页面后台管理模板系统</p>--%>
+			<p>家长登入</p>
 		</div>
 		<div class="layadmin-user-login-box layadmin-user-login-body layui-form">
 			<div class="layui-form-item">
