@@ -4,7 +4,6 @@ server:
   servlet:
     context-path: /ChildSchool
 spring:
-
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://120.27.247.16/childSchool?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8
@@ -36,7 +35,7 @@ spring:
 
   mvc:
     view:
-      prefix: /WEB-INF/pages/
+      prefix: /WEB-INF/jsp/
       suffix: .jsp
     pathmatch:
       #�����Ƿ��Ǻ�׺ģʽƥ�䣬�硰/user���Ƿ�ƥ��/user.*��Ĭ���漴ƥ�䣻
