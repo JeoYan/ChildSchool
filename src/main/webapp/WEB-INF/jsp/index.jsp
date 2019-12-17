@@ -1,4 +1,10 @@
 <%--
+------------------------------------------------
+               家长登入界面
+               by 严俊杰
+------------------------------------------------
+--%>
+<%--
   Created by IntelliJ IDEA.
   User: Administrator
   Date: 2019/12/17 0017
@@ -23,11 +29,10 @@
 <body>
 
 <div class="layadmin-user-login layadmin-user-display-show" id="LAY-user-login" style="display: none;">
-
 	<div class="layadmin-user-login-main">
 		<div class="layadmin-user-login-box layadmin-user-login-header">
-			<h2>layuiAdmin</h2>
-			<p>layui 官方出品的单页面后台管理模板系统</p>
+			<h2>智慧幼儿园</h2>
+<%--			<p>layui 官方出品的单页面后台管理模板系统</p>--%>
 		</div>
 		<div class="layadmin-user-login-box layadmin-user-login-body layui-form">
 			<div class="layui-form-item">
@@ -59,38 +64,25 @@
 				<button class="layui-btn layui-btn-fluid" lay-submit lay-filter="LAY-user-login-submit">登 入</button>
 			</div>
 			<div class="layui-trans layui-form-item layadmin-user-login-other">
-				<label>社交账号登入</label>
-				<a href="javascript:;"><i class="layui-icon layui-icon-login-qq"></i></a>
-				<a href="javascript:;"><i class="layui-icon layui-icon-login-wechat"></i></a>
-				<a href="javascript:;"><i class="layui-icon layui-icon-login-weibo"></i></a>
-
+<%--				<label>社交账号登入</label>--%>
+<%--				<a href="javascript:;"><i class="layui-icon layui-icon-login-qq"></i></a>--%>
+<%--				<a href="javascript:;"><i class="layui-icon layui-icon-login-wechat"></i></a>--%>
+<%--				<a href="javascript:;"><i class="layui-icon layui-icon-login-weibo"></i></a>--%>
 				<a href="reg.html" class="layadmin-user-jump-change layadmin-link">注册帐号</a>
 			</div>
 		</div>
 	</div>
-
 	<div class="layui-trans layadmin-user-login-footer">
 
-		<p>© 2018 <a href="http://www.layui.com/" target="_blank">layui.com</a></p>
-		<p>
-			<span><a href="http://www.layui.com/admin/#get" target="_blank">获取授权</a></span>
-			<span><a href="http://www.layui.com/admin/pro/" target="_blank">在线演示</a></span>
-			<span><a href="http://www.layui.com/admin/" target="_blank">前往官网</a></span>
-		</p>
+		<p>© 2019 V0.001 Design by Jeo</p>
+<%--		<p>© 2018 <a href="http://www.layui.com/" target="_blank">layui.com</a></p>--%>
+<%--		<p>--%>
+<%--			<span><a href="http://www.layui.com/admin/#get" target="_blank">获取授权</a></span>--%>
+<%--			<span><a href="http://www.layui.com/admin/pro/" target="_blank">在线演示</a></span>--%>
+<%--			<span><a href="http://www.layui.com/admin/" target="_blank">前往官网</a></span>--%>
+<%--		</p>--%>
 	</div>
 
-	<!--<div class="ladmin-user-login-theme">
-	  <script type="text/html" template>
-		<ul>
-		  <li data-theme=""><img src="{{ layui.setter.base }}style/res/bg-none.jpg"></li>
-		  <li data-theme="#03152A" style="background-color: #03152A;"></li>
-		  <li data-theme="#2E241B" style="background-color: #2E241B;"></li>
-		  <li data-theme="#50314F" style="background-color: #50314F;"></li>
-		  <li data-theme="#344058" style="background-color: #344058;"></li>
-		  <li data-theme="#20222A" style="background-color: #20222A;"></li>
-		</ul>
-	  </script>
-	</div>-->
 
 </div>
 
