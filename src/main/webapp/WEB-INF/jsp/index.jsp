@@ -58,7 +58,7 @@
 			</div>
 			<div class="layui-form-item" style="margin-bottom: 20px;">
 				<input type="checkbox" name="remember" lay-skin="primary" title="记住密码">
-				<a href="forget.html" class="layadmin-user-jump-change layadmin-link" style="margin-top: 7px;">忘记密码？</a>
+				<a class="layadmin-user-jump-change layadmin-link" style="margin-top: 7px;"  href=<%=path+"/parentLogin/parentForgetPage.action"%> >忘记密码？</a>
 			</div>
 			<div class="layui-form-item">
 				<button class="layui-btn layui-btn-fluid" lay-submit lay-filter="LAY-user-login-submit">登 入</button>
@@ -74,7 +74,7 @@
 	</div>
 	<div class="layui-trans layadmin-user-login-footer">
 
-		<p>© 2019 V0.001 Design by Jeo</p>
+		<p>© 2019 Design by Jeo</p>
 <%--		<p>© 2018 <a href="http://www.layui.com/" target="_blank">layui.com</a></p>--%>
 <%--		<p>--%>
 <%--			<span><a href="http://www.layui.com/admin/#get" target="_blank">获取授权</a></span>--%>
@@ -89,7 +89,7 @@
 <script src=<%=path+ "/layuiadmin/layui/layui.js"%>></script>
 <script>
 	layui.config({
-		base: '../../layuiadmin/' //静态资源所在路径
+		base: '${pageContext.request.contextPath}/layuiadmin/' //静态资源所在路径
 	}).extend({
 		index: 'lib/index' //主入口模块
 	}).use(['index', 'user'], function(){

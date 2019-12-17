@@ -20,7 +20,14 @@ public class YjjParentLoginController
 		return "index";
 	}
 
-
+	/**
+	 * 调用家长登入忘记密码页面
+	 * by 严俊杰
+	 */
+	@RequestMapping("parentForgetPage.action")
+	public String parentForgetPage(){
+		return "forget";
+	}
 
 
 

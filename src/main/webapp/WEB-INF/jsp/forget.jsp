@@ -13,23 +13,27 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+	String path=request.getContextPath();
+%>
+
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>忘记密码 - layuiAdmin</title>
+	<title>密码找回</title>
 	<meta name="renderer" content="webkit">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
-	<link rel="stylesheet" href="../../layuiadmin/layui/css/layui.css" media="all">
-	<link rel="stylesheet" href="../../layuiadmin/style/admin.css" media="all">
-	<link rel="stylesheet" href="../../layuiadmin/style/login.css" media="all">
+	<link rel="stylesheet" href=<%=path+"/layuiadmin/layui/css/layui.css"%> media="all">
+	<link rel="stylesheet" href=<%=path+"/layuiadmin/style/admin.css"%> media="all">
+	<link rel="stylesheet" href=<%=path+"/layuiadmin/style/login.css"%> media="all">
 </head>
 
 <div class="layadmin-user-login layadmin-user-display-show" id="LAY-user-login" style="display: none;">
 	<div class="layadmin-user-login-main">
 		<div class="layadmin-user-login-box layadmin-user-login-header">
-			<h2>layuiAdmin</h2>
-			<p>layui 官方出品的单页面后台管理模板系统</p>
+			<h2>密码找回</h2>
+<%--			<p>layui 官方出品的单页面后台管理模板系统</p>--%>
 		</div>
 		<div class="layadmin-user-login-box layadmin-user-login-body layui-form">
 
@@ -88,20 +92,20 @@
 
 	<div class="layui-trans layadmin-user-login-footer">
 
-		<p>© 2018 <a href="http://www.layui.com/" target="_blank">layui.com</a></p>
-		<p>
-			<span><a href="http://www.layui.com/admin/#get" target="_blank">获取授权</a></span>
-			<span><a href="http://www.layui.com/admin/pro/" target="_blank">在线演示</a></span>
-			<span><a href="http://www.layui.com/admin/" target="_blank">前往官网</a></span>
-		</p>
+		<p>© 2019 Design by Jeo</p>
+<%--		<p>--%>
+<%--			<span><a href="http://www.layui.com/admin/#get" target="_blank">获取授权</a></span>--%>
+<%--			<span><a href="http://www.layui.com/admin/pro/" target="_blank">在线演示</a></span>--%>
+<%--			<span><a href="http://www.layui.com/admin/" target="_blank">前往官网</a></span>--%>
+<%--		</p>--%>
 	</div>
 
 </div>
 
-<script src="../../layuiadmin/layui/layui.js"></script>
+<script src=<%=path+ "/layuiadmin/layui/layui.js"%>></script>
 <script>
 	layui.config({
-		base: '../../layuiadmin/' //静态资源所在路径
+		base: '${pageContext.request.contextPath}/layuiadmin/' //静态资源所在路径
 	}).extend({
 		index: 'lib/index' //主入口模块
 	}).use(['index', 'user'], function(){
@@ -149,7 +153,7 @@
 						,icon: 1
 						,time: 1000
 					}, function(){
-						location.href = 'login.html'; //跳转到登入页
+						location.href = '${pageContext.request.contextPath}/parentLogin/parentLoginPage.action'; //跳转到登入页
 					});
 				}
 			});
