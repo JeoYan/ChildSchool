@@ -1,6 +1,7 @@
 package com.great.childschool.entity;
 
 
+
 public class TblParent {
 
   private int pid;

@@ -54,7 +54,6 @@
 						<cite>${sessionScope.pName}</cite>
 					</a>
 				</li>
-
 			</ul>
 		</div>
 

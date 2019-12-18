@@ -9,36 +9,32 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
-import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.util.Random;
 
 /**
- * 前端家长登入入口类
+ * 前端幼儿园工作人员登入入口类
  * by 严俊杰
  */
 @Controller
-@RequestMapping("/parentLogin")
-public class YjjParentLoginController
+@RequestMapping("/workerLogin")
+public class YjjWorkerLoginController
 {
 
-	@Resource
-	private YjjParentLoginService parentLoginService;
+//	@Resource
+//	private YjjParentLoginService parentLoginService;
 	/**
-	 * 调用家长登入页面
+	 * 调用工作人员登入页面
 	 * by 严俊杰
 	 */
-	@RequestMapping("parentLoginPage.action")
+	@RequestMapping("workerLoginPage.action")
 	public String callParentLoginPage(){
-		return "index";
+		return "workerlogin";
 	}
 
 	/**
-	 * 调用家长登入忘记密码页面
+	 * 调用登入忘记密码页面
 	 * by 严俊杰
 	 */
 	@RequestMapping("parentForgetPage.action")
@@ -59,49 +55,44 @@ public class YjjParentLoginController
 			response.setHeader("Pragma", "No-cache");
 			response.setHeader("Cache-Control", "no-cache");
 			response.setDateHeader("Expire", 0);
-//			RandomValidateCodeUtil randomValidateCode = new RandomValidateCodeUtil();
+//			RandomValidateCodeUtil randomValidateCode = new RandomValidateCodeUtil("RANDOMVALIDATECODEKEY1");
 			RandomValidateCodeUtil randomValidateCode = new RandomValidateCodeUtil();
-
 			//输出验证码图片方法
 			randomValidateCode.getRandcode(request, response);
 		} catch (Exception e) {
 			System.out.println("获取验证码失败>>>>"+e);
 		}
 	}
-
 	/**
 	 * 登入验证
 	 * by 严俊杰
 	 */
-	//用于保存登入成的parent实体
+	//用于保存登入成的worker的实体
 	private TblParent parentSuccess;
 	@RequestMapping("loginCheck.action")
 	@ResponseBody
 	public String loginCheck(String uPhone,String passWord,String verifyCode,HttpSession session)
 	{
-		System.out.println("-----------家长登入验证------------");
+		System.out.println("-----------工作人员登入验证------------");
 		System.out.println("-----------登入名------------"+uPhone);
 		System.out.println("-----------登入密码------------"+passWord);
 		System.out.println("-----------登入验证码------------"+verifyCode);
 		String result="NotOk";
 		//从session中获取随机数
+//		String random = (String) session.getAttribute("RANDOMVALIDATECODEKEY1");
 		String random = (String) session.getAttribute("RANDOMVALIDATECODEKEY");
-		System.out.println("-----------家长登入验证码------------"+random);
+		System.out.println("-----------工作人员登入验证码------------"+random);
+
 		if(random.equalsIgnoreCase(verifyCode)){
-			TblParent parent= parentLoginService.parentLoginCheck(uPhone,passWord);
-		if(null!=parent){
-			parentSuccess=parent;
-			result="Ok";
-			}
+//			TblParent parent= parentLoginService.parentLoginCheck(uPhone,passWord);
+//		if(null!=parent){
+//			parentSuccess=parent;
+//			result="Ok";
+//			}
+
 		}else{
 			result="vercodeError";
 		}
-
-
-
-
-
-
 
 		return result;
 
@@ -109,7 +100,7 @@ public class YjjParentLoginController
 
 
 	/**
-	 * 登入跳转到家长菜单主页
+	 * 登入跳转到工作人员菜单主页
 	 * by 严俊杰
 	 */
 	@RequestMapping("login.action")
