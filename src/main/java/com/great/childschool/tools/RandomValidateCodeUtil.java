@@ -19,7 +19,9 @@ public class RandomValidateCodeUtil
 {
 
 	public static final String RANDOMCODEKEY= "RANDOMVALIDATECODEKEY";//放到session中的key
-//	private String randString = "0123456789";//随机产生只有数字的字符串 private String
+//	public  String RANDOMCODEKEY;//放到session中的key
+
+	//	private String randString = "0123456789";//随机产生只有数字的字符串 private String
 	//private String randString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";//随机产生只有字母的字符串
 	private String randString = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";//随机产生数字与字母组合的字符串
 	private int width = 95;// 图片宽
@@ -30,6 +32,12 @@ public class RandomValidateCodeUtil
 	private static final Logger logger = LoggerFactory.getLogger(RandomValidateCodeUtil.class);
 
 	private Random random = new Random();
+
+//	public RandomValidateCodeUtil(String RANDOMCODEKEY)
+//	{
+//		this.RANDOMCODEKEY=RANDOMCODEKEY;
+//
+//	}
 
 	/**
 	 * 获得字体

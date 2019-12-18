@@ -30,8 +30,6 @@ public class ZhMedicalManageController
 	@Resource
 	private ZhMedicalManageService zhMedicalManageService;
 
-
-
 	//体检界面显示
 	@RequestMapping("/medicalmanage.action")
 	public ModelAndView tableView()

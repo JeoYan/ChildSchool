@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--幼儿园家长登入Mybatis数据库配置文件
+    by 严俊杰
+-->
+<mapper namespace="com.great.childschool.mapper.YjjWorkerLoginMapper">
+
+
+</mapper>
