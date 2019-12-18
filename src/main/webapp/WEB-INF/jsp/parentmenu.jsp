@@ -101,7 +101,7 @@
 						</a>
 						<dl class="layui-nav-child">
 							<dd><a lay-href="template/personalpage.html">宝宝作业</a></dd>
-							<dd><a lay-href="template/addresslist.html">课程表</a></dd>
+							<dd><a lay-href="/ChildSchool/web/coursemanagement.action">课程表</a></dd>
 							</dl>
 					</li>
 

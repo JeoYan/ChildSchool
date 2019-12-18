@@ -3,118 +3,44 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!--<dao namespace="UserSqlMap">-->
-<mapper namespace="com.great.springboot.dao.BackMapper">
+<mapper namespace="com.great.childschool.mapper.TjzBackMapper">
 
 
-    <!-- 查询文档-->
-    <select id="findByTbDocument" parameterType="map" resultType="com.great.springboot.bean.TbDocument">
-        SELECT * FROM tb_document
-        <where>
-            <if test="documentName !=null and documentName!=''">
-                AND documentname like '%' #{documentName} '%'
+    <!-- 查询课程管理-->
+    <select id="courseManagement" parameterType="map" resultType="com.great.childschool.entity.TjzTbClassRoom">
+        SELECT cl.cname,wo.wname,cl.classroom,cl.courseadddate
+        FROM tbl_classroom cl,tbl_worker wo
+        WHERE cl.wid=wo.wid
+            <if test="cName !=null and cName!=''">
+                AND cl.cname like '%' #{cName} '%'
             </if>
-        </where>
+            <if test="startDate !=null and startDate!=''">
+                AND cl.courseadddate &gt;= #{startDate}
+            </if>
+            <if test="endDate !=null and endDate!=''">
+                AND cl.courseadddate &lt;= #{endDate}
+            </if>
         LIMIT #{pstart},#{psize}
     </select>
 
-
-    <!--    查询文档数量-->
-    <select id="findByTbDocumentNum" parameterType="map" resultType="int">
-        SELECT COUNT(documentid) FROM tb_document
-        <where>
-            <if test="documentName !=null and documentName!=''">
-                AND documentname like '%' #{documentName} '%'
-            </if>
-        </where>
-    </select>
-
-
-
-    <!-- 查询角色-->
-    <select id="findRole" parameterType="int" resultType="com.great.springboot.bean.TbRole">
-        SELECT * FROM tb_role
-    </select>
-
-    <!-- 更新树-->
-    <update id="updateTree" >
-            UPDATE tb_rome set menuchecked =1 WHERE menuid = #{menuId} AND roleid=#{roleId}
-        </update>
-
-    <!-- 树置为未选-->
-    <update id="clearChecked" >
-            UPDATE tb_rome set menuchecked =2 WHERE roleid=#{roleId}
-        </update>
-
-    <!-- 查询一级菜单-->
-    <select id="findFirstMenu" parameterType="int" resultType="com.great.springboot.bean.TbMenu">
-        SELECT DISTINCT p.menuid pmenuid,p.menuname pmenuname,p.menuid cmenuid
-        FROM tb_menu p,tb_menu c,tb_adro,tb_rome
-        WHERE p.menuid=c.pmenuid
-        AND tb_adro.adminid=#{personID}
-        AND tb_adro.roleid=tb_rome.roleid
-        AND tb_rome.menuid=p.menuid
-        AND tb_rome.menuchecked=1
-    </select>
-
-    <!-- 查询二级菜单-->
-    <select id="findChildMenu" parameterType="map" resultType="com.great.springboot.bean.TbMenu">
-       SELECT tb_rome.menuid cmenuid,c.menuname cmenuname,c.menuurl,tb_rome.menuchecked
-        FROM tb_menu p,tb_menu c,tb_rome
-        WHERE p.menuid=c.pmenuid
-        AND p.menuid=#{pMenuId}
-        AND c.menuid=tb_rome.menuid
-        AND tb_rome.roleid=#{roleId}
-    </select>
-
-    <!-- 管理员登录-->
-    <select id="findByTbAdmin" parameterType="com.great.springboot.bean.TbAdmin"
-            resultType="com.great.springboot.bean.TbAdmin">
-        SELECT * FROM tb_admin WHERE adminid=#{adminId} AND adminpass =#{adminPass}
-    </select>
-
-    <!-- 登录角色-->
-    <select id="findLoginRole" parameterType="int" resultType="int">
-            SELECT tb_adro.roleid
-            FROM tb_admin,tb_adro
-            WHERE tb_admin.adminid=#{adminId}
-            AND tb_admin.adminid=tb_adro.adminid
-    </select>
-
-    <!-- 查询用户-->
-    <select id="findByTbUser" parameterType="map" resultType="com.great.springboot.bean.TbUser">
-        SELECT * FROM tb_user
-        <where>
-            <if test="userName !=null and userName!=''">
-                AND username like '%' #{userName} '%'
-            </if>
-            <if test="startDate !=null and startDate!=''">
-                AND userregistrationtime &gt;= #{startDate}
-            </if>
-            <if test="endDate !=null and endDate!=''">
-                AND userregistrationtime &lt;= #{endDate}
-            </if>
-        </where>
-        LIMIT #{pstart},#{psize}
-    </select>
-
-    <!--    查询用户数量-->
-    <select id="findByTbUserNum" parameterType="map" resultType="int">
-        SELECT COUNT(userid) FROM tb_user
-        <where>
-            <if test="userName !=null and userName!=''">
-                AND username like '%' #{userName} '%'
-            </if>
-            <if test="startDate !=null and startDate!=''">
-                AND userregistrationtime &gt;= #{startDate}
-            </if>
-            <if test="endDate !=null and endDate!=''">
-                AND userregistrationtime &lt;= #{endDate}
-            </if>
-        </where>
+    <!--查询课程管理数量-->
+    <select id="courseManagementNum" parameterType="map" resultType="int">
+        SELECT COUNT(cl.cid)
+        FROM tbl_classroom cl,tbl_worker wo
+        WHERE cl.wid=wo.wid
+        <if test="cName !=null and cName!=''">
+            AND cl.cname like '%' #{cName} '%'
+        </if>
+        <if test="startDate !=null and startDate!=''">
+            AND cl.courseadddate &gt;= #{startDate}
+        </if>
+        <if test="endDate !=null and endDate!=''">
+            AND cl.courseadddate &lt;= #{endDate}
+        </if>
     </select>
 
     <!-- 查询日志-->
-    <select id="findLog" parameterType="map" resultType="com.great.springboot.bean.TbLog">
+    <select id="findLog" parameterType="map" resultType="com.great.childschool.entity.TjzTbLog">
         SELECT * FROM tb_log
         <where>
             <if test="userName !=null and userName!=''">
@@ -147,65 +73,11 @@
     </select>
 
     <!--    增加日志-->
-    <insert id="addLog" parameterType="com.great.springboot.bean.TbLog">
+    <insert id="addLog" parameterType="com.great.childschool.entity.TjzTbLog">
         INSERT INTO tb_log(operator,operationtime,operationalmatters)
         VALUES (#{operator},#{operationTime},#{operationalMatters})
     </insert>
 
-    <!-- 查询菜单-->
-    <select id="findMenu" parameterType="int" resultType="com.great.springboot.bean.TbMenu">
-        SELECT p.menuid pmenuid,p.menuname pmenuname,c.menuid cmenuid,c.menuname cmenuname,c.menuurl
-        FROM tb_menu p,tb_menu c,tb_adro,tb_rome
-        WHERE p.menuid=c.pmenuid
-        AND tb_adro.adminid=#{personID}
-        AND tb_adro.roleid=tb_rome.roleid
-        AND tb_rome.menuid=p.menuid
-        AND tb_rome.menuchecked=1
-    </select>
 
-    <!--    增加-->
-    <insert id="addTbUser" parameterType="com.great.springboot.bean.TbUser">
-        INSERT INTO tb_user(username,userstate)
-        VALUES (#{userName},#{userState})
-    </insert>
-
-    <!-- 删除用户-->
-    <delete id="deleteTbUserById">
-        DELETE FROM tb_user WHERE userid =#{userId}
-    </delete>
-
-    <!--    文件上传-->
-    <insert id="upload" parameterType="com.great.springboot.bean.TbDocument">
-        INSERT INTO tb_document(documentname,documentbrief,documentscore)
-        VALUES (#{documentName},#{documentBrief},#{documentScore})
-    </insert>
-
-    <!-- 修改用户-->
-    <update id="updateUser" parameterType="com.great.springboot.bean.TbUser">
-        UPDATE tb_user
-        <set>
-            <if test="userName !=null and userName!=''">
-                username =#{userName},
-            </if>
-            <if test="userState !=null and userState!=''">
-                userstate = #{userState}
-            </if>
-        </set>
-        WHERE userid =#{userId}
-    </update>
-
-    <!-- 修改管理员  事务管理测试-->
-    <update id="updateAdmin" parameterType="com.great.springboot.bean.TbAdmin">
-        UPDATE tb_admin
-        <set>
-            <if test="userName !=null and userName!=''">
-                username =#{userName},
-            </if>
-            <if test="userState !=null and userState!=''">
-                userstate = #{userState}
-            </if>
-        </set>
-        WHERE userid =#{userId}
-    </update>
 
 </mapper>

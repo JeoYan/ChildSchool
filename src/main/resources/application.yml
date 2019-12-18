@@ -6,9 +6,9 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1/childSchool?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8
-    username: root
-    password: 123456
+    url: jdbc:mysql://120.27.247.16/childSchool?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8
+    username: yanjunjie
+    password: abc123
     type: com.alibaba.druid.pool.DruidDataSource
   druid:
     initial-size: 8 #初始化时建立物理连接的个数

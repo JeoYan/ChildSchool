@@ -52,7 +52,7 @@
 		//数据表格
 			reloadTable = table.render({
 			elem: '#demo'
-			, url: '/ChildSchool/BackAction/findClassRooms.action' //数据接口
+			, url: '/ChildSchool/BackAction/courseManagement.action' //数据接口
 			, page: true //开启分页
 			, cols: [[ //表头
 				{field: 'cName', title: '班级名称', sort: true, fixed: 'left', align: 'center'}
