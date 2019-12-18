@@ -5,6 +5,8 @@ package com.great.childschool.mapper;
 
 
 import com.great.childschool.entity.TbLog;
+import com.great.childschool.entity.TjzTbClassRoom;
+import com.great.childschool.entity.TjzTbCourse;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -12,14 +14,14 @@ import java.util.Map;
 
 
 @Mapper
-public interface BackMapper
+public interface TjzBackMapper
 {
 
 //	public TbAdmin findByTbAdmin(TbAdmin admin);
 //
-//	public List<TbUser> findByTbUser(Map<String, Object> map);
-//
-//	public int findByTbUserNum(Map<String, Object> map);
+	public List<TjzTbClassRoom> findClassRooms(Map<String, Object> map);
+
+	public int findClassRoomNum(Map<String, Object> map);
 //
 //	public int deleteTbUserById(int userId);
 //

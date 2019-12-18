@@ -4,7 +4,9 @@ package com.great.childschool.service;
 
 import com.great.childschool.entity.TbLog;
 import com.great.childschool.entity.TbTable;
-import com.great.childschool.mapper.BackMapper;
+import com.great.childschool.entity.TjzTbClassRoom;
+import com.great.childschool.entity.TjzTbCourse;
+import com.great.childschool.mapper.TjzBackMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +19,7 @@ import java.util.Map;
 public class TjzBackService
 {
 	@Resource
-	private BackMapper backMapper;
+	private TjzBackMapper tjzBackMapper;
 
 
 //	//用户分页
@@ -31,9 +33,9 @@ public class TjzBackService
 //		map.put("pstart", pstart);
 //		map.put("psize", psize);
 //		map.put("documentName", documentName);
-//		List<TbDocument> list = backMapper.findByTbDocument(map);
+//		List<TbDocument> list = tjzBackMapper.findByTbDocument(map);
 //		tbBean.setData(list);
-//		tbBean.setCount(String.valueOf(backMapper.findByTbDocumentNum(map)));
+//		tbBean.setCount(String.valueOf(tjzBackMapper.findByTbDocumentNum(map)));
 //		tbBean.setCode("0");
 //		tbBean.setMsg(null);
 //		return tbBean;
@@ -45,7 +47,7 @@ public class TjzBackService
 //	@Transactional
 //	public int findLoginRole(int adminId)
 //	{
-//		int roleId = backMapper.findLoginRole(adminId);
+//		int roleId = tjzBackMapper.findLoginRole(adminId);
 //		return roleId;
 //	}
 //
@@ -53,7 +55,7 @@ public class TjzBackService
 //	@Transactional
 //	public List<TbRole> findRole()
 //	{
-//		List<TbRole> list = backMapper.findRole();
+//		List<TbRole> list = tjzBackMapper.findRole();
 //		return list;
 //	}
 //
@@ -61,7 +63,7 @@ public class TjzBackService
 //	@Transactional
 //	public int updateTree(Map<String, Object> map)
 //	{
-//		int flag = backMapper.updateTree(map);
+//		int flag = tjzBackMapper.updateTree(map);
 //		return flag;
 //	}
 //
@@ -69,7 +71,7 @@ public class TjzBackService
 //	@Transactional
 //	public int clearChecked(int updateRoleId)
 //	{
-//		int flag = backMapper.clearChecked(updateRoleId);
+//		int flag = tjzBackMapper.clearChecked(updateRoleId);
 //		return flag;
 //	}
 //
@@ -77,7 +79,7 @@ public class TjzBackService
 //	@Transactional
 //	public List<TbMenu> findFirstMenu(int personID)
 //	{
-//		List<TbMenu>  firstMenu=backMapper.findFirstMenu(personID);
+//		List<TbMenu>  firstMenu=tjzBackMapper.findFirstMenu(personID);
 //		return firstMenu;
 //	}
 //
@@ -86,7 +88,7 @@ public class TjzBackService
 //	public List<TbMenu> findChildMenu(Map<String, Object> map)
 //	{
 //
-//		List<TbMenu> childMenu= backMapper.findChildMenu(map);
+//		List<TbMenu> childMenu= tjzBackMapper.findChildMenu(map);
 //		return childMenu;
 //	}
 //
@@ -97,7 +99,7 @@ public class TjzBackService
 //		TbAdmin tbAdmin = new TbAdmin();
 //		tbAdmin.setAdminId(Integer.valueOf(personID));
 //		tbAdmin.setAdminPass(Md5Test.toMD5(personPass));
-//		TbAdmin tbAdmin1 = backMapper.findByTbAdmin(tbAdmin);
+//		TbAdmin tbAdmin1 = tjzBackMapper.findByTbAdmin(tbAdmin);
 //		return tbAdmin1;
 //	}
 //
@@ -105,29 +107,32 @@ public class TjzBackService
 //	@Transactional
 //	public List<TbMenu> findMenu(String personID)
 //	{
-//		List<TbMenu>menuList=backMapper.findMenu(Integer.valueOf(personID));
+//		List<TbMenu>menuList=tjzBackMapper.findMenu(Integer.valueOf(personID));
 //		return menuList;
 //	}
-//	//用户分页
-//	@Transactional
-//	public TbTable showTable(String page, String limit, String startDate, String endDate, String userName)
-//	{
-//		TbTable tbBean = new TbTable();
-//		Map<String, Object> map = new HashMap<String, Object>();
-//		int psize = Integer.valueOf(limit);
-//		int pstart = (Integer.valueOf(page) - 1) * psize;
-//		map.put("pstart", pstart);
-//		map.put("psize", psize);
-//		map.put("startDate", startDate);
-//		map.put("endDate", endDate);
-//		map.put("userName", userName);
-//		List<TbUser> list = backMapper.findByTbUser(map);
-//		tbBean.setData(list);
-//		tbBean.setCount(String.valueOf(backMapper.findByTbUserNum(map)));
-//		tbBean.setCode("0");
-//		tbBean.setMsg(null);
-//		return tbBean;
-//	}
+
+	/**
+	 * 课程管理分页
+	 */
+	@Transactional
+	public TbTable findClassRooms(String page, String limit, String startDate, String endDate, String cName)
+	{
+		TbTable tbBean = new TbTable();
+		Map<String, Object> map = new HashMap<String, Object>();
+		int psize = Integer.valueOf(limit);
+		int pstart = (Integer.valueOf(page) - 1) * psize;
+		map.put("pstart", pstart);
+		map.put("psize", psize);
+		map.put("startDate", startDate);
+		map.put("endDate", endDate);
+		map.put("cName", cName);
+		List<TjzTbClassRoom> list = tjzBackMapper.findClassRooms(map);
+		tbBean.setData(list);
+		tbBean.setCount(String.valueOf(tjzBackMapper.findClassRoomNum(map)));
+		tbBean.setCode("0");
+		tbBean.setMsg(null);
+		return tbBean;
+	}
 
 	//日志分页
 	@Transactional
@@ -142,9 +147,9 @@ public class TjzBackService
 		map.put("startDate", startDate);
 		map.put("endDate", endDate);
 		map.put("userName", userName);
-		List<TbLog> list = backMapper.findLog(map);
+		List<TbLog> list = tjzBackMapper.findLog(map);
 		tbBean.setData(list);
-		tbBean.setCount(String.valueOf(backMapper.findLogNum(map)));
+		tbBean.setCount(String.valueOf(tjzBackMapper.findLogNum(map)));
 		tbBean.setCode("0");
 		tbBean.setMsg(null);
 		return tbBean;
@@ -154,7 +159,7 @@ public class TjzBackService
 //	@Transactional
 //	public int delUser(int userId)
 //	{
-//		int flag = backMapper.deleteTbUserById(userId);
+//		int flag = tjzBackMapper.deleteTbUserById(userId);
 //		return flag;
 //
 //	}
@@ -164,7 +169,7 @@ public class TjzBackService
 //	@Transactional
 //	public int addlUser(TbUser user)
 //	{
-//		int flag = backMapper.addTbUser(user);
+//		int flag = tjzBackMapper.addTbUser(user);
 //		return flag;
 //
 //	}
@@ -173,7 +178,7 @@ public class TjzBackService
 	@Transactional
 	public int addLog(TbLog log)
 	{
-		int flag = backMapper.addLog(log);
+		int flag = tjzBackMapper.addLog(log);
 		return flag;
 
 	}
@@ -182,7 +187,7 @@ public class TjzBackService
 //	@Transactional
 //	public int updateUser(TbUser user)
 //	{
-//		int flag = backMapper.updateUser(user);
+//		int flag = tjzBackMapper.updateUser(user);
 //		return flag;
 //	}
 //
@@ -190,7 +195,7 @@ public class TjzBackService
 //	@Transactional
 //	public int upload(TbDocument document)
 //	{
-//		int flag = backMapper.upload(document);
+//		int flag = tjzBackMapper.upload(document);
 //		return flag;
 //	}
 
