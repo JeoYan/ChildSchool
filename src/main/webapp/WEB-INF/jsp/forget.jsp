@@ -28,7 +28,7 @@
 	<link rel="stylesheet" href=<%=path+"/layuiadmin/style/admin.css"%> media="all">
 	<link rel="stylesheet" href=<%=path+"/layuiadmin/style/login.css"%> media="all">
 </head>
-
+<body>
 <div class="layadmin-user-login layadmin-user-display-show" id="LAY-user-login" style="display: none;">
 	<div class="layadmin-user-login-main">
 		<div class="layadmin-user-login-box layadmin-user-login-header">
