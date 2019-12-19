@@ -23,7 +23,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>教师管理</title>
+	<title>职工管理</title>
 	<meta name="renderer" content="webkit">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -37,13 +37,40 @@
 
 
 <div class="demoTable">
-	<h1 style="text-align: center">教师管理</h1>
-	教师名称:
-	<div class="layui-inline">
-		<input class="layui-input" name="wname" id="demoReload" autocomplete="off">
+	<h1 style="text-align: center">职工管理</h1>
+<%--	教师名称:--%>
+<%--	<div class="layui-inline">--%>
+<%--		<input class="layui-input" name="wname" id="demoReload" autocomplete="off">--%>
+<%--	</div>--%>
+	<%--	<form class="layui-form" action="">--%>
+	<div style="text-align: center">
+		教师名称:
+		<div class="layui-inline">
+			<input class="layui-input" name="wname" id="demoReload" autocomplete="off">
+		</div>
+
+		<div class="layui-inline">
+			<label class="layui-form-label">角色选择</label>
+			<div class="layui-input-inline" >
+				<select name="rname" id="demoReload1">
+					<option value="">请选择角色</option>
+
+
+					<c:forEach items="${requestScope.role}" begin="0" step="1" var="y">
+						<option value="${y.rid}">${y.rname}</option>
+					</c:forEach>
+
+				</select>
+			</div>
+		</div>
+
+		<button class="layui-btn" data-type="reload">查询</button>
+		<button class="layui-btn layui-btn-normal" data-type="add" >新增</button>
+
 	</div>
-	<button class="layui-btn" data-type="reload">查询</button>
-	<button class="layui-btn layui-btn-normal" data-type="add" >新增</button>
+
+	<%--	</form>--%>
+
 
 </div>
 
@@ -83,10 +110,12 @@
 
 
 		var $ = layui.$, active = {
+
 			//查询
 			reload: function(){
-				var demoReload = $('#demoReload');
 
+				var demoReload = $('#demoReload');
+				var demoReload1 = $('#demoReload1');
 				//执行重载
 				table.reload('test', {
 					page: {
@@ -94,7 +123,8 @@
 					}
 					,where: {
 
-						wname: demoReload.val()
+						wname: demoReload.val(),
+						rname: demoReload1.val()
 					}
 				}, 'data');
 			},
