@@ -59,7 +59,7 @@ public class YjjParentLoginController
 			response.setHeader("Pragma", "No-cache");
 			response.setHeader("Cache-Control", "no-cache");
 			response.setDateHeader("Expire", 0);
-//			RandomValidateCodeUtil randomValidateCode = new RandomValidateCodeUtil();
+			//			RandomValidateCodeUtil randomValidateCode = new RandomValidateCodeUtil();
 			RandomValidateCodeUtil randomValidateCode = new RandomValidateCodeUtil();
 
 			//输出验证码图片方法
@@ -89,25 +89,23 @@ public class YjjParentLoginController
 		System.out.println("-----------家长登入验证码------------"+random);
 		if(random.equalsIgnoreCase(verifyCode)){
 			TblParent parent= parentLoginService.parentLoginCheck(uPhone,passWord);
-		if(null!=parent){
-			parentSuccess=parent;
-			result="Ok";
+
+			if(null!=parent){
+				if(parent.getSid()==1)
+				{
+					parentSuccess = parent;
+					result = "Ok";
+				}else{
+					result="StatusLock";
+				}
+			}else{
+				result="NotExist";
 			}
 		}else{
 			result="vercodeError";
 		}
-
-
-
-
-
-
-
 		return result;
-
 	}
-
-
 	/**
 	 * 登入跳转到家长菜单主页
 	 * by 严俊杰
@@ -119,7 +117,7 @@ public class YjjParentLoginController
 		request.getSession().setAttribute("pName",parentSuccess.getPname());
 		request.getSession().setAttribute("pid",parentSuccess.getPid());
 		ModelAndView modelAndView=new ModelAndView();
-//		modelAndView.addObject("aname", tbladmin.getAname());
+		//		modelAndView.addObject("aname", tbladmin.getAname());
 		modelAndView.setViewName("parentmenu");
 		return modelAndView;
 	}

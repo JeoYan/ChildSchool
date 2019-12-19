@@ -10,6 +10,17 @@ public class TblParent {
   private String pphone;
   private String pjob;
   private int sid;
+  private String prelation;
+
+  public String getPrelation()
+  {
+    return prelation;
+  }
+
+  public void setPrelation(String prelation)
+  {
+    this.prelation = prelation;
+  }
 
   public int getPid()
   {

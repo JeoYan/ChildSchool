@@ -40,7 +40,7 @@
 			<div class="layui-form-item">
 				<label class="layadmin-user-login-icon layui-icon layui-icon-username"
 				       for="LAY-user-login-username"></label>
-				<input type="text" name="username" id="LAY-user-login-username" lay-verify="required" placeholder="手机号"
+				<input type="text" name="username" id="LAY-user-login-username" lay-verify="required" placeholder="用户账号"
 				       class="layui-input">
 			</div>
 			<div class="layui-form-item">
@@ -121,7 +121,7 @@
 		//提交
 		form.on('submit(LAY-user-login-submit)', function (obj) {
 			var flag=false;
-			var uPhone = $("#LAY-user-login-username").val();
+			var wid = $("#LAY-user-login-username").val();
 			var passWord = $("#LAY-user-login-password").val();
 			var verifyCode = $("#LAY-user-login-vercode").val();
 			//请求登入接口
@@ -129,7 +129,7 @@
 				async: false,//异步操作
 				type: "POST",
 				url: "${pageContext.request.contextPath}/workerLogin/loginCheck.action",//注意路径
-				data: {uPhone: uPhone, passWord: passWord,verifyCode: verifyCode},
+				data: {wid: wid, passWord: passWord,verifyCode: verifyCode},
 				dataType: "text",
 				success: function (data) {
 					// alert(data);
@@ -137,7 +137,11 @@
 						layer.msg("账号或密码不存在！！！");
 					}else if(data==="vercodeError"){
 						layer.msg("验证码错误！！！");
-					} else {
+					} else if(data==="NotExist"){
+						layer.msg("账户不存在！！！");
+					}else if(data==="StatusLock"){
+						layer.msg("账户已被禁用，请联系学校管理员！！！");
+					}else{
 						//登入成功的提示与跳转
 						layer.msg('登入成功', {
 							offset: '15px'
