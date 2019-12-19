@@ -7,34 +7,25 @@ package com.great.childschool.entity;
 public class TblRole {
 
   private int rid;
-  private String rName;
+  private String rname;
 
-  public TblRole()
+  public int getRid()
   {
-  }
-
-  public TblRole(int rid, String rName)
-  {
-    this.rid = rid;
-    this.rName = rName;
-  }
-
-  public int getRid() {
     return rid;
   }
 
-  public void setRid(int rid) {
+  public void setRid(int rid)
+  {
     this.rid = rid;
   }
 
-
-  public String getrName()
+  public String getRname()
   {
-    return rName;
+    return rname;
   }
 
-  public void setrName(String rName)
+  public void setRname(String rname)
   {
-    this.rName = rName;
+    this.rname = rname;
   }
 }

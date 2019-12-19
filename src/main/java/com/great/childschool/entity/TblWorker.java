@@ -10,8 +10,17 @@ public class TblWorker {
   private String wsex;
   private String wdate;
   private int sid;
+  private String rname;
 
+  public String getRname()
+  {
+    return rname;
+  }
 
+  public void setRname(String rname)
+  {
+    this.rname = rname;
+  }
 
   public int getWid()
   {

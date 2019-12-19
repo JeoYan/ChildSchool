@@ -12,6 +12,9 @@ public class TblParent {
   private int sid;
   private String prelation;
 
+
+
+
   public String getPrelation()
   {
     return prelation;
