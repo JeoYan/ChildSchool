@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.great.childschool.mapper.ZhFoodManageMapper">
+
+
+    <select id="findFoodManage"  parameterType="com.great.childschool.entity.TblFood" resultType="com.great.childschool.entity.TblFood">
+
+        SELECT  * from  tbl_food
+        <where>
+            1=1
+            <if test="fdate != null and fdate != '' ">
+
+                AND fdate like  #{fdate}
+
+            </if>
+
+        </where>
+
+        ORDER BY fdate desc
+        limit #{page},5
+
+    </select>
+
+
+
+
+
+    <select id="totalPageFoodManage" parameterType="com.great.childschool.entity.TblFood" resultType="com.great.childschool.entity.TblFood">
+
+        SELECT  * from  tbl_food
+        <where>
+            1=1
+            <if test="fdate != null and fdate != '' ">
+
+                AND fdate like  #{fdate}
+
+            </if>
+
+        </where>
+        ORDER BY fdate desc
+    </select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>
