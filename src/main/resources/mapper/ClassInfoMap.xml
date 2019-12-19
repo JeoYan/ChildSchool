@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.great.childschool.mapper.ClassInfoMapper">
+    <select id="queryClassInfo" resultType="CmjTblBaby">
+        select A.*,C.pname from tbl_baby A ,
+        (select bid,pid from tbl_parent_baby) B,
+        (select pid,pname from tbl_parent) C
+        <where>
+            A.bid = B.bid and B.pid = C.pid and A.cid = 1
+            <if test="beginDate !=null and beginDate!=''">
+                AND A.bdate &gt;= #{beginDate}
+            </if>
+            <if test="endDate !=null and endDate!=''">
+                AND A.bdate &lt;= #{endDate}
+            </if>
+        </where>
+        limit #{page},#{size}
+    </select>
+
+    <select id="countClassInfo" resultType="java.lang.Integer">
+        select count(D.cid) from (select A.cid from tbl_baby A ,
+        (select bid,pid from tbl_parent_baby) B,
+        (select pid,pname from tbl_parent) C
+         <where>
+            A.bid = B.bid and B.pid = C.pid and A.cid = 1
+            <if test="beginDate !=null and beginDate!=''">
+                AND A.bdate &gt;= #{beginDate}
+            </if>
+            <if test="endDate !=null and endDate!=''">
+                AND A.bdate &lt;= #{endDate}
+            </if>
+        </where>
+    ) D
+    </select>
+
+    <select id="findParentInfo" resultType="TblParent">
+        select A.*,B.prelation from tbl_parent A,tbl_parent_baby B
+        where bid = #{bid} and A.pid = B.pid
+    </select>
+
+    <select id="findBabyInfo" resultType="CmjTblBaby">
+        select * from tbl_baby where bid = #{bid}
+    </select>
+</mapper>
