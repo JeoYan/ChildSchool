@@ -12,13 +12,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 /**
- * 体检管理表格控制层
+ * 体检控制层
  * by 张宏
  */
 
@@ -29,6 +30,12 @@ public class ZhMedicalManageController
 
 	@Resource
 	private ZhMedicalManageService zhMedicalManageService;
+
+
+	/**
+	 * 保健端体检
+	 *
+	 */
 
 	//体检界面显示
 	@RequestMapping("/medicalmanage.action")
@@ -93,8 +100,16 @@ public class ZhMedicalManageController
 		//获取时间
 		String s = simpleDateFormat.format(date);
 		tblChecklist.setCheckDate(s);
+		int num;
+		TblChecklist newTblChecklist=zhMedicalManageService.findMedical(tblChecklist);
+		if (newTblChecklist == null){
+			num =zhMedicalManageService.addMedical(tblChecklist);
+		}else {
+			num=0;
+		}
 
-		int num =zhMedicalManageService.addMedical(tblChecklist);
+
+
 
 		return num;
 	}
@@ -136,7 +151,7 @@ public class ZhMedicalManageController
 	@ResponseBody
 	public int updateMedical(TblChecklist tblChecklist){
 
-		System.out.println(tblChecklist.getTemperature()+"------------getTemperature-----------");
+//		System.out.println(tblChecklist.getTemperature()+"------------getTemperature-----------");
 //		//时间
 //		Date date = new Date();
 //		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -148,4 +163,82 @@ public class ZhMedicalManageController
 
 		return num;
 	}
+
+
+	//删除体检信息
+	@RequestMapping("/deleteMedical.action")
+	@ResponseBody
+	public int deleteMedical(TblChecklist tblChecklist){
+
+//		System.out.println(tblChecklist.getTemperature()+"------------getTemperature-----------");
+
+
+		int num =zhMedicalManageService.deleteMedical(tblChecklist);
+
+		return num;
+	}
+
+
+
+	/**
+	 * 家长端体检信息
+	 *
+	 */
+
+	//家长端体检情况界面
+	@RequestMapping("/medicalcase.action")
+	public ModelAndView medicalcaseView(HttpServletRequest request)
+	{
+		ModelAndView modelAndView = new ModelAndView();
+		TblChecklist tblChecklist = new TblChecklist();
+		tblChecklist.setPid(Long.valueOf(String.valueOf(request.getSession().getAttribute("pid"))).longValue());
+
+
+		List<TblChecklist> pageList = zhMedicalManageService.totalPageMedicalCase(tblChecklist);
+		modelAndView.addObject("bybyname", pageList.get(0).getBname());
+		modelAndView.addObject("bybysex", pageList.get(0).getBsex());
+
+		System.out.println(pageList.get(0).getBname()+"------------getBname------------");
+		System.out.println(pageList.get(0).getBsex()+"------------getBsex------------");
+		modelAndView.setViewName("medicalcase");
+
+		return modelAndView;
+	}
+
+
+	//家长端体检情况表格
+	@RequestMapping("/findMedicalCase.action")
+	@ResponseBody
+	public ZhSend findMedicalCase(TblChecklist tblChecklist, String page, HttpServletRequest request)
+	{
+
+		ModelAndView modelAndView = new ModelAndView();
+
+		//获取家长id
+		tblChecklist.setPid(Long.valueOf(String.valueOf(request.getSession().getAttribute("pid"))).longValue());
+		System.out.println(tblChecklist.getPid()+"----------getPid-------------");
+
+		//发送表格实体类
+		ZhSend zhSend = new ZhSend();
+
+		tblChecklist.setPage((Integer.valueOf(page) - 1) * 5);
+
+		List<TblChecklist> list = zhMedicalManageService.findMedicalCase(tblChecklist);
+
+		System.out.println(list.get(0).getCheckDate()+"++++++++++++getCheckDate++++++++++++++++");
+
+		List<TblChecklist> pageList = zhMedicalManageService.totalPageMedicalCase(tblChecklist);
+
+		int totalPage = pageList.size();
+
+		zhSend.setCode(new BigDecimal(0));
+
+		zhSend.setCount(new BigDecimal(totalPage));
+
+		zhSend.setData(list);
+
+		return zhSend;
+	}
+
+
 }

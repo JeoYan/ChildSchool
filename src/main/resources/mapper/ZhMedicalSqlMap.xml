@@ -11,13 +11,13 @@
        <where>
            c.bid=b.bid and b.cid=r.cid
 
-<!--            <if test="uname != null and uname != '' ">-->
+            <if test="cname != null and cname != '' ">
 
-<!--                AND U.UNAME like  #{uname}-->
+                AND r.cname like  #{cname}
 
-<!--            </if>-->
-
-        </where>
+            </if>
+           ORDER BY c.checkdate desc
+       </where>
 
         limit #{page},5
 
@@ -33,11 +33,11 @@
         <where>
             c.bid=b.bid and b.cid=r.cid
 
-            <!--            <if test="uname != null and uname != '' ">-->
+            <if test="cname != null and cname != '' ">
 
-            <!--                AND U.UNAME like  #{uname}-->
+                AND r.cname like  #{cname}
 
-            <!--            </if>-->
+            </if>
 
         </where>
 

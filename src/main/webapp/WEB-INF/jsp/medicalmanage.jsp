@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
 	String path = request.getContextPath();
 	String uiPath = request.getContextPath() + "/layui/";
@@ -14,7 +15,10 @@
 <head>
 	<title>体检管理</title>
 
-
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport"
+	      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
 	<link rel="stylesheet" href=<%=path+"/layuiadmin/layui/css/layui.css"%> media="all">
 	<link rel="stylesheet" href=<%=path+"/layuiadmin/style/admin.css"%> media="all">
 	<link rel="stylesheet" href=<%=path+"/layuiadmin/style/login.css"%> media="all">
@@ -26,11 +30,11 @@
 <body>
 
 
-<div  id="LAY-user-login" style="display: none;">
+<div id="LAY-user-login" style="display: none;">
 	<div class="layadmin-user-login-box layadmin-user-login-header">
 		<h2>体检管理</h2>
 	</div>
-	<div style="text-align: center" >
+	<div style="text-align: center">
 		<%--		<div class="layui-inline" style="width:1000px;text-align: right">--%>
 		<%--			<a href="userlogin.jsp">登录</a>&nbsp&nbsp&nbsp&nbsp--%>
 		<%--			<a href="userlogin.jsp">注册</a>--%>
@@ -38,13 +42,43 @@
 		<div class="layui-inline" style="width:500px;">
 			<hr>
 		</div>
+
+
 	</div>
 	<div class="layui-card-body">
 		<div style="text-align: center;">
+			<div class="layui-inline">
+				<label class="layui-form-label">班级</label>
+			</div>
+			<div class="layui-inline">
+				<div class="layui-form">
+
+					<select name="" id="cname" lay-filter="myselect">
+						<option value="">请选择</option>
+						<option value="小二班">小二班</option>
+						<c:forEach items="${requestScope.allClass}" begin="0" step="1" var="t">
+							<option value="${t.cId}">${t.cName}</option>
+						</c:forEach>
+					</select>
+				</div>
+			</div>
+			<%--			<div class="layui-inline">--%>
+			<%--				<label class="layui-form-label">班级</label>--%>
+			<%--				<select   lay-filter="class"  id="classid" lay-verify="required" >--%>
+			<%--					<option value="0"></option>--%>
+			<%--					<c:forEach items="${requestScope.allClass}" begin="0" step="1" var="t">--%>
+			<%--						<option value="${t.cId}" >${t.cName}</option>--%>
+			<%--					</c:forEach>--%>
+			<%--				</select>--%>
+			<%--			</div>--%>
 
 			<div class="layui-inline">
-<%--				<label class="layui-form-label">      </label>--%>
+				<button class="layui-btn layuiadmin-btn-admin" id="serace" lay-submit
+				        lay-filter="LAY-user-back-search">
+					<i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+				</button>
 			</div>
+
 			<div class="layui-inline">
 				<button class="layui-btn layuiadmin-btn-useradmin" data-type="add">新增体检情况</button>
 
@@ -52,7 +86,7 @@
 		</div>
 	</div>
 	<div style="text-align: center">
-		<div class="layui-inline" style="width:1000px">
+		<div class="layui-inline" style="width:96%">
 			<table id="demo" lay-filter="demo"></table>
 		</div>
 	</div>
@@ -61,9 +95,7 @@
 	</div>
 
 
-
 </div>
-
 
 
 <script type="text/html" id="barDemo">
@@ -73,6 +105,11 @@
 
 <script>
 
+	layui.use('form', function () {
+		var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
+
+		form.render();
+	});
 
 	layui.use('table', function () {
 		var table = layui.table;
@@ -81,27 +118,28 @@
 		table.render({
 			elem: '#demo'
 			, height: 350
-			,url: '/ChildSchool/findMedicalManage.action' //数据接口
+			, url: '/ChildSchool/findMedicalManage.action' //数据接口
 			, page: true //开启分页
-			,limit:5
-			,done: function(){
+			, limit: 5
+			, done: function () {
 				$('.layui-laypage-limits').hide();
 			}
 			, id: 'demo'
 			, cols: [[ //表头
 				// {field: 'id', title: 'ID', width:80, sort: true, fixed: 'left'}
 				// ,
-				{field: 'bname', title: '宝宝名字', align:'center'}
-				,{field: 'cname', title: '宝宝班级', align:'center'}
-				,{field: 'checkDate', title: '体检时间', align:'center'}
-				,{field: 'height', title: '身高', align:'center'}
-				,{field: 'weight', title: '体重' , align:'center'}
-				,{field: 'vision', title: '视力', align:'center'}
-				,{field: 'temperature', title: '体温', align:'center'}
-				,{field: 'sId', title: '健康状况', align:'center'}
-				,{field:'bId', title: 'bId', hide:true}
-				,{field:'cid', title: 'cid', hide:true}
-				 ,{field: '', title: '操作', align: "center", toolbar: "#barDemo"}
+				{type: 'numbers', title: '序号', align: 'center'}
+				, {field: 'bname', title: '宝宝名字',align: 'center'}
+				, {field: 'cname', title: '宝宝班级', align: 'center'}
+				, {field: 'checkDate', title: '体检时间', align: 'center'}
+				, {field: 'height', title: '身高', align: 'center'}
+				, {field: 'weight', title: '体重', align: 'center'}
+				, {field: 'vision', title: '视力', align: 'center'}
+				, {field: 'temperature', title: '体温', align: 'center'}
+				, {field: 'sId', title: '健康状况', align: 'center'}
+				, {field: 'bId', title: 'bId', hide: true}
+				, {field: 'cid', title: 'cid', hide: true}
+				, {field: '', title: '操作', align: "center", toolbar: "#barDemo"}
 
 			]]
 		});
@@ -112,7 +150,6 @@
 				var demoReload = $('#demo');
 				//执行重载
 				table.reload('demo', {
-
 
 					page: {
 						curr: 1 //重新从第 1 页开始
@@ -134,27 +171,31 @@
 				, table = layui.table;
 
 			//监听搜索
-			form.on('submit(LAY-user-front-search)', function (data) {
-				var field = data.field;
+			$('#serace').on('click', function () {
 
-				//执行重载
-				table.reload('LAY-user-manage', {
-					where: field
-				});
+				var cname = $('#cname').val();
+				table.reload('demo', {
+					where: {
+						'cname': cname
+					}, page: {
+						curr: 1
+					}
+				})
+
 			});
 
 			//修改
 			table.on('tool(demo)', function (obj) {//注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
 				var data = obj.data;//获得当前行数据
-				if(obj.event === 'update'){
+				if (obj.event === 'update') {
 					layer.open({
 						type: 2
-						,title: '修改体检表'
-						,content: '/ChildSchool/updatemedicalview.action'
-						,maxmin: true
-						,area: ['500px', '450px']
-						,btn: ['确定', '取消']
-						, success : function(layero, index) {
+						, title: '修改体检表'
+						, content: '/ChildSchool/updatemedicalview.action'
+						, maxmin: true
+						, area: ['500px', '450px']
+						, btn: ['确定', '取消']
+						, success: function (layero, index) {
 							//回显到窗口
 							var body = layer.getChildFrame('body', index);
 							body.find("#class").val(data.cname);
@@ -166,26 +207,16 @@
 							body.find("#health").val(data.sId);
 
 
-
-
-
-
-
-
-
-
 						}
-						,yes: function(index, layero){
+						, yes: function (index, layero) {
 							//窗口拿数据
 
 							//宝宝id
-							var  bId =data.bId;
+							var bId = data.bId;
 							//班级id
-							var  cid =data.cid;
+							var cid = data.cid;
 							//时间
-							var  checkDate =data.checkDate;
-
-
+							var checkDate = data.checkDate;
 
 
 							//身高
@@ -205,7 +236,7 @@
 
 							//正则
 							//只能输入中文，字母,下划线
-							var regname=/^[A-Za-z\u4e00-\u9fa5]+$/;
+							var regname = /^[A-Za-z\u4e00-\u9fa5]+$/;
 							//身高  只能整数或小数
 							var heightReg = /^[+-]?\d+(\.\d+)?$|^$|^(\d+|\-){7,}$/;
 							//体重
@@ -213,19 +244,18 @@
 							//视力 只能到5.0
 							var visionReg = /^(0\.\d{1}|[1-4]{1}(\.\d{1}){0,1}|5(\.0){0,1}|.{0})$/;
 							//体温
-							var  temperatureReg  =/^(\-?\d{0,2})(\.\d{0,2})?/;
+							var temperatureReg = /^(\-?\d{0,2})(\.\d{0,2})?/;
 
 
-
-							if (!heightReg.test(high)){
+							if (!heightReg.test(high)) {
 								layer.msg("身高输入格式有误");
-							}else if (!weightReg.test(weight)){
+							} else if (!weightReg.test(weight)) {
 								layer.msg("体重输入格式有误");
-							}else if (!visionReg.test(vision)){
+							} else if (!visionReg.test(vision)) {
 								layer.msg("视力输入格式有误");
-							}else if (!heightReg.test(temperature)){
+							} else if (!heightReg.test(temperature)) {
 								layer.msg("体温输入格式有误");
-							}else {
+							} else {
 								var ob = {
 									bId: bId,
 									height: high,
@@ -233,15 +263,15 @@
 									vision: vision,
 									temperature: temperature,
 									sId: health,
-									cid:cid,
-									checkDate:checkDate
+									cid: cid,
+									checkDate: checkDate
 
 								};
 
 								$.ajax({
 									type: "POST",//提奥的方式
 									url: "/ChildSchool/updateMedical.action",//提交的地址
-									data: ob ,//提交的数据
+									data: ob,//提交的数据
 									dataType: "json",//希望返回的数据类型
 									async: true,//异步操作
 									success: function (num) {//成功的方法  msg为返回数据
@@ -249,7 +279,7 @@
 										//msg字符串切割得到list和
 
 										//未查询到数据时执行
-										if (num >=1) {
+										if (num >= 1) {
 											layer.msg("修改成功");
 
 											// //刷新表格
@@ -271,33 +301,48 @@
 
 						// ,value: data.USERNAME
 					});
-				}
-				else if (obj.event==='delete'){
+				} else if (obj.event === 'delete') {
 					layer.confirm('确定删除？', function (index) {
-						layer.close(index);
+						// layer.close(index);
+						//宝宝id
+						var bId = data.bId;
+						//时间
+						var checkDate = data.checkDate;
+						var ob = {bId: bId, checkDate: checkDate};
 
-
-						var ob={uname:name,sname:sname};
 
 						$.ajax({
 							type: "POST",//提奥的方式
-							url: "",//提交的地址
+							url: "/ChildSchool/deleteMedical.action",//提交的地址
 							data: ob,//提交的数据
 							dataType: "json",//希望返回的数据类型
 							async: true,//异步操作
-							success: function (msg) {//成功的方法  msg为返回数据
-
-								// alert(msg);
+							success: function (num) {//成功的方法  msg为返回数据
+								// alert(num);
 								//msg字符串切割得到list和
-								var arr = msg.sendMsg.split("\\");
-								// alert(arr[1]);
-								//未查询到数据时执行
-								if (arr[0] === "OK") {
 
-									alert("修改成功！");
+								//未查询到数据时执行
+								if (num >= 1) {
+									layer.msg("删除成功");
+
+									var index=table.cache.demo;
+									alert(index.length===1);
+									if(index.length===1){
+										table.reload('demo', {
+											 page: {
+												curr: 1
+											}
+										});
+
+									}else {
+										table.reload('demo');
+
+									}
+
 									// //刷新表格
 									// table.reload();
-									table.reload('demo');
+									layer.close(index);
+
 								}
 							},
 							error: function () {//错误的方法
@@ -305,19 +350,12 @@
 							}
 						});
 
-
-
-
-
 					});
-
 
 
 				}
 
 			});
-
-
 
 
 			//新增
@@ -389,7 +427,7 @@
 
 							//正则
 							//只能输入中文，字母,下划线
-							var regname=/^[A-Za-z\u4e00-\u9fa5]+$/;
+							var regname = /^[A-Za-z\u4e00-\u9fa5]+$/;
 							//身高  只能整数或小数
 							var heightReg = /^[+-]?\d+(\.\d+)?$|^$|^(\d+|\-){7,}$/;
 							//体重
@@ -397,21 +435,21 @@
 							//视力 只能到5.0
 							var visionReg = /^(0\.\d{1}|[1-4]{1}(\.\d{1}){0,1}|5(\.0){0,1}|.{0})$/;
 							//体温
-							var  temperatureReg  =/^(\-?\d{0,2})(\.\d{0,2})?/;
+							var temperatureReg = /^(\-?\d{0,2})(\.\d{0,2})?/;
 
-							if (Number(classid)===0){
+							if (Number(classid) === 0) {
 								layer.msg("请选择班级");
-							}else if (Number(babyname)===0){
+							} else if (Number(babyname) === 0) {
 								layer.msg("请选择宝宝名字");
-							}else if (!heightReg.test(high)){
+							} else if (!heightReg.test(high)) {
 								layer.msg("身高输入格式有误");
-							}else if (!weightReg.test(weight)){
+							} else if (!weightReg.test(weight)) {
 								layer.msg("体重输入格式有误");
-							}else if (!visionReg.test(vision)){
+							} else if (!visionReg.test(vision)) {
 								layer.msg("视力输入格式有误");
-							}else if (!heightReg.test(temperature)){
+							} else if (!heightReg.test(temperature)) {
 								layer.msg("体温输入格式有误");
-							}else {
+							} else {
 								var ob = {
 									bId: babyname,
 									height: high,
@@ -424,7 +462,7 @@
 								$.ajax({
 									type: "POST",//提奥的方式
 									url: "/ChildSchool/addmedical.action",//提交的地址
-									data: ob ,//提交的数据
+									data: ob,//提交的数据
 									dataType: "json",//希望返回的数据类型
 									async: true,//异步操作
 									success: function (num) {//成功的方法  msg为返回数据
@@ -432,13 +470,15 @@
 										//msg字符串切割得到list和
 
 										//未查询到数据时执行
-										if (num >=1) {
+										if (num >= 1) {
 											layer.msg("添加成功");
 
 											// //刷新表格
 											// table.reload();
 											table.reload('demo');
 											layer.close(index);
+										}else if(num === 0){
+											layer.msg("该宝宝已经添加过体检信息了，请选择其他宝宝");
 										}
 									},
 									error: function () {//错误的方法
@@ -449,19 +489,9 @@
 							}
 
 
-
 							// if(!new RegExp("^1[345789]\d{9}$").test(vision)){
 							// 	layer.msg("手机号码格式错误");
 							// }
-
-
-
-
-
-
-
-
-
 
 
 							// var iframeWindow = window['layui-layer-iframe']
@@ -498,9 +528,6 @@
 
 
 </script>
-
-
-
 
 
 </body>

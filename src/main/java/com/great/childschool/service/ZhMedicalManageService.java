@@ -14,7 +14,7 @@ import java.util.List;
 
 
 /**
- * 体检管理表格Service层
+ * 体检管理Service层
  * by 张宏
  */
 @Service
@@ -26,7 +26,10 @@ public class ZhMedicalManageService
 
 
 
-
+	/**
+	 * 保健端体检管理
+	 *
+	 */
 
 	//查询全部班级
 	public List<TblClassroom> allClass(){
@@ -39,6 +42,10 @@ public class ZhMedicalManageService
 		return zhMedicalManageDao.findbaby(cId);
 	};
 
+	//查询是否已增加完体检
+	public TblChecklist findMedical(TblChecklist tblChecklist){
+		return zhMedicalManageDao.findMedical(tblChecklist);
+	}
 
 	//增加体检信息
 	public int addMedical(TblChecklist tblChecklist){
@@ -64,8 +71,30 @@ public class ZhMedicalManageService
 		return zhMedicalManageDao.updateMedical(tblChecklist);
 	}
 
+	//删除体检信息
+	public int deleteMedical(TblChecklist tblChecklist){
+		return zhMedicalManageDao.deleteMedical(tblChecklist);
+	};
 
 
 
+	/**
+	 * 家长端体检情况
+	 *
+	 */
+
+	//家长端体检情况表格
+	public List<TblChecklist> findMedicalCase (TblChecklist tblChecklist){
+
+		return zhMedicalManageDao.findMedicalCase(tblChecklist);
+	}
+
+	//家长的体检情况总条数
+	public List<TblChecklist>  totalPageMedicalCase (TblChecklist tblChecklist){
+
+
+		return  zhMedicalManageDao.totalPageMedicalCase(tblChecklist);
+
+	}
 
 }

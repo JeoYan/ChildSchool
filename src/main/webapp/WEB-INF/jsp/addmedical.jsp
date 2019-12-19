@@ -37,9 +37,6 @@
 
 	<div class="layui-form-item">
 		<label class="layui-form-label">班级</label>
-
-
-
 	        <div class="layui-input-inline">
 		        <select   lay-filter="class"  id="classid" lay-verify="required" >
 			        <option value="0"></option>

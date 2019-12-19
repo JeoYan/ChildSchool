@@ -71,13 +71,13 @@
 						</a>
 						<dl class="layui-nav-child">
 							<dd data-name="console" class="layui-this">
-								<a lay-href="home/console.html">体检情况</a>
+								<a lay-href="/ChildSchool/medicalcase.action">体检情况</a>
 							</dd>
 							<dd data-name="console">
-								<a lay-href="home/homepage1.html">宝宝考勤</a>
+								<a lay-href="">宝宝考勤</a>
 							</dd>
 							<dd data-name="console">
-								<a lay-href="home/homepage2.html">宝宝膳食</a>
+								<a lay-href="/ChildSchool/foodCaseView.action">宝宝膳食</a>
 							</dd>
 						</dl>
 					</li>
