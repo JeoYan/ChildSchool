@@ -39,71 +39,59 @@
 		<%--		</div>--%>
 		<div class="layui-inline" style="width:500px;">
 			<div class="layui-inline">
-
 				<label class="layui-form-label" id="wName"></label>
 			</div>
 			<div class="layui-inline">
 				<label class="layui-form-label" id="rName"></label>
 			</div>
-
 			<hr>
 		</div>
-
-
 	</div>
 	<div class="layui-card-body">
-
 		<%--表主体--%>
 		<div style="text-align: center">
 			<div class="layui-inline" style="width:96%">
 				<input type="hidden" id="hiddenWid">
 				<div id="test12" class="demo-tree-more"></div>
-			</div>
-			<div class="layui-btn-container">
-				<button type="button" class="layui-btn layui-btn-sm" lay-demo="getChecked">保存</button>
+				<div class="layui-btn-container">
+					<button type="button" class="layui-btn layui-btn-sm" lay-demo="getChecked">保存</button>
+				</div>
 			</div>
 		</div>
-
 		<div class="layui-trans layadmin-user-login-footer">
-
-
 		</div>
-
 	</div>
-
-
-	<script>
-		layui.use(['tree', 'util'], function () {
-			var tree = layui.tree
-				, layer = layui.layer
-				, util = layui.util
-				, $ = layui.$;
-			var url = "${pageContext.request.contextPath}/power/getMenu.action?wid=" + $("#hiddenWid").val();
-			$.post(url, function (data) {
-				console.log(data);
-				// alert(data);
-				//  alert(JSON.stringify(data));
-
-				//基本演示
-				tree.render({
-					elem: '#test12'
-					, data: data
-					, showCheckbox: true  //是否显示复选框
-					, id: 'demoId1'
-					, isJump: true //是否允许点击节点时弹出新窗口跳转
-					, click: function (obj) {
-						var data = obj.data;  //获取当前点击的节点数据
-						layer.msg('状态：' + obj.state + '<br>节点数据：' + JSON.stringify(data));
-					}
-				});
+</div>
+<script>
+	layui.use(['tree', 'util'], function () {
+		var tree = layui.tree
+			, layer = layui.layer
+			, util = layui.util
+			, $ = layui.$;
+		var url = "${pageContext.request.contextPath}/power/getMenu.action?wid=" + $("#hiddenWid").val();
+		$.post(url, function (data) {
+			console.log(data);
+			//基本演示
+			tree.render({
+				elem: '#test12'
+				, data: data
+				, showCheckbox: true  //是否显示复选框
+				, id: 'demoId1'
+				, isJump: true //是否允许点击节点时弹出新窗口跳转
+				, click: function (obj) {
+					var data = obj.data;  //获取当前点击的节点数据
+					// layer.msg('状态：' + obj.state + '<br>节点数据：' + JSON.stringify(data));
+				}
 			});
+		});
+		//按钮事件
+		util.event('lay-demo', {
+			getChecked: function (othis) {
+				var checkedData = tree.getChecked('demoId1'); //获取选中节点的数据
+				var ob = JSON.stringify(checkedData);
 
-
-			//按钮事件
-			util.event('lay-demo', {
-				getChecked: function (othis) {
-					var checkedData = tree.getChecked('demoId1'); //获取选中节点的数据
-					var ob = JSON.stringify(checkedData);
+				var flag=confirm("确定修改？");
+				if(flag){
 					$.ajax({
 						type: "POST",//提交的方式
 						url: "${pageContext.request.contextPath}/power/updateTree.action",//提交的地址
@@ -122,21 +110,19 @@
 							alert("服务器正忙")
 						}
 					});
-
-					console.log(checkedData);
 				}
-				, reload: function () {
-					//重载实例
-					tree.reload('demoId1', {});
-
-				}
-			});
-
-
+				console.log(checkedData);
+			}
+			, reload: function () {
+				//重载实例
+				tree.reload('demoId1', {});
+			}
 		});
 
+	});
 
-	</script>
+
+</script>
 
 
 </body>

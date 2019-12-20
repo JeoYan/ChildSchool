@@ -1,5 +1,6 @@
 package com.great.childschool.service;
 
+import com.great.childschool.aoplog.Log;
 import com.great.childschool.entity.*;
 import com.great.childschool.mapper.YjjParentLoginMapper;
 import com.great.childschool.mapper.YjjWorkerPowerControlMapper;
@@ -66,6 +67,43 @@ public class YjjWorkerPowerControlService
 
 		return workerPowerControlMapper.findMenuStatus(wid, mid);
 	}
+
+
+
+
+	@Log(operationType="修改",operationName="初始化化菜单")
+	@Transactional
+	public int initSid(String wid)
+	{
+		return workerPowerControlMapper.initSid(wid);
+	}
+
+	@Log(operationType="修改",operationName="更新菜单")
+	@Transactional
+	public int updateSid(String wid,List<Integer> list)
+	{
+		int count=0;
+		for (int i = 0; i <list.size() ; i++)
+		{
+			int j=workerPowerControlMapper.updateSid(wid,list.get(i));
+			if(j>0){
+				count++;
+			}
+		}
+		return count ;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }

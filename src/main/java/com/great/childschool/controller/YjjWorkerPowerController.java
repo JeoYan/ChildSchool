@@ -1,5 +1,7 @@
 package com.great.childschool.controller;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.great.childschool.aoplog.Log;
 import com.great.childschool.entity.*;
 import com.great.childschool.service.YjjWorkerPowerControlService;
@@ -67,7 +69,6 @@ public class YjjWorkerPowerController
 		send.setData(list);
 		System.out.println(limit + "limit+----------------+page" + page);
 		return send;
-
 	}
 
 
@@ -168,12 +169,47 @@ public class YjjWorkerPowerController
 	}
 
 
+	//获得更新的数据并保存 严俊杰12.19
+	private List<Integer> menuIds=new ArrayList<>();
 	@RequestMapping("/updateTree.action")
 	@ResponseBody
-	public String updateTree(String wid){
+	public String updateTree(String wid,String data ){
+		System.out.println("------------wid--------------------"+wid);
+		System.out.println("------------data--------------------"+data);
+		Gson gson=new Gson();
+		//将gson的list数据装成list
+		List<YjjTreeData> list= gson.fromJson(data, new TypeToken<List<YjjTreeData>>() {}.getType());
+		menuIds.removeAll(menuIds);
+		List<Integer> menuIds1=getMid(list);
+		//清空用户的菜单数据
+		int i=workerPowerControlService.initSid(wid);
+		//更新树节点设置成勾选
+		int x=workerPowerControlService.updateSid(wid,menuIds1);
+		if (x>0){
+			return"OK";
+		}
+		return"NotOK";
 
-		return "ok";
 	}
+
+
+	public List<Integer> getMid(List<YjjTreeData> list){
+		for (YjjTreeData treeData : list)
+		{
+			menuIds.add(treeData.getId());
+			if(treeData.getChildren()!=null){
+				getMid(treeData.getChildren());
+			}
+		}
+		return menuIds;
+	}
+
+
+
+
+
+
+
 
 
 
