@@ -6,11 +6,12 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%--/**--%>
-<%--* 教师管理-修改界面--%>
+<%--* 幼儿管理-增加界面--%>
 <%--* by 陈超--%>
 <%--*/--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page isELIgnored="false"%>
 
 <%
 	String path = application.getContextPath();
@@ -35,38 +36,38 @@
 
 
 
-
-<div class="layui-form" lay-filter="layui-btn-xs" id="layui-btn-xs" style="padding: 20px 0 0 0;">
+<form class="layui-form" action="">
+<div class="layui-form" lay-filter="layui-btn-normal" id="layui-btn-normal" style="padding: 20px 0 0 0;">
 	<div class="layui-form-item" style="text-align: center">
-		<label class="layui-form-label">教师名称</label>
+		<label class="layui-form-label">宝宝名称</label>
 		<div class="layui-input-inline">
-			<input type="text"  name="wname" id="wname" lay-verify="required" placeholder="请输入教师名称" autocomplete="off" class="layui-input" value="">
+			<input type="text"  name="bname" id="bname" lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+		</div>
+	</div>
+
+	<div class="layui-form-item" lay-filter="sex" >
+		<label class="layui-form-label">性别</label>
+		<div class="layui-inline">
+			<select name="bsex"  id="bsex" lay-filter="LAY-user-adminrole-type">
+				<option value="男">男</option>
+				<option value="女">女</option>
+
+			</select>
 		</div>
 	</div>
 
 	<div class="layui-form-item" >
-		<div class="layui-inline">
-			<label class="layui-form-label">角色选择</label>
-			<div class="layui-input-inline">
-				<select name="rname" id="rname">
-					<option value=""></option>
-
-
-					<c:forEach items="${requestScope.role}" begin="0" step="1" var="y">
-						<option value="${y.rid}">${y.rname}</option>
-					</c:forEach>
-
-				</select>
-			</div>
-		</div>
-
+		<label class="layui-form-label">出生年月</label>
+	<div class="layui-inline">
+		<input class="layui-input" type="date" name="bbirth" id="bbirth" autocomplete="off">
 	</div>
-
+	</div>
 
 	<div class="layui-form-item layui-hide" style="text-align: center">
 		<input type="button" lay-submit lay-filter="LAY-user-front-submit" id="LAY-user-front-submit" value="确认">
 	</div>
 </div>
+</form>
 
 <script src="<%=uiPath+"layui/layui.js"%>"></script>
 <script>

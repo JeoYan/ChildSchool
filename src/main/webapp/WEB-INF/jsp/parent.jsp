@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <%--/**--%>
-<%--* 教师管理---%>
+<%--* 家长管理---%>
 <%--* by 陈超--%>
 <%--*/--%>
 <%--
@@ -23,7 +23,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>职工管理</title>
+	<title>家长管理</title>
 	<meta name="renderer" content="webkit">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -37,41 +37,29 @@
 
 
 <div class="demoTable">
-	<h1 style="text-align: center">职工管理</h1>
-<%--	教师名称:--%>
-<%--	<div class="layui-inline">--%>
-<%--		<input class="layui-input" name="wname" id="demoReload" autocomplete="off">--%>
-<%--	</div>--%>
-
+	<h1 style="text-align: center">家长管理</h1>
+	<div >
+		查询条件:
+	</div>
+	<br>
 	<div style="text-align: center">
-<%--		<form class="layui-form" action="">--%>
-		教师名称:
-		<div class="layui-inline">
-			<input class="layui-input" name="wname" id="demoReload" autocomplete="off">
-		</div>
-
-		<div class="layui-inline">
-			<label class="layui-form-label">角色选择</label>
-			<div class="layui-input-inline" >
-				<select name="rname" id="demoReload1">
-					<option value=""></option>
-
-					<c:forEach items="${requestScope.role}" begin="0" step="1" var="y">
-						<option value="${y.rid}">${y.rname}</option>
-					</c:forEach>
-
-				</select>
-			</div>
-		</div>
-
-		<button class="layui-btn" data-type="reload">查询</button>
-		<button class="layui-btn layui-btn-normal" data-type="add" >新增</button>
-<%--		</form>--%>
+	创建时间:
+	<div class="layui-inline">
+		<input class="layui-input" type="date" name="starttime" id="demo1" autocomplete="off">
+	</div>	至
+	<div class="layui-inline">
+		<input class="layui-input" type="date" name="endtime" id="demo2" autocomplete="off">
 	</div>
 
+	<br>
 
-
-
+	家长名称:
+	<div class="layui-inline">
+		<input class="layui-input" name="pname" id="demoReload" autocomplete="off">
+	</div>
+	<button class="layui-btn" data-type="reload">查询</button>
+	<button class="layui-btn layui-btn-normal" data-type="add" >新增</button>
+	</div>
 </div>
 
 <table class="layui-hide" id="test" lay-filter="test"></table>
@@ -89,21 +77,24 @@
 	layui.use('table', function(){
 		var table = layui.table
 			,upload =layui.upload;
-
 		table.render({
 			elem: '#test',
 			height: 312 ,
-			url: '/ChildSchool/teacherxs.action' ,
+			url: '/ChildSchool/parentxs.action' ,
 			page: 1,
 			limit:5,
 			limits:[5],
 			// method:'post',
 
 			cols: [[
-				{field: 'wid', title: '教师编号', width:130 , sort: true, fixed: 'left'}      ,
-				{field: 'wname', title: '教师名称', width:130} ,
-				{field: 'rname', title: '角色', width:130, sort: true} ,
-				{field: 'wdate', title: '创建时间', width:130}      ,
+				{field: 'pid', title: '家长编号', width:130 , sort: true, fixed: 'left'} ,
+				{field: 'pname', title: '家长名称', width:130} ,
+				{field: 'bname', title: '宝宝名称', width:130} ,
+				{field: 'prelation', title: '亲子关系', width:130} ,
+				{field: 'pphone', title: '联系方式', width:130, sort: true} ,
+				{field: 'pjob', title: '职业', width:130},
+				{field: 'pdate', title: '创建时间', width:130},
+
 				{fixed: 'right', title:'操作', toolbar: '#barDemo', width:130}
 			]]
 
@@ -111,13 +102,11 @@
 
 
 		var $ = layui.$, active = {
-
 			//查询
 			reload: function(){
-
 				var demoReload = $('#demoReload');
-				var demoReload1 =  $("#demoReload1").find("option:selected").text();
-
+				var demo1= $('#demo1');
+				var demo2= $('#demo2');
 				//执行重载
 				table.reload('test', {
 					page: {
@@ -125,8 +114,9 @@
 					}
 					,where: {
 
-						wname: demoReload.val(),
-						rname: demoReload1
+						pname: demoReload.val(),
+						starttime:demo1.val(),
+						endtime:demo2.val()
 					}
 				}, 'data');
 			},
@@ -135,25 +125,28 @@
 				layer.open({
 					type: 2,
 					title: '新增',
-					content: '/ChildSchool/xzteacher.action',
+					content: '/ChildSchool/xzparent.action',
 					maxmin: true,
 					area: ['500px', '400px'],
 					btn: ['确定', '取消'],
 					yes: function (index, layero) {
-						//教师名称
-						var wname=$(layero).find('iframe')[0].contentWindow.wname.value;
-						//角色
-						var rid=$(layero).find('iframe')[0].contentWindow.rname.value;
-						var wsex=$(layero).find('iframe')[0].contentWindow.wsex.value;
-						var wbrith=$(layero).find('iframe')[0].contentWindow.wbrith.value;
-						alert(wsex);
-						alert(wbrith);
+						//家长名称
+						var pname=$(layero).find('iframe')[0].contentWindow.pname.value;
+						//宝宝名称
+						var bname=$(layero).find('iframe')[0].contentWindow.bname.value;
+						//亲子关系
+						var prelation=$(layero).find('iframe')[0].contentWindow.prelation.value;
+						//联系方式
+						var pphone=$(layero).find('iframe')[0].contentWindow.pphone.value;
+						//职业
+						var pjob=$(layero).find('iframe')[0].contentWindow.pjob.value;
 
-						var ob={wname:wname,rid:rid,wsex:wsex,wbrith:wbrith};
+
+						var ob={pname:pname,bname:bname,prelation:prelation,pphone:pphone,pjob:pjob};
 						alert(ob);
 						$.ajax({
 							type:"POST",//提交方式
-							url:"/ChildSchool/addteacher.action",//提交地址
+							url:"/ChildSchool/addparent.action",//提交地址
 							data:ob,//数据
 							dataType:"json",//希望返回的数据类型
 							async:true,//异步操作
@@ -201,15 +194,15 @@
 			if(obj.event === 'del'){
 
 				var v=confirm('真的删除行么');
-					alert(data.wid);
-					var id =data.wid;
+					alert(data.pid);
+					var id =data.pid;
 					if (v==true){
-					var ob= {wid:id};
+					var ob= {pid:id};
 					alert(ob);
 					//走AJAX
 					$.ajax({
 						type:"POST",//提交方式
-						url:"/ChildSchool/deleteteacher.action",//路径
+						url:"/ChildSchool/deleteparent.action",//路径
 						data:ob,//数据
 						dataType:"json",//希望返回的数据类型
 						async:true,//异步操作
@@ -232,33 +225,36 @@
 			}
 			//编辑
 			else if(obj.event === 'edit'){
-				alert(data.wname);
-				alert(data.rname);
+				alert(data.bname);
+
 				layer.open({
 					type: 2,
 					title: '修改',
-					content: '/ChildSchool/xgteacher.action',
+					content: '/ChildSchool/xgparent.action',
 					maxmin: true,
 					area: ['500px', '500px'],
 					btn: ['确定', '取消'],
 					success: function (layero,index) {
 						var body = layer.getChildFrame('body', index);
-						body.find("#wname").val(data.wname);
-						body.find("#demoReload1").val(data.rname);
-						var iframe = window['layui-layer-iframe' + index];
-						iframe.child('我是父布局传到子布局的值')
+						body.find("#bname").val(data.bname)
 
 					},
 					yes:function (index,layero) {
-						var wname = $(layero).find('iframe')[0].contentWindow.wname.value;
-						 var rid=$(layero).find('iframe')[0].contentWindow.rname.value;
-						// var rname=$(layero).find('iframe')[0].contentWindow.rname.value;
-
-						var wid = data.wid;
-						var ob = {wid: wid, rid:rid,wname: wname};
+						//家长名称
+						var pname=$(layero).find('iframe')[0].contentWindow.pname.value;
+						//宝宝名称
+						var bname=$(layero).find('iframe')[0].contentWindow.bname.value;
+						//亲子关系
+						var prelation=$(layero).find('iframe')[0].contentWindow.prelation.value;
+						//联系方式
+						var pphone=$(layero).find('iframe')[0].contentWindow.pphone.value;
+						//职业
+						var pjob=$(layero).find('iframe')[0].contentWindow.pjob.value;
+						var pid = data.pid;
+						var ob = {pid: pid, pname:pname,bname: bname,prelation:prelation,pphone:pphone,pjob:pjob};
 						$.ajax({
 							type: "POST",//提交方式
-							url: "/ChildSchool/updateteacher.action",//路径
+							url: "/ChildSchool/updateparent.action",//路径
 							data: ob,//数据
 							dataType: "json",//希望返回的数据类型
 							async: true,//异步操作

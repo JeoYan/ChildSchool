@@ -6,11 +6,12 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%--/**--%>
-<%--* 教师管理-修改界面--%>
+<%--* 家长管理-增加界面--%>
 <%--* by 陈超--%>
 <%--*/--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page isELIgnored="false"%>
 
 <%
 	String path = application.getContextPath();
@@ -35,38 +36,59 @@
 
 
 
-
-<div class="layui-form" lay-filter="layui-btn-xs" id="layui-btn-xs" style="padding: 20px 0 0 0;">
+<form class="layui-form" action="">
+<div class="layui-form" lay-filter="layui-btn-normal" id="layui-btn-normal" style="padding: 20px 0 0 0;">
 	<div class="layui-form-item" style="text-align: center">
-		<label class="layui-form-label">教师名称</label>
+		<label class="layui-form-label">家长名称</label>
 		<div class="layui-input-inline">
-			<input type="text"  name="wname" id="wname" lay-verify="required" placeholder="请输入教师名称" autocomplete="off" class="layui-input" value="">
+			<input type="text"  name="pname" id="pname" lay-verify="required" placeholder="请输入家长名称" autocomplete="off" class="layui-input">
 		</div>
 	</div>
 
-	<div class="layui-form-item" >
+	<div class="layui-inline">
+		<label class="layui-form-label">宝宝名称</label>
+		<div class="layui-input-inline" >
+			<select name="bname" id="demoReload1">
+				<option value=""></option>
+
+				<c:forEach items="${requestScope.baby}" begin="0" step="1" var="y">
+					<option value="${y.bname}">${y.bname}</option>
+				</c:forEach>
+
+			</select>
+		</div>
+	</div>
+
+	<div class="layui-form-item" lay-filter="sex" >
+		<label class="layui-form-label">亲子关系</label>
 		<div class="layui-inline">
-			<label class="layui-form-label">角色选择</label>
-			<div class="layui-input-inline">
-				<select name="rname" id="rname">
-					<option value=""></option>
+			<select name="prelation"  id="prelation" lay-filter="LAY-user-adminrole-type">
+				<option value="爸爸">爸爸</option>
+				<option value="妈妈">妈妈</option>
 
-
-					<c:forEach items="${requestScope.role}" begin="0" step="1" var="y">
-						<option value="${y.rid}">${y.rname}</option>
-					</c:forEach>
-
-				</select>
-			</div>
+			</select>
 		</div>
-
 	</div>
 
+	<div class="layui-form-item" style="text-align: center">
+		<label class="layui-form-label">联系方式</label>
+		<div class="layui-input-inline">
+			<input type="text"  name="pphone" id="pphone" lay-verify="required" placeholder="请输入联系方式" autocomplete="off" class="layui-input">
+		</div>
+	</div>
+
+	<div class="layui-form-item" style="text-align: center">
+		<label class="layui-form-label">职业</label>
+		<div class="layui-input-inline">
+			<input type="text"  name="pjob" id="pjob" lay-verify="required" placeholder="请输入职业名称" autocomplete="off" class="layui-input">
+		</div>
+	</div>
 
 	<div class="layui-form-item layui-hide" style="text-align: center">
 		<input type="button" lay-submit lay-filter="LAY-user-front-submit" id="LAY-user-front-submit" value="确认">
 	</div>
 </div>
+</form>
 
 <script src="<%=uiPath+"layui/layui.js"%>"></script>
 <script>

@@ -80,10 +80,10 @@ public class CcBabyController
 		ccTableInf.setPage((page-1)*5);
 
 		//调用查询数据方法
-		List<TblBaby> list= ccBabyService.findTblBaby(ccTableInf);
+		List<CcTblBaby> list= ccBabyService.findTblBaby(ccTableInf);
 		System.out.println("list"+list.toString());
 
-		List<TblBaby> totalPagelist= ccBabyService.totalPage1(ccTableInf);
+		List<CcTblBaby> totalPagelist= ccBabyService.totalPage1(ccTableInf);
 		System.out.println("totalPagelist"+totalPagelist.toString());
 
 
@@ -103,45 +103,40 @@ public class CcBabyController
 	@RequestMapping("/addbaby.action")
 	@ResponseBody
 	@Log(operationType = "增加操作", operationName = "添加宝宝")
-	public MSG add(TblWorker tblWorker,HttpServletRequest request)
+	public MSG add(CcTblBaby ccTblBaby,HttpServletRequest request)
 	{
-		TblWorkerRole tblWorkerRole =new TblWorkerRole();
-		String wname=request.getParameter("wname");
-		String rid=request.getParameter("rid");
-		System.out.println();
+
+		String bname=request.getParameter("bname");
+		String bsex=request.getParameter("bsex");
+		String bbirth=request.getParameter("bbirth");
 
 		Date date =new Date();
 		SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd");
 		String time =sdf.format(date);
 		System.out.println();
-		tblWorker.setWdate(time);
-		tblWorker.setWname(wname);
+		ccTblBaby.setBdate(time);
+		ccTblBaby.setBname(bname);
+		ccTblBaby.setBsex(bsex);
+		ccTblBaby.setBbirth(bbirth);
 
-//		System.out.println();
-//		int flag =ccBabyService.addteacher(tblWorker);
-//		System.out.println(flag);
-//		int wid=ccBabyService.findwid(wname);
-//
-//		tblWorkerRole.setWid(wid);
-//		tblWorkerRole.setRid(Integer.valueOf(rid));
-//
-//		int flag1 =ccBabyService.addworkerrole(tblWorkerRole);
-//		System.out.println(flag1);
-//
-//		MSG msg =new MSG();
-//
-//		if (flag >0 && flag1>0)
-//		{
-//			msg.setMsg("1");
-//			System.out.println("增加宝宝成功");
-//		}
-//		else
-//		{
-//			msg.setMsg("2");
-//			System.out.println("增加宝宝失败");
-//		}
-//		return msg;
-		return null;
+		System.out.println();
+		int flag =ccBabyService.addbaby(ccTblBaby);
+		System.out.println(flag);
+
+		MSG msg =new MSG();
+
+		if (flag >0 )
+		{
+			msg.setMsg("1");
+			System.out.println("增加宝宝成功");
+		}
+		else
+		{
+			msg.setMsg("2");
+			System.out.println("增加宝宝失败");
+		}
+		return msg;
+
 	}
 
 	/**
@@ -151,12 +146,12 @@ public class CcBabyController
 	@RequestMapping("/updatebaby.action")
 	@ResponseBody
 	@Log(operationType = "更新操作", operationName = "修改宝宝信息")
-	public MSG update(int bid,String bname,String bdate,String bsex)
+	public MSG update(int bid,String bname,String bbirth,String bsex)
 	{
 
 		CcTblBaby ccTblBaby =new CcTblBaby();
 		ccTblBaby.setBid(bid);
-		ccTblBaby.setBdate(bdate);
+		ccTblBaby.setBbirth(bbirth);
 		ccTblBaby.setBsex(bsex);
 		ccTblBaby.setBname(bname);
 		int flag = ccBabyService.updatebaby(ccTblBaby);

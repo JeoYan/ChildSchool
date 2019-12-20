@@ -2,22 +2,24 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.great.childschool.mapper.CcTeacherDeptMapper">
+<mapper namespace="com.great.childschool.mapper.CcBabyDeptMapper">
 
-    <!--   教师管理&#45;&#45;数据显示sql-->
+    <!--   幼儿管理&#45;&#45;数据显示sql-->
     <!--    by 陈超-->
-    <select id="findTableInf" parameterType="com.great.childschool.entity.CcTableInf" resultType="com.great.childschool.entity.TblWorker">
-    select w.wid,w.wname,a.rname,w.wdate from tbl_worker w ,
-        (select r.rname,s.wid from tbl_role r,
-            (select * from tbl_worker_role ) s
-                where r.rid=s.rid) a
+    <select id="findTblBaby" parameterType="com.great.childschool.entity.CcTableInf" resultType="com.great.childschool.entity.CcTblBaby">
+        select bid,bname ,bsex,bbirth,bdate from tbl_baby
+
         <where>
-             w.wid=a.wid
-            <if test="wname != null and wname !='' " >
-                and w.wname like '%${wname}%'
+
+            <if test="bname != null and bname !='' " >
+                and bname like '%${bname}%'
             </if>
-            <if test="rname != null and rname !='' " >
-                and a.rname =#{rname}
+            <if test="starttime != null and starttime != '' " >
+
+                    and bdate = #{starttime}
+                </if>
+            <if test="endtime != null and endtime != '' " >
+                and bdate =#{endtime}
             </if>
 
         </where>
@@ -25,86 +27,46 @@
 
     </select>
 
-    <!--   教师管理&#45;&#45;页数显示sql-->
+    <!--   幼儿管理&#45;&#45;页数显示sql-->
     <!--    by 陈超-->
-    <select id="totalPage" parameterType="com.great.childschool.entity.CcTableInf" resultType="com.great.childschool.entity.TblWorker">
+    <select id="totalPage1" parameterType="com.great.childschool.entity.CcTableInf" resultType="com.great.childschool.entity.CcTblBaby">
 
-        select w.wid,w.wname,a.rname,w.wdate from tbl_worker w ,
-        (select r.rname,s.wid from tbl_role r,
-        (select * from tbl_worker_role ) s
-        where r.rid=s.rid) a
+        select bid,bname ,bsex,bbirth,bdate from tbl_baby
         <where>
-             w.wid=a.wid
-            <if test="wname != null and wname !='' " >
-                and w.wname like '%${wname}%'
-            </if>
-            <if test="rname != null and rname !='' " >
-                and a.rname =#{rname}
-            </if>
 
+            <if test="bname != null and bname !='' " >
+                and bname like '%${bname}%'
+            </if>
+            <if test="starttime != null and starttime != ''" >
+                and bdate = #{starttime}
+            </if>
+            <if test="endtime != null and endtime != ''" >
+                and bdate =#{endtime}
+            </if>
         </where>
     </select>
 
-
-<!--   教师管理&#45;&#45;删除sql-->
-<!--    by 陈超-->
-    <delete id="deleteteacher" parameterType="java.lang.Integer" >
-            delete from tbl_worker where wid=#{wid}
-        </delete>
-    <delete id="deletemenu" parameterType="java.lang.Integer" >
-            delete from tbl_menu_role where wid=#{wid}
-        </delete>
-    <delete id="deletewrole" parameterType="java.lang.Integer" >
-            delete from tbl_worker_role where wid=#{wid}
+    <!--   幼儿管理-删除sql-->
+    <!--    by 陈超-->
+    <delete id="deletebaby" parameterType="java.lang.Integer" >
+            delete from tbl_baby where bid=#{bid}
         </delete>
 
-<!--    &lt;!&ndash;   教师管理&#45;&#45;根据wName查询wid  sql&ndash;&gt;-->
-<!--    &lt;!&ndash;    by 陈超&ndash;&gt;-->
-<!--    <select id="findwid" parameterType="java.lang.String" resultType="integer">-->
-<!--       select wid from tbl_worker where wname=#{wname}-->
-<!--    </select>-->
 
-
-    <!--   教师管理&#45;&#45;增加教师sql-->
+    <!--   幼儿管理-角色更新sql-->
     <!--    by 陈超-->
-    <insert id="addteacher" useGeneratedKeys="true" keyProperty="wid" parameterType="com.great.childschool.entity.TblWorker" >
-        insert into tbl_worker    (wname,wpsw,wbrith,wsex,wdate,sid)
-            values(#{wname},123,#{wbrith},#{wsex},#{wdate},1)
-    </insert>
+    <update id="updatebaby" parameterType="com.great.childschool.entity.CcTblBaby">
 
-    <!--   教师管理&#45;&#45;工作人员角色关系表 增加sql-->
-    <!--    by 陈超-->
-    <insert id="addworkerrole" parameterType="com.great.childschool.entity.TblWorkerRole" >
-        insert into tbl_worker_role    (wid, rid)
-            values(#{wid},#{rid})
-    </insert>
-
-    <!--   教师管理&#45;&#45;角色查询sql-->
-    <!--    by 陈超-->
-    <select id="findrole" resultType="com.great.childschool.entity.TblRole">
-       select * from tbl_role
-    </select>
-
-
-<!--       教师管理&#45;&#45;角色修改-->
-<!--        by 陈超-->
-<!--        根据wid修改工作人员表-->
-    <update id="updateteacher" parameterType="com.great.childschool.entity.TblWorker">
-
-        update  tbl_worker  set wname=#{wname} where wid=#{wid}
+        update  tbl_baby set bname=#{bname},bsex=#{bsex},bbirth=#{bbirth} where bid=#{bid}
     </update>
 
-<!--       教师管理-根据wid更新工作人员角色关系表sql-->
-    <update id="updatername" parameterType="com.great.childschool.entity.TblWorkerRole">
+    <!--   幼儿管理&#45;&#45;增加幼儿sql-->
+    <!--    by 陈超-->
+    <insert id="addbaby" useGeneratedKeys="true" keyProperty="bid" parameterType="com.great.childschool.entity.CcTblBaby" >
+        insert into tbl_baby    (bname ,bsex,bbirth,bdate,cid)
+            values(#{bname},#{bsex},#{bbirth},#{bdate},1)
+    </insert>
 
-        update  tbl_worker_role  set rid=#{rid} where wid=#{wid}
-    </update>
-
-    <!--    &lt;!&ndash;   教师管理&#45;&#45;rid获取rname&ndash;&gt;-->
-    <!--    &lt;!&ndash;    by 陈超&ndash;&gt;-->
-    <!--    <select id="findrname" parameterType="java.lang.Integer" resultType="java.lang.String">-->
-    <!--       select rname from tbl_role where rid=#{rid};-->
-    <!--    </select>-->
 
 </mapper>
 

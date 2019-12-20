@@ -32,12 +32,12 @@ public interface CcTeacherDeptMapper
 	 * by 陈超
 	 */
 	public int deletemenu(int wid);
-
 	/**
-	 * 教师管理-据wName查询
+	 * 教师管理-删除对应的工作角色关系表
 	 * by 陈超
 	 */
-	public int findwid(String wname);
+	public int deletewrole(int wid);
+
 
 	/**
 	 * 教师管理-增加方法
@@ -51,17 +51,31 @@ public interface CcTeacherDeptMapper
 	 */
 	public int  addworkerrole(TblWorkerRole tblWorkerRole);
 
-	/**
-	 * 教师管理-修改方法
-	 * by 陈超
-	 */
-	public int updateteacher(TblWorker tblWorker);
 
 	/**
 	 * 教师管理-查询角色方法
 	 * by 陈超
 	 */
 	public List<TblRole>findrole();
+
+
+	/**
+	 * 教师管理-根据wid修改工作人员表
+	 * by 陈超
+	 */
+	public int updateteacher(TblWorker tblWorker);
+	/**
+	 * 教师管理-根据wid更新工作人员角色关系表修改方法
+	 * by 陈超
+	 */
+	public int updatername(TblWorkerRole tblWorkerRole);
+
+//	/**
+//	 * 教师管理-rid获取rname方法
+//	 * by 陈超
+//	 */
+//	public String findrname(int rid);
+
 
 
 	/**

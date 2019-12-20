@@ -175,18 +175,23 @@ public class CcTeacherController
 	@RequestMapping("/updateteacher.action")
 	@ResponseBody
 	@Log(operationType = "更新操作", operationName = "修改教师信息")
-	public MSG update(int wid,String wname,String rid)
+	public MSG update(int wid,String wname,int rid)
 	{
 		System.out.println("rid"+rid);
+
 		TblWorker tblWorker =new TblWorker();
 		tblWorker.setWid(wid);
 		tblWorker.setWname(wname);
-//		tblWorker.setRname(rid);
+
+		TblWorkerRole tblWorkerRole = new TblWorkerRole();
+		tblWorkerRole.setWid(wid);
+		tblWorkerRole.setRid(rid);
 
 		int flag = ccTeacherService.updateteacher(tblWorker);
-		System.out.println("flag"+flag);
+		int flag1=ccTeacherService.updatername(tblWorkerRole);
+
 		MSG msg =new MSG();
-		if (flag >0)
+		if (flag >0&&flag1 >0)
 		{
 			msg.setMsg("1");
 			System.out.println("修改成功");
@@ -210,8 +215,9 @@ public class CcTeacherController
 		System.out.println("wid"+wid);
 		int msg = ccTeacherService.deleteteacher(Integer .valueOf(wid));
 		int msg2 =ccTeacherService.deletemenu(Integer .valueOf(wid));
+		int msg3 =ccTeacherService.deletewrole(Integer .valueOf(wid));
 		MSG msg1 =new MSG();
-		if (msg >0&msg2 >0)
+		if (msg >0&&msg2 >0&&msg3 >0)
 		{
 			msg1.setMsg("1");
 			System.out.println("删除成功");

@@ -41,13 +41,13 @@
 				<label class="layadmin-user-login-icon layui-icon layui-icon-username"
 				       for="LAY-user-login-username"></label>
 				<input type="text" name="username" id="LAY-user-login-username" lay-verify="required" placeholder="用户账号"
-				       class="layui-input">
+				       class="layui-input" value="41">
 			</div>
 			<div class="layui-form-item">
 				<label class="layadmin-user-login-icon layui-icon layui-icon-password"
 				       for="LAY-user-login-password"></label>
 				<input type="password" name="password" id="LAY-user-login-password" lay-verify="required"
-				       placeholder="密码" class="layui-input">
+				       placeholder="密码" class="layui-input" value="123">
 			</div>
 			<div class="layui-form-item">
 				<div class="layui-row">
