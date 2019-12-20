@@ -57,7 +57,7 @@ public class YjjReadBookController
 		String page = request.getParameter("page");
 		String bName = request.getParameter("bName");
 		String startDate = request.getParameter("startDate");
-		String endDate = request.getParameter(" endDate");
+		String endDate = request.getParameter("endDate");
 		System.out.println("---------limit------------" + limit);
 		System.out.println("---------page------------" + page);
 		System.out.println("---------bName------------" + bName);
@@ -68,7 +68,7 @@ public class YjjReadBookController
 		searchInfo.setPage(Integer.valueOf(page));
 		searchInfo.setbName(bName);
 		searchInfo.setStartDate(startDate);
-		searchInfo.setStartDate(startDate);
+		searchInfo.setEndDate(endDate);
 		List<YjjTblReadbook> list = bookReadService.findBook(searchInfo);
 		List<YjjTblReadbook> list1 =  bookReadService.totalPage(searchInfo);
 

@@ -54,10 +54,12 @@
 
 			<div class="layui-inline">
 				<label class="layui-form-label">日期</label>
+
 				<div class="layui-input-inline">
 					<input type="text" class="layui-input" id="startDate" placeholder="请选择开始日期">
 					<%--					<input type="text" class="layui-input" id="endDate" placeholder="请选择结束日期">--%>
 				</div>
+
 			</div>
 
 			<div class="layui-inline">
@@ -449,9 +451,12 @@
 		var laydate = layui.laydate;
 		//常规用法
 		laydate.render({
-			elem: '#fdate'
+			elem: '#startDate'
 		});
 
+		laydate.render({
+			elem: '#endDate'
+		});
 
 	});
 

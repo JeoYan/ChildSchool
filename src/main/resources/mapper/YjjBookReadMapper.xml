@@ -8,7 +8,7 @@
         select * from (select @rownum:=@rownum+1 as RN,A.* FROM (select @rownum:=0,tbl_readbook.*,tbl_worker.wname from tbl_worker,tbl_readbook
         where tbl_readbook.wid=tbl_worker.wid
         <if test="bName!=null and bName!=''">
-            AND wname like "%" #{bName}"%"
+            AND bookname like "%" #{bName}"%"
         </if>
 
         <if test="startDate!=null and startDate!=''">
@@ -23,16 +23,17 @@
     <select id="totalPage" parameterType="YjjSearchInfo" resultType="YjjTblReadbook">
         select * from (select @rownum:=@rownum+1 as RN,A.* FROM (select @rownum:=0,tbl_readbook.*,tbl_worker.wname from tbl_worker,tbl_readbook
         where tbl_readbook.wid=tbl_worker.wid
-        <if test="wName!=null and wName!=''">
-            AND wname like "%" #{wName}"%"
+
+        <if test="bName!=null and bName!=''">
+            AND bookname like "%" #{bName}"%"
         </if>
-        <if test="rid!=null and rid!=''">
-            AND tbl_role.rid =#{rid}
+        <if test="startDate!=null and startDate!=''">
+            <if test="endDate!=null and endDate!=''">
+                AND uploaddate BETWEEN #{startDate} and #{endDate}
+            </if>
         </if>
         )A )B
     </select>
-
-
 
 
 </mapper>

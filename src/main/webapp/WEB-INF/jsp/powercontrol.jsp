@@ -183,7 +183,7 @@
 				layer.open({
 					type: 2
 					, title: '权限修改'
-					, content: '${pageContext.request.contextPath}/power/callPowerPage.action'
+
 					, maxmin: true
 					, area: ['450px', '500px']
 					, success: function (layero, index) {
@@ -193,6 +193,7 @@
 						body.find("#wName").html("姓名:"+data.wname);
 						body.find("#rName").html("角色:"+data.rname);
 					}
+					, content: '${pageContext.request.contextPath}/power/callPowerPage.action'
 
 					// ,value: data.USERNAME
 				});
