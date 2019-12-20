@@ -1,9 +1,12 @@
 
+
 server:
   port: 8080
   servlet:
     context-path: /ChildSchool
 spring:
+  thymeleaf:
+    cache: false
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://120.27.247.16/childSchool?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8
