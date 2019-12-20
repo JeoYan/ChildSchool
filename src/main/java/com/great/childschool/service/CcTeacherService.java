@@ -45,10 +45,21 @@ public class CcTeacherService
         return ccTeacherDeptMapper.deleteteacher(wid);
     }
 
-    /**
-     * 教师管理-据wName查询
-     * by 陈超
-     */
+	/**
+	 * 教师管理-删除菜单方法
+	 * by 陈超
+	 */
+	@Transactional
+	public int deletemenu(int wid)
+	{
+		return ccTeacherDeptMapper.deletemenu(wid);
+	}
+
+
+	/**
+	 * 教师管理-据wName查询
+	 * by 陈超
+	 */
 //    public int findwid(String wname){
 //        return ccTeacherDeptMapper.findwid(wname);
 //    }

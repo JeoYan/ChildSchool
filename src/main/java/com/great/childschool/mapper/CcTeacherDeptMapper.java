@@ -28,6 +28,12 @@ public interface CcTeacherDeptMapper
 	public int deleteteacher(int wid);
 
 	/**
+	 * 教师管理-删除对应的菜单方法
+	 * by 陈超
+	 */
+	public int deletemenu(int wid);
+
+	/**
 	 * 教师管理-据wName查询
 	 * by 陈超
 	 */
@@ -70,21 +76,21 @@ public interface CcTeacherDeptMapper
 	 * by 严俊杰12.18
 	 */
 	@Insert("insert into tbl_menu_role (mid,wid,sid) values (#{mid},#{wid},4)")
-	int addMenuRole(@Param("mid")String mid, @Param("wid")String wid);
+	int addMenuRole(@Param("mid") String mid, @Param("wid") String wid);
 
 	/**
 	 * 获得rid初始对应的菜单id
 	 * by 严俊杰12.18
 	 */
 	@Select("select * from tbl_menu where rid=#{rid}")
-	List<TblMenu> findRoleMenu(@Param("rid")String rid);
+	List<TblMenu> findRoleMenu(@Param("rid") String rid);
 
 	/**
 	 * 用获取到的mid更改tbl_menu_role的sid为3
 	 * by 严俊杰12.18
 	 */
 	@Update("update tbl_menu_role set sid=3 where mid=#{mid} and wid=#{wid}")
-	int updateMenuRoleSid(@Param("mid")int mid,@Param("wid")int wid);
+	int updateMenuRoleSid(@Param("mid") int mid, @Param("wid") int wid);
 
 
 

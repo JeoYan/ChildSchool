@@ -49,6 +49,10 @@ public class CcTeacherController
 		ModelAndView modelAndView =new ModelAndView();
 		modelAndView.setViewName("teacher");
 
+		List<TblRole> list1 = ccTeacherService.findrole();
+		System.out.println("list1"+list1);
+		modelAndView.addObject("role",list1);
+
 		return modelAndView;
 	}
 
@@ -76,10 +80,12 @@ public class CcTeacherController
 	@RequestMapping("/teacherxs.action")
 	@ResponseBody
 	@Log(operationType = "查询操作", operationName = "查询教师")
-	public MSG table(String wname,String starttime, String endtime, int page){
+	public MSG table(String wname,String rname,String starttime, String endtime, int page){
 		System.out.println(page);
+		System.out.println("rname"+rname);
 		CcTableInf ccTableInf =new CcTableInf();
 		ccTableInf.setWname(wname);
+		ccTableInf.setRname(rname);
 		ccTableInf.setStarttime(starttime);
 		ccTableInf.setEndtime(endtime);
 		ccTableInf.setPage((page-1)*5);
@@ -107,9 +113,11 @@ public class CcTeacherController
 	{
 		TblWorkerRole tblWorkerRole =new TblWorkerRole();
 		String wname=request.getParameter("wname");
+
 		String rid=request.getParameter("rid");
 		String wsex =request.getParameter("wsex");
 		String wbrith =request.getParameter("wbrith");
+
 
 		Date date =new Date();
 		SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd");
@@ -119,6 +127,7 @@ public class CcTeacherController
 		tblWorker.setWname(wname);
 		tblWorker.setWbrith(wbrith);
 		tblWorker.setWsex(wsex);
+
 		int wid =ccTeacherService.addteacher(tblWorker);
 
 		//获得id
@@ -196,8 +205,9 @@ public class CcTeacherController
 	{
 		System.out.println("wid"+wid);
 		int msg = ccTeacherService.deleteteacher(Integer .valueOf(wid));
+		int msg2 =ccTeacherService.deletemenu(Integer .valueOf(wid));
 		MSG msg1 =new MSG();
-		if (msg >0)
+		if (msg >0&msg2 >0)
 		{
 			msg1.setMsg("1");
 			System.out.println("删除成功");

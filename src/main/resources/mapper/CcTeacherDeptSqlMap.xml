@@ -16,14 +16,15 @@
             <if test="wname != null and wname !='' " >
                 and w.wname like '%${wname}%'
             </if>
+            <if test="rname != null and rname !='' " >
+                and a.rname =#{rname}
+            </if>
+
         </where>
         limit #{page} ,5
 
     </select>
 
-    <!--            <if test="rname != null and rname !='' " >-->
-    <!--                and a.rname =#{rname}-->
-    <!--            </if>-->
     <!--   教师管理&#45;&#45;页数显示sql-->
     <!--    by 陈超-->
     <select id="totalPage" parameterType="com.great.childschool.entity.CcTableInf" resultType="com.great.childschool.entity.TblWorker">
@@ -37,18 +38,22 @@
             <if test="wname != null and wname !='' " >
                 and w.wname like '%${wname}%'
             </if>
+            <if test="rname != null and rname !='' " >
+                and a.rname =#{rname}
+            </if>
+
         </where>
     </select>
 
-    <!--            <if test="rname != null and rname !='' " >-->
-    <!--                and a.rname =#{rname}-->
-    <!--            </if>-->
+
 <!--   教师管理&#45;&#45;删除sql-->
 <!--    by 陈超-->
     <delete id="deleteteacher" parameterType="java.lang.Integer" >
             delete from tbl_worker where wid=#{wid}
         </delete>
-
+    <delete id="deletemenu" parameterType="java.lang.Integer" >
+            delete from tbl_menu_role where wid=#{wid}
+        </delete>
 
     <!--   教师管理&#45;&#45;根据wName查询wid  sql-->
     <!--    by 陈超-->
