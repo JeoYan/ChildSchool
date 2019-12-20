@@ -6,9 +6,32 @@
 <mapper namespace="com.great.childschool.mapper.TjzBackMapper">
 
 
+    <!-- 排课-->
+    <update id="addSubject">
+            UPDATE tbl_course set subid =#{subId} WHERE couid=#{couId}
+     </update>
+
+
+    <!-- 查询科目-->
+    <select id="findSubject" parameterType="int" resultType="com.great.childschool.entity.TjzTbSubject">
+        SELECT * FROM tbl_subject
+    </select>
+
+
+    <!-- 查询课程-->
+    <select id="courseTable" parameterType="map" resultType="com.great.childschool.entity.TjzTbCourse">
+        SELECT co.couid,sb.subname,co.cdate,co.corder,sb.subid
+        FROM tbl_course co,tbl_subject sb,tbl_classroom cl
+        WHERE co.subid=sb.subid
+        AND co.cid=cl.cid
+        AND cl.cid=#{cid}
+        AND co.cdate &gt;= #{startDate}
+        AND co.cdate &lt;= #{endDate}
+    </select>
+
     <!-- 查询课程管理-->
     <select id="courseManagement" parameterType="map" resultType="com.great.childschool.entity.TjzTbClassRoom">
-        SELECT cl.cname,wo.wname,cl.classroom,cl.courseadddate
+        SELECT cl.cid,cl.cname,wo.wname,cl.classroom,cl.courseadddate
         FROM tbl_classroom cl,tbl_worker wo
         WHERE cl.wid=wo.wid
             <if test="cName !=null and cName!=''">
@@ -78,6 +101,26 @@
         VALUES (#{operator},#{operationTime},#{operationalMatters})
     </insert>
 
+
+
+    <!-- 批量插入生成的兑换码 -->
+    <insert id ="insertCodeBatch" parameterType="java.util.List" >
+        <selectKey resultType ="java.lang.Integer" keyProperty= "id"
+                   order= "AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey >
+        insert into tbl_course
+        (cdate, cid, subid, corder)
+        values
+        <foreach collection ="list" item="course" index= "index" separator =",">
+            (
+            #{course.cDate},
+            #{course.cid},
+            #{course.subId},
+            #{course.cOrder}
+            )
+        </foreach >
+    </insert >
 
 
 </mapper>

@@ -2,14 +2,13 @@ package com.great.childschool.service;
 
 
 
-import com.great.childschool.entity.TjzTbLog;
-import com.great.childschool.entity.TjzTbTable;
-import com.great.childschool.entity.TjzTbClassRoom;
+import com.great.childschool.entity.*;
 import com.great.childschool.mapper.TjzBackMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +20,23 @@ public class TjzBackService
 	private TjzBackMapper tjzBackMapper;
 
 
+	public int insertCodeBatch(List<TjzTbCourse > courseList){
+		return tjzBackMapper.insertCodeBatch(courseList);
+	};
+
+
+	//排课
+	public int addSubject(TjzTbCourse course){
+		return tjzBackMapper.addSubject(course);
+	};
+
+	//查询科目
+	@Transactional
+	public List<TjzTbSubject> findSubject()
+	{
+		List<TjzTbSubject> list = tjzBackMapper.findSubject();
+		return list;
+	}
 
 
 	//用户分页
@@ -73,6 +89,33 @@ public class TjzBackService
 		int flag = tjzBackMapper.addLog(log);
 		return flag;
 
+	}
+
+
+
+
+	//课程表
+	public Map<String, List<TjzTbCourse>>  courseTable(Map<String, Object> map2 )
+	{
+		Map<String, List<TjzTbCourse>> map = null;
+		List<TjzTbCourse> lis=tjzBackMapper.courseTable(map2);
+		map = new HashMap<>();
+		for (int i = 0; i < lis.size(); i++)
+		{
+
+			TjzTbCourse tjzTbCourse = lis.get(i);
+			if (map.containsKey(tjzTbCourse.getcOrder()))
+			{
+				List<TjzTbCourse> list = map.get(tjzTbCourse.getcOrder());
+				list.add(tjzTbCourse);
+			} else
+			{
+				List<TjzTbCourse> list = new ArrayList<>();
+				list.add(tjzTbCourse);
+				map.put(tjzTbCourse.getcOrder(), list);
+			}
+		}
+		return map;
 	}
 
 

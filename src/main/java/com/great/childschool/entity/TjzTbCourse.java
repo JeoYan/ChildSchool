@@ -12,9 +12,22 @@ public class TjzTbCourse
 	private int cid;
 	private int tid;
 	private int subId;
+	private String subName;
+	private String cOrder;
+
 
 	public TjzTbCourse()
 	{
+	}
+
+	public String getcOrder()
+	{
+		return cOrder;
+	}
+
+	public void setcOrder(String cOrder)
+	{
+		this.cOrder = cOrder;
 	}
 
 	public int getCouId()
@@ -77,9 +90,13 @@ public class TjzTbCourse
 		this.subId = subId;
 	}
 
-	@Override
-	public String toString()
+	public String getSubName()
 	{
-		return "TjzTbCourse{" + "couId=" + couId + ", cDate='" + cDate + '\'' + ", wid=" + wid + ", cid=" + cid + ", tid=" + tid + ", subId=" + subId + '}';
+		return subName;
+	}
+
+	public void setSubName(String subName)
+	{
+		this.subName = subName;
 	}
 }
