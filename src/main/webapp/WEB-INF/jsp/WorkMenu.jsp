@@ -51,7 +51,6 @@
 	</div>
 	<div class="layui-side layui-bg-black">
 		<div class="layui-side-scroll">
-
 			<ul class="layui-nav layui-nav-tree" lay-filter="test">
 				<!-- 侧边导航: <ul class="layui-nav layui-nav-tree layui-nav-side"> -->
 				<c:if test="${requestScope.workerMenu!=null}">
@@ -70,14 +69,13 @@
 						</li>
 					</c:forEach>
 				</c:if>
-
 			</ul>
 		</div>
 	</div>
 	<div class="layui-body">
 		<!-- 内容主体区域 -->
 		<div style="padding: 15px;">
-			<iframe src="" frameborder="0" style="width: 100% ;height: 90% " name="page-view" id="myiframe">
+			<iframe src="" frameborder="0" style="width: 100% ;height: 100% " name="page-view" id="myiframe">
 			</iframe>
 		</div>
 	</div>

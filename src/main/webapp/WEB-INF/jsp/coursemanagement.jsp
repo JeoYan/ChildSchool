@@ -19,6 +19,8 @@
 	<script src=<%=layuiPath + "layui.js"%>></script>
 </head>
 <body>
+<div class="layui-fluid">
+<div class="layui-card">
 <div class="demoTable">
 	创建时间：
 	<div class="layui-inline">
@@ -37,7 +39,10 @@
 
 
 
-<table id="demo" lay-filter="test"></table>
+<table id="demo" lay-filter="test" ></table>
+<%--<script type="text/html" id="titleTpl">--%>
+<%--	{{d.LAY_TABLE_INDEX+1}}--%>
+<%--</script>--%>
 <script type="text/html" id="barDemo">
 	<a class="layui-btn layui-btn-xs" lay-event="addCourse">配置课程</a>
 </script>
@@ -55,10 +60,11 @@
 			, url: '/ChildSchool/BackAction/courseManagement.action' //数据接口
 			, page: true //开启分页
 			, cols: [[ //表头
-				{field: 'cName', title: '班级名称', sort: true, fixed: 'left', align: 'center'}
+				{field: 'cid',title: '班级编号', sort: true, fixed: 'left',align: 'center'}
+				,{field: 'cName', title: '班级名称', sort: true, fixed: 'left', align: 'center'}
 				, {field: 'wName', title: '班主任', align: 'center'}
 				, {field: 'classroom', title: '所在班级', sort: true, align: 'center'}
-				, {field: 'courseAddDate', title: '创建时间', align: 'center'}
+				, {field: 'courseAddDate', title: '创建时间', align: 'center',event: 'setSign', style:'cursor: pointer;'}
 				, {fixed: 'right', title: '操作', toolbar: '#barDemo', align: 'center'}
 			]]
 			, id: 'testReload'
@@ -66,6 +72,9 @@
 			, limits: [5, 10, 20]
 
 		});
+
+
+
 
 		//查询
 		var $ = layui.$, active = {
@@ -96,61 +105,6 @@
 		});
 
 
-		// //配置课程
-		// table.on('tool(test)', function (obj) {
-		// 	var data = obj.data;
-		// 	 if (obj.event === 'addCourse') {
-		//
-		// 		layer.open({
-		// 			type: 2
-		// 			, title: '配置课程'
-		// 			, offset: 'auto'
-		// 			, content: '/ChildSchool/web/coursetable2.action'
-		// 			, area: ['500px', '250px']
-		// 			, btn: ['确定', '取消']
-		// 			, shade: 0
-		// 			, success: function (layero, index) {
-		// 				var body = layer.getChildFrame('body', index);
-		// 				body.find("#userName").val(data.userName);
-		// 				if (data.userState == '禁用') {
-		// 					body.find("#userState").removeAttr('checked');
-		// 					body.find("#userState").next().removeClass('layui-form-onswitch');
-		// 					body.find("#userState").next().find('em').html('OFF');
-		// 				}
-		// 				var userState = body.find("#userState").val(data.userState);
-		// 			}
-		// 			, yes: function (index, layero) {
-		// 				var userName = $(layero).find('iframe')[0].contentWindow.userName.value;
-		// 				var userState = $(layero).find('iframe')[0].contentWindow.userState.value;
-		// 				var ob = {"userName": userName, "userState": userState, "userId": data.userId};
-		// 				$.ajax({
-		// 					type: "POST",//提交的方式
-		// 					url: "/u151/BackAction/updateUser.action",
-		// 					data: ob,//提交的数据
-		// 					dataType: "json",//希望返回的数据类型
-		// 					success: function (msg) {//成功的方法  msg为返回数据
-		// 						if (msg.msg === "1") {
-		// 							alert("修改成功");
-		// 							reloadTable.reload();
-		// 							layer.close(index); //关闭弹窗
-		// 						} else if (msg.msg === "0") {
-		// 							alert("修改失败");
-		// 						}
-		// 					},
-		// 					error: function () {//错误的方法
-		// 						alert("服务器正忙")
-		// 					}
-		// 				});
-		//
-		//
-		// 			}
-		// 		});
-		//
-		// 	}
-		// });
-
-
-		//
 		//配置课程
 		table.on('tool(test)', function (obj) {
 			var data = obj.data;
@@ -160,55 +114,28 @@
 					type: 2
 					, title: '配置课程'
 					, offset: 'auto'
-					, content: '/ChildSchool/web/fullcalendar.action'
-					, area: ['500px', '250px']
+					, content: '/ChildSchool/BackAction/courseTable.action?cid='+data.cid
+					, area: ['700px', '500px']
 					, btn: ['确定', '取消']
 					, shade: 0
 					, success: function (layero, index) {
-						var body = layer.getChildFrame('body', index);
-						body.find("#userName").val(data.userName);
-						if (data.userState == '禁用') {
-							body.find("#userState").removeAttr('checked');
-							body.find("#userState").next().removeClass('layui-form-onswitch');
-							body.find("#userState").next().find('em').html('OFF');
-						}
-						var userState = body.find("#userState").val(data.userState);
-					}
-					, yes: function (index, layero) {
-						var userName = $(layero).find('iframe')[0].contentWindow.userName.value;
-						var userState = $(layero).find('iframe')[0].contentWindow.userState.value;
-						var ob = {"userName": userName, "userState": userState, "userId": data.userId};
-						$.ajax({
-							type: "POST",//提交的方式
-							url: "/u151/BackAction/updateUser.action",
-							data: ob,//提交的数据
-							dataType: "json",//希望返回的数据类型
-							success: function (msg) {//成功的方法  msg为返回数据
-								if (msg.msg === "1") {
-									alert("修改成功");
-									reloadTable.reload();
-									layer.close(index); //关闭弹窗
-								} else if (msg.msg === "0") {
-									alert("修改失败");
-								}
-							},
-							error: function () {//错误的方法
-								alert("服务器正忙")
-							}
-						});
-
 
 					}
 				});
 
+
 			}
 		});
+
+
+
 
 
 	});
 
 
 </script>
-
+</div>
+</div>
 </body>
 </html>
