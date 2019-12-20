@@ -11,6 +11,7 @@ public class TblWorker {
   private String wdate;
   private int sid;
   private String rname;
+  private int rid;
 
   public String getRname()
   {
@@ -90,5 +91,15 @@ public class TblWorker {
   public void setSid(int sid)
   {
     this.sid = sid;
+  }
+
+  public int getRid()
+  {
+    return rid;
+  }
+
+  public void setRid(int rid)
+  {
+    this.rid = rid;
   }
 }

@@ -52,6 +52,14 @@ public class CcParentController
 		return modelAndView;
 	}
 
+	@RequestMapping("/Admission.action")
+	@Log(operationType = "访问操作", operationName = "访问欢迎页")
+	public ModelAndView Admission(){
+		ModelAndView modelAndView =new ModelAndView();
+		modelAndView.setViewName("Admission");
+
+		return modelAndView;
+	}
 	/**
 	 * 家长管理-修改弹窗
 	 * by 陈超

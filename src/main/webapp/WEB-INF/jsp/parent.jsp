@@ -87,15 +87,15 @@
 			// method:'post',
 
 			cols: [[
-				{field: 'pid', title: '家长编号', width:130 , sort: true, fixed: 'left'} ,
-				{field: 'pname', title: '家长名称', width:130} ,
-				{field: 'bname', title: '宝宝名称', width:130} ,
-				{field: 'prelation', title: '亲子关系', width:130} ,
-				{field: 'pphone', title: '联系方式', width:130, sort: true} ,
-				{field: 'pjob', title: '职业', width:130},
-				{field: 'pdate', title: '创建时间', width:130},
+				{field: 'pid', title: '家长编号', sort: true, fixed: 'center'} ,
+				{field: 'pname', title: '家长名称'} ,
+				{field: 'bname', title: '宝宝名称' } ,
+				{field: 'prelation', title: '亲子关系'} ,
+				{field: 'pphone', title: '联系方式', sort: true} ,
+				{field: 'pjob', title: '职业'},
+				{field: 'pdate', title: '创建时间'},
 
-				{fixed: 'right', title:'操作', toolbar: '#barDemo', width:130}
+				{fixed: 'right', title:'操作', toolbar: '#barDemo'}
 			]]
 
 		});

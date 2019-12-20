@@ -7,8 +7,8 @@
     <!--   教师管理&#45;&#45;数据显示sql-->
     <!--    by 陈超-->
     <select id="findTableInf" parameterType="com.great.childschool.entity.CcTableInf" resultType="com.great.childschool.entity.TblWorker">
-    select w.wid,w.wname,a.rname,w.wdate from tbl_worker w ,
-        (select r.rname,s.wid from tbl_role r,
+    select w.wid,w.wname,a.rname,a.rid,w.wdate from tbl_worker w ,
+        (select r.rname,r.rid ,s.wid from tbl_role r,
             (select * from tbl_worker_role ) s
                 where r.rid=s.rid) a
         <where>
@@ -29,8 +29,8 @@
     <!--    by 陈超-->
     <select id="totalPage" parameterType="com.great.childschool.entity.CcTableInf" resultType="com.great.childschool.entity.TblWorker">
 
-        select w.wid,w.wname,a.rname,w.wdate from tbl_worker w ,
-        (select r.rname,s.wid from tbl_role r,
+        select w.wid,w.wname,a.rname,a.rid,w.wdate from tbl_worker w ,
+        (select r.rname,r.rid ,s.wid from tbl_role r,
         (select * from tbl_worker_role ) s
         where r.rid=s.rid) a
         <where>

@@ -87,13 +87,13 @@
 			// method:'post',
 
 			cols: [[
-				{field: 'bid', title: '宝宝编号', width:130 , sort: true, fixed: 'left'} ,
-				{field: 'bname', title: '宝宝名称', width:130} ,
-				{field: 'bsex', title: '性别', width:130, sort: true} ,
-				{field: 'bbirth', title: '出生年月', width:130},
-				{field: 'bdate', title: '创建时间', width:130},
+				{field: 'bid', title: '宝宝编号' , sort: true, fixed: 'center'} ,
+				{field: 'bname', title: '宝宝名称'} ,
+				{field: 'bsex', title: '性别', sort: true} ,
+				{field: 'bbirth', title: '出生年月'},
+				{field: 'bdate', title: '创建时间'},
 
-				{fixed: 'right', title:'操作', toolbar: '#barDemo', width:130}
+				{fixed: 'right', title:'操作', toolbar: '#barDemo'}
 			]]
 
 		});

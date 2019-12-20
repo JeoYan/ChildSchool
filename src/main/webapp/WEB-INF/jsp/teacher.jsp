@@ -100,12 +100,18 @@
 			// method:'post',
 
 			cols: [[
-				{field: 'wid', title: '教师编号', width:130 , sort: true, fixed: 'left'}      ,
-				{field: 'wname', title: '教师名称', width:130} ,
-				{field: 'rname', title: '角色', width:130, sort: true} ,
-				{field: 'wdate', title: '创建时间', width:130}      ,
-				{fixed: 'right', title:'操作', toolbar: '#barDemo', width:130}
+				{field: 'wid', title: '教师编号', sort: true, fixed: 'center'}      ,
+				{field: 'wname', title: '教师名称'} ,
+				{field: 'rname', title: '角色',  sort: true} ,
+				{field: 'rid', title: '角色id', sort: true,hide:true} ,
+				{field: 'wdate', title: '创建时间'}      ,
+				{fixed: 'right', title:'操作', toolbar: '#barDemo'}
 			]]
+		// 	,done:function(res,curr,count){
+		// 	// 隐藏列
+		// 	$(".layui-table-box").find("[data-field='rid']").css("display","none");
+		// }
+
 
 		});
 
@@ -234,6 +240,8 @@
 			else if(obj.event === 'edit'){
 				alert(data.wname);
 				alert(data.rname);
+
+				alert(data.rid);
 				layer.open({
 					type: 2,
 					title: '修改',
@@ -244,15 +252,14 @@
 					success: function (layero,index) {
 						var body = layer.getChildFrame('body', index);
 						body.find("#wname").val(data.wname);
-						body.find("#demoReload1").val(data.rname);
-						var iframe = window['layui-layer-iframe' + index];
-						iframe.child('我是父布局传到子布局的值')
+						body.find("#rname").val(data.rid);
+
 
 					},
 					yes:function (index,layero) {
 						var wname = $(layero).find('iframe')[0].contentWindow.wname.value;
 						 var rid=$(layero).find('iframe')[0].contentWindow.rname.value;
-						// var rname=$(layero).find('iframe')[0].contentWindow.rname.value;
+
 
 						var wid = data.wid;
 						var ob = {wid: wid, rid:rid,wname: wname};
