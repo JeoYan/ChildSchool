@@ -16,11 +16,20 @@ public interface TjzBackMapper
 {
 
 
-	/**树置为未选*/
+
+	//教师查看班级
+	public List<TjzTbClassRoom> teacherCourseQuery(Map<String, Object> map);
+
+	public int teacherCourseQueryNum(Map<String, Object> map);
+
+	//教师查看排课
+	public List<TjzTbCourse> teacherCourseTable(Map<String, Object> map);
+
 	public int addSubject(TjzTbCourse course);
 
 	public List<TjzTbSubject> findSubject();
 
+	//园长查看排课
 	public List<TjzTbCourse> courseTable(Map<String, Object> map);
 
 	public List<TjzTbClassRoom> courseManagement(Map<String, Object> map);

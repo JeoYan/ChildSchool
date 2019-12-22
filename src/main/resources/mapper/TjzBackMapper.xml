@@ -6,6 +6,57 @@
 <mapper namespace="com.great.childschool.mapper.TjzBackMapper">
 
 
+
+
+    <!-- 查询课程管理-->
+    <select id="teacherCourseQuery" parameterType="map" resultType="com.great.childschool.entity.TjzTbClassRoom">
+        SELECT cl.cid,cl.cname,wo.wname,cl.classroom,cl.courseadddate
+        FROM tbl_classroom cl,tbl_worker wo
+        WHERE cl.wid=wo.wid
+        AND wo.wid=#{wid}
+        <if test="cName !=null and cName!=''">
+            AND cl.cname like '%' #{cName} '%'
+        </if>
+        <if test="startDate !=null and startDate!=''">
+            AND cl.courseadddate &gt;= #{startDate}
+        </if>
+        <if test="endDate !=null and endDate!=''">
+            AND cl.courseadddate &lt;= #{endDate}
+        </if>
+        LIMIT #{pstart},#{psize}
+    </select>
+
+    <!--查询课程管理数量-->
+    <select id="teacherCourseQueryNum" parameterType="map" resultType="int">
+        SELECT COUNT(cl.cid)
+        FROM tbl_classroom cl,tbl_worker wo
+        WHERE cl.wid=wo.wid
+        AND wo.wid=#{wid}
+        <if test="cName !=null and cName!=''">
+            AND cl.cname like '%' #{cName} '%'
+        </if>
+        <if test="startDate !=null and startDate!=''">
+            AND cl.courseadddate &gt;= #{startDate}
+        </if>
+        <if test="endDate !=null and endDate!=''">
+            AND cl.courseadddate &lt;= #{endDate}
+        </if>
+    </select>
+
+
+    <!-- 教师查询课程-->
+    <select id="teacherCourseTable" parameterType="map" resultType="com.great.childschool.entity.TjzTbCourse">
+        SELECT co.couid,sub.subname,co.cdate,co.corder,sub.subid
+        FROM tbl_course co,tbl_subject sub,tbl_classroom cl
+        WHERE co.subid = sub.subid
+        AND cl.wid=#{wid}
+        AND cl.cid=#{cid}
+        AND cl.cid=co.cid
+        AND co.cdate &gt;= #{startDate}
+        AND co.cdate &lt;= #{endDate}
+    </select>
+
+
     <!-- 排课-->
     <update id="addSubject">
             UPDATE tbl_course set subid =#{subId} WHERE couid=#{couId}

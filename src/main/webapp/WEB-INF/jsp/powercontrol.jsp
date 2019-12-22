@@ -189,11 +189,12 @@
 					, success: function (layero, index) {
 						//向子窗口设置值
 						var body = layer.getChildFrame('body', index);
-						body.find("#hiddenWid").val(wid);
+						console.log(wid);
+						//body.find("#hiddenWid").val(wid);
 						body.find("#wName").html("姓名:"+data.wname);
 						body.find("#rName").html("角色:"+data.rname);
 					}
-					, content: '${pageContext.request.contextPath}/power/callPowerPage.action'
+					, content: '${pageContext.request.contextPath}/power/callPowerPage.action?wid=' + wid
 
 					// ,value: data.USERNAME
 				});

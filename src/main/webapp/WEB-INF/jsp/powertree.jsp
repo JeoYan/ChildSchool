@@ -51,7 +51,7 @@
 		<%--表主体--%>
 		<div style="text-align: center">
 			<div class="layui-inline" style="width:96%">
-				<input type="hidden" id="hiddenWid">
+				<input type="hidden" id="hiddenWid" value="<%=request.getParameter("wid")%>">
 				<div id="test12" class="demo-tree-more"></div>
 				<div class="layui-btn-container">
 					<button type="button" class="layui-btn layui-btn-sm" lay-demo="getChecked">保存</button>

@@ -1,7 +1,6 @@
 package com.great.childschool.controller;
 
 
-
 import com.great.childschool.aoplog.Log;
 import com.great.childschool.entity.TjzTbCourse;
 import com.great.childschool.entity.TjzTbSubject;
@@ -16,7 +15,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
@@ -26,13 +24,94 @@ public class TjzAdminHandler
 	@Resource
 	private TjzBackService tjzBackService;
 
-	@RequestMapping("/insertCodeBatch.action")
-	public int insertCodeBatch(){
-		List<TjzTbCourse > courseList2=new ArrayList<TjzTbCourse>();
 
-		for (int i = 0; i <3 ; i++)
+	@RequestMapping("/teacherCourseQuery.action")
+	@ResponseBody
+	@Log(operationType = "查询操作", operationName = "课程管理")
+	public TjzTbTable teacherCourseQuery(HttpServletRequest request,String page, String limit, String startDate, String endDate, String cName)
+	{
+
+		String wid = request.getSession().getAttribute("wid").toString();
+		TjzTbTable tbBean = tjzBackService.teacherCourseQuery(page, limit, startDate, endDate, cName,wid);
+		return tbBean;
+	}
+
+
+	@RequestMapping("/teacherWeekcourseTable.action")
+	@Log(operationType = "查询操作", operationName = "课程表")
+	public String teacherWeekcourseTable(HttpServletRequest request, HttpServletResponse response, String cid,String wid)
+	{
+		String nowDate = request.getParameter("now-Date");
+		String doWhich = request.getParameter("doWhich");
+		Date date = Tool.getDateType(nowDate);
+		List<Date> dateList;
+		if ("上一周".equals(doWhich))
 		{
-			TjzTbCourse course=new TjzTbCourse();
+			dateList = Tool.dateToWeek(Tool.getLastWeekMonday(date));
+
+
+		} else {
+
+			dateList = Tool.dateToWeek(Tool.getNextWeekMonday(date));
+
+		}
+		List<String> days = Tool.getDateType(dateList);
+		Map<String, Object> map2 = new HashMap<String, Object>();
+		map2.put("startDate", days.get(0));
+		map2.put("endDate", days.get(days.size() - 1));
+		map2.put("wid", wid);
+		map2.put("cid", cid);
+		Map<String, List<TjzTbCourse>> map = tjzBackService.teacherCourseTable(map2);
+		request.setAttribute("cid", cid);
+		request.setAttribute("wid", wid);
+		request.setAttribute("tableBody", map);
+		request.setAttribute("tableHead", days);
+		return "teachercoursetable";
+
+
+	}
+
+
+	@RequestMapping("/teacherCourseTable.action")
+	@Log(operationType = "查询操作", operationName = "课程表")
+	public String teacherCourseTable(HttpServletRequest request, String cid)
+	{
+
+
+		String wid = request.getSession().getAttribute("wid").toString();
+		Date date = new Date(System.currentTimeMillis());
+		List<Date> dateList = Tool.dateToWeek(date);
+		List<String> days = Tool.getDateType(dateList);
+		Map<String, Object> map2 = new HashMap<String, Object>();
+		map2.put("startDate", days.get(0));
+		map2.put("endDate", days.get(days.size() - 1));
+		map2.put("wid", wid);
+		map2.put("cid", cid);
+		Map<String, List<TjzTbCourse>> map = tjzBackService.teacherCourseTable(map2);
+		if (null != map)
+		{
+			request.setAttribute("cid", cid);
+			request.setAttribute("wid", wid);
+			request.setAttribute("tableBody", map);
+			request.setAttribute("tableHead", days);
+			return "teachercoursetable";
+		} else
+		{
+			System.out.println("fail");
+			return "teachercoursetable";
+
+		}
+	}
+
+
+	@RequestMapping("/insertCodeBatch.action")
+	public int insertCodeBatch()
+	{
+		List<TjzTbCourse> courseList2 = new ArrayList<TjzTbCourse>();
+
+		for (int i = 0; i < 3; i++)
+		{
+			TjzTbCourse course = new TjzTbCourse();
 			course.setcDate("2019-12-19");
 			course.setCid(1);
 			course.setSubId(1);
@@ -41,17 +120,19 @@ public class TjzAdminHandler
 		}
 		tjzBackService.insertCodeBatch(courseList2);
 		return 2;
-	};
+	}
+
+
 
 
 	//查询科目
 	@RequestMapping("/findSubject.action")
 	public ModelAndView findSubject(HttpServletRequest req)
 	{
-		List<TjzTbSubject>  subjects=tjzBackService.findSubject();
+		List<TjzTbSubject> subjects = tjzBackService.findSubject();
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("courseadd");
-		modelAndView.addObject("subjects",subjects);
+		modelAndView.addObject("subjects", subjects);
 		return modelAndView;
 	}
 
@@ -60,13 +141,13 @@ public class TjzAdminHandler
 	@ResponseBody
 	public TjzTbTable addSubject(HttpServletRequest req)
 	{
-		TjzTbTable tjzTbTable=new TjzTbTable();
+		TjzTbTable tjzTbTable = new TjzTbTable();
 		String subjects = req.getParameter("subjects");
 		String couId = req.getParameter("couId");
-		TjzTbCourse course=new TjzTbCourse();
+		TjzTbCourse course = new TjzTbCourse();
 		course.setCouId(Integer.valueOf(couId));
 		course.setSubId(Integer.valueOf(subjects));
-		int flag= tjzBackService.addSubject(course);
+		int flag = tjzBackService.addSubject(course);
 		if (flag > 0)
 		{
 			tjzTbTable.setMsg("1");
@@ -79,136 +160,111 @@ public class TjzAdminHandler
 	}
 
 
-
-
-
 	@RequestMapping("/weekcourseTable.action")
 	@Log(operationType = "查询操作", operationName = "课程表")
-	public String weekcourseTable(HttpServletRequest request, HttpServletResponse response,String cid)
+	public String weekcourseTable(HttpServletRequest request, HttpServletResponse response, String cid)
 	{
 		String nowDate = request.getParameter("now-Date");
 		String doWhich = request.getParameter("doWhich");
 		Date date = Tool.getDateType(nowDate);
-		int intCid=Integer.valueOf(cid);
+		int intCid = Integer.valueOf(cid);
+		Map<String, List<TjzTbCourse>> map;
+		List<String> days;
 		if ("上一周".equals(doWhich))
 		{
-
 			List<Date> dateList = Tool.dateToWeek(Tool.getLastWeekMonday(date));
 			List<String> daySting = Tool.getDateType(dateList);
 			Date toDay = new Date(System.currentTimeMillis());
 			List<Date> toDays = Tool.dateToWeek(toDay);
 			List<String> toDaysSting = Tool.getDateType(toDays);
-
-			Date date1=Tool.getDateType((toDaysSting.get(6)));
-			Date date2=Tool.getDateType((daySting.get(6)));
-			if(dateList.get(6).getTime()>toDays.get(6).getTime()){
-
-				List<String> days = Tool.getDateType(dateList);
-				Map<String, Object> map2 = new HashMap<String, Object>();
-				map2.put("startDate",days.get(0));
-				map2.put("endDate",days.get(days.size() - 1));
-				map2.put("cid", cid);
-				Map<String, List<TjzTbCourse>> map= tjzBackService.courseTable(map2);
-				request.setAttribute("cid", cid);
-				request.setAttribute("tableBody", map);
-				request.setAttribute("tableHead", days);
-				return "coursetable";
-			}else {
-
-
-				List<String> days = Tool.getDateType(toDays);
-				Map<String, Object> map2 = new HashMap<String, Object>();
-				map2.put("startDate",days.get(0));
-				map2.put("endDate",days.get(days.size() - 1));
-				map2.put("cid", cid);
-				Map<String, List<TjzTbCourse>> map= tjzBackService.courseTable(map2);
-				if (null != map)
-				{
-					request.setAttribute("cid", cid);
-					request.setAttribute("tableBody", map);
-					request.setAttribute("tableHead", days);
-					return "coursetable";
-				} else
-				{
-					System.out.println("fail");
-					return "coursetable";
-
-				}
-
-
+			Date date1 = Tool.getDateType((toDaysSting.get(6)));
+			Date date2 = Tool.getDateType((daySting.get(6)));
+			if (dateList.get(6).getTime() > toDays.get(6).getTime())
+			{
+				 days = Tool.getDateType(dateList);
+			} else
+			{
+				 days = Tool.getDateType(toDays);
 			}
-
-		}
-		else
-		{
-
-			List<Date> dateList = Tool.dateToWeek(Tool.getNextWeekMonday(date));
-			List<String> days = Tool.getDateType(dateList);
 			Map<String, Object> map2 = new HashMap<String, Object>();
-			map2.put("startDate",days.get(0));
-			map2.put("endDate",days.get(days.size() - 1));
+			map2.put("startDate", days.get(0));
+			map2.put("endDate", days.get(days.size() - 1));
 			map2.put("cid", cid);
-			Map<String, List<TjzTbCourse>> map= tjzBackService.courseTable(map2);
-
-			if (!(map.size()>0)){
-				List<TjzTbCourse > courseList2=new ArrayList<TjzTbCourse>();
-				for (int i = 0; i <5 ; i++)
+			map = tjzBackService.courseTable(map2);
+		} else
+		{
+			List<Date> dateList = Tool.dateToWeek(Tool.getNextWeekMonday(date));
+			days = Tool.getDateType(dateList);
+			Map<String, Object> map2 = new HashMap<String, Object>();
+			map2.put("startDate", days.get(0));
+			map2.put("endDate", days.get(days.size() - 1));
+			map2.put("cid", cid);
+			 map = tjzBackService.courseTable(map2);
+			if (!(map.size() > 0))
+			{
+				List<TjzTbCourse> courseList2 = new ArrayList<TjzTbCourse>();
+				for (int i = 0; i < 5; i++)
 				{
-					for (int j = 0; j <5 ; j++)
+					for (int j = 0; j < 5; j++)
 					{
-
-						TjzTbCourse course=new TjzTbCourse();
+						TjzTbCourse course = new TjzTbCourse();
 						course.setcDate(days.get(i));
 						course.setCid(intCid);
 						course.setSubId(1);
-						course.setcOrder(String.valueOf(j+1));
+						course.setcOrder(String.valueOf(j + 1));
 						courseList2.add(course);
 					}
-
 				}
 				tjzBackService.insertCodeBatch(courseList2);
-				 map= tjzBackService.courseTable(map2);
+				map = tjzBackService.courseTable(map2);
 			}
-
+		}
+		if (null != map)
+		{
 			request.setAttribute("cid", cid);
 			request.setAttribute("tableBody", map);
-				request.setAttribute("tableHead", days);
-				return "coursetable";
+			request.setAttribute("tableHead", days);
+			return "coursetable";
+		}else
+		{
+			System.out.println("fail");
+			return "coursetable";
 		}
 	}
 
 	@RequestMapping("/courseTable.action")
 	@Log(operationType = "查询操作", operationName = "课程表")
-	public String courseTable(HttpServletRequest request,String cid)
+	public String courseTable(HttpServletRequest request, String cid)
 	{
 
 		Date date = new Date(System.currentTimeMillis());
 		List<Date> dateList = Tool.dateToWeek(date);
 		List<String> days = Tool.getDateType(dateList);
 		Map<String, Object> map2 = new HashMap<String, Object>();
-		map2.put("startDate",days.get(0));
-		map2.put("endDate",days.get(days.size() - 1));
+		map2.put("startDate", days.get(0));
+		map2.put("endDate", days.get(days.size() - 1));
 		map2.put("cid", cid);
-		Map<String, List<TjzTbCourse>> map= tjzBackService.courseTable(map2);
-		int intCid=Integer.valueOf(cid);
-		if (!(map.size()>0)){
-			List<TjzTbCourse > courseList2=new ArrayList<TjzTbCourse>();
-			for (int i = 0; i <5 ; i++)
+		Map<String, List<TjzTbCourse>> map = tjzBackService.courseTable(map2);
+		int intCid = Integer.valueOf(cid);
+		if (!(map.size() > 0))
+		{
+			List<TjzTbCourse> courseList2 = new ArrayList<TjzTbCourse>();
+			for (int i = 0; i < 5; i++)
 			{
-				for (int j = 0; j <5 ; j++)
+				for (int j = 0; j < 5; j++)
 				{
 
-					TjzTbCourse course=new TjzTbCourse();
+					TjzTbCourse course = new TjzTbCourse();
 					course.setcDate(days.get(i));
 					course.setCid(intCid);
 					course.setSubId(1);
-					course.setcOrder(String.valueOf(j+1));
+					course.setcOrder(String.valueOf(j + 1));
 					courseList2.add(course);
 				}
 
 			}
 			tjzBackService.insertCodeBatch(courseList2);
-			map= tjzBackService.courseTable(map2);
+			map = tjzBackService.courseTable(map2);
 		}
 
 
@@ -225,8 +281,6 @@ public class TjzAdminHandler
 
 		}
 	}
-
-
 
 
 	@RequestMapping("/courseManagement.action")
@@ -246,13 +300,6 @@ public class TjzAdminHandler
 		TjzTbTable tbBean = tjzBackService.showLogTable(page, limit, startDate, endDate, userName);
 		return tbBean;
 	}
-
-
-
-
-
-
-
 
 
 }

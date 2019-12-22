@@ -21,9 +21,9 @@
 
 	<div class="layui-form-item">
 		<label class="layui-form-label">科目</label>
-		<div class="layui-input-inline">
-			<select name="usereducation" lay-filter="subjects" id="subjects">
-				<option value=""></option>
+		<div class="layui-input-block" style="width: 60%">
+			<select name="subjects" lay-filter="subjects" id="subjects" >
+<%--				<option value="-1"></option>--%>
 				<c:forEach items="${requestScope.subjects}" begin="0" step="1" var="i">
 					<option value="${i.subId}">${i.subName}</option>
 				</c:forEach>

@@ -14,7 +14,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-	<title>课程管理</title>
+	<title>课程查看</title>
 	<link rel="stylesheet" href=<%=layuiPath+"css/layui.css"%>>
 	<script  src=<%=layuiPath + "layui.js"%>></script>
 </head>
@@ -23,7 +23,7 @@
 <div class="layui-card">
 	<div>
 		<h1 style="text-align: center">
-			课程管理
+			课程查看
 		</h1>
 	</div>
 	<div>
@@ -54,7 +54,7 @@
 <%--	{{d.LAY_TABLE_INDEX+1}}--%>
 <%--</script>--%>
 <script type="text/html" id="barDemo">
-	<a class="layui-btn layui-btn-xs" lay-event="addCourse">配置课程</a>
+	<a class="layui-btn layui-btn-xs" lay-event="addCourse">查看课程</a>
 </script>
 <script>
 
@@ -67,7 +67,7 @@
 		//数据表格
 			reloadTable = table.render({
 			elem: '#demo'
-			, url: '/ChildSchool/BackAction/courseManagement.action' //数据接口
+			, url: '/ChildSchool/BackAction/teacherCourseQuery.action' //数据接口
 			, page: true //开启分页
 			, cols: [[ //表头
 				{field: 'cid',title: '班级编号', sort: true, fixed: 'left',align: 'center'}
@@ -82,8 +82,6 @@
 			, limits: [5, 10, 20]
 
 		});
-
-
 
 
 		//查询
@@ -122,9 +120,9 @@
 
 				layer.open({
 					type: 2
-					, title: '配置课程'
+					, title: '查看课程'
 					, offset: 'auto'
-					, content: '/ChildSchool/BackAction/courseTable.action?cid='+data.cid
+					, content: '/ChildSchool/BackAction/teacherCourseTable.action?cid='+data.cid
 					, area: ['800px', '600px']
 					, btn: ['确定', '取消']
 					, shade: 0

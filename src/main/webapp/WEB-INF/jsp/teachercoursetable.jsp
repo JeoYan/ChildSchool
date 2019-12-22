@@ -49,11 +49,11 @@
 			<h1 style="text-align: center">
 				课程表<input type="hidden" id="cid">
 			</h1>
-		</div>
-		<div>
-			<h2 style="text-align: center">
-				班级名称：<label  id="className"></label>
-			</h2>
+			<div>
+				<h2 style="text-align: center">
+					班级名称：<label  id="className"></label>
+				</h2>
+			</div>
 		</div>
 		<div class="layui-form">
 			<table class="layui-table">
@@ -86,23 +86,19 @@
 							<td>
 								<input type="hidden" value="${requestScope.tableHead[0]}">
 								<c:forEach items="${i.value}" begin="0" step="1" var="j">
-								<c:if test="${j.cDate==requestScope.tableHead[0]}">
-
-									<c:choose>
+									<c:if test="${j.cDate==requestScope.tableHead[0]}">
+										<c:choose>
 										<c:when test="${j.subId == 1}">
 											<button type="button" class="btn btn-schedule layui-btn layui-btn-primary" value="${j.subId}"
-											        onclick="showRegistered(this)" couId="${j.couId}">${j.subName}</button>
+											        couId="${j.couId}">${j.subName}</button>
 										</c:when>
 										<c:otherwise>
 											<button type="button" class="btn btn-schedule layui-btn" value="${j.subId}"
-											        onclick="showRegistered(this)" couId="${j.couId}">${j.subName}</button>
+											        couId="${j.couId}">${j.subName}</button>
 										</c:otherwise>
-									</c:choose>
-
-
-
-							</c:if>
-							</c:forEach>
+										</c:choose>
+									</c:if>
+								</c:forEach>
 							</td>
 							<td>
 								<input type="hidden" value="${requestScope.tableHead[1]}">
@@ -111,14 +107,13 @@
 										<c:choose>
 											<c:when test="${j.subId == 1}">
 												<button type="button" class="btn btn-schedule layui-btn layui-btn-primary" value="${j.subId}"
-												        onclick="showRegistered(this)" couId="${j.couId}">${j.subName}</button>
+												        couId="${j.couId}">${j.subName}</button>
 											</c:when>
 											<c:otherwise>
 												<button type="button" class="btn btn-schedule layui-btn" value="${j.subId}"
-												        onclick="showRegistered(this)" couId="${j.couId}">${j.subName}</button>
+												        couId="${j.couId}">${j.subName}</button>
 											</c:otherwise>
 										</c:choose>
-
 									</c:if>
 								</c:forEach>
 							</td>
@@ -129,14 +124,13 @@
 										<c:choose>
 											<c:when test="${j.subId == 1}">
 												<button type="button" class="btn btn-schedule layui-btn layui-btn-primary" value="${j.subId}"
-												        onclick="showRegistered(this)" couId="${j.couId}">${j.subName}</button>
+												        couId="${j.couId}">${j.subName}</button>
 											</c:when>
 											<c:otherwise>
 												<button type="button" class="btn btn-schedule layui-btn" value="${j.subId}"
-												        onclick="showRegistered(this)" couId="${j.couId}">${j.subName}</button>
+												        couId="${j.couId}">${j.subName}</button>
 											</c:otherwise>
 										</c:choose>
-
 									</c:if>
 								</c:forEach>
 							</td>
@@ -147,14 +141,13 @@
 										<c:choose>
 											<c:when test="${j.subId == 1}">
 												<button type="button" class="btn btn-schedule layui-btn layui-btn-primary" value="${j.subId}"
-												        onclick="showRegistered(this)" couId="${j.couId}">${j.subName}</button>
+												        couId="${j.couId}">${j.subName}</button>
 											</c:when>
 											<c:otherwise>
 												<button type="button" class="btn btn-schedule layui-btn" value="${j.subId}"
-												        onclick="showRegistered(this)" couId="${j.couId}">${j.subName}</button>
+												        couId="${j.couId}">${j.subName}</button>
 											</c:otherwise>
 										</c:choose>
-
 									</c:if>
 								</c:forEach>
 							</td>
@@ -165,14 +158,13 @@
 										<c:choose>
 											<c:when test="${j.subId == 1}">
 												<button type="button" class="btn btn-schedule layui-btn layui-btn-primary" value="${j.subId}"
-												        onclick="showRegistered(this)" couId="${j.couId}">${j.subName}</button>
+												        couId="${j.couId}">${j.subName}</button>
 											</c:when>
 											<c:otherwise>
 												<button type="button" class="btn btn-schedule layui-btn" value="${j.subId}"
-												        onclick="showRegistered(this)" couId="${j.couId}">${j.subName}</button>
+												        couId="${j.couId}">${j.subName}</button>
 											</c:otherwise>
 										</c:choose>
-
 									</c:if>
 								</c:forEach>
 							</td>
@@ -186,11 +178,11 @@
 
 
 			</table>
-			<a href="/ChildSchool/BackAction/weekcourseTable.action?now-Date=${requestScope.tableHead[0]}&doWhich=上一周&cid=${requestScope.cid}">
+			<a href="/ChildSchool/BackAction/teacherWeekcourseTable.action?now-Date=${requestScope.tableHead[0]}&doWhich=上一周&cid=${requestScope.cid}&wid=${requestScope.wid}">
 				<input type="button" class="btn btn-default layui-btn" value="上一周" onclick="weeks(this)"/>
 			</a>
 
-			<a href="/ChildSchool/BackAction/weekcourseTable.action?now-Date=${requestScope.tableHead[0]}&&doWhich=下一周&cid=${requestScope.cid}">
+			<a href="/ChildSchool/BackAction/teacherWeekcourseTable.action?now-Date=${requestScope.tableHead[0]}&&doWhich=下一周&cid=${requestScope.cid}&wid=${requestScope.wid}">
 				<input type="button" class="btn btn-default layui-btn" value="下一周" onclick="weeks(this)"/>
 			</a>
 
@@ -211,41 +203,7 @@
 
 	});
 
-	function showRegistered(node) {
-		layer.open({
-			type: 2
-			, title: '配置课程'
-			, offset: 'auto'
-			, content: '/ChildSchool/BackAction/findSubject.action'
-			, area: ['450px', '350px']
-			, btn: ['确定', '取消']
-			, shade: 0
-			, yes: function (index, layero) {
-				var subjects = $(layero).find('iframe')[0].contentWindow.subjects.value;
-				var couId = $(node).attr("couId");
-				var ob = {"subjects": subjects, "couId": couId};
-				$.ajax({
-					type: "POST",//提交的方式
-					url: "/ChildSchool/BackAction/addSubject.action",
-					data: ob,//提交的数据
-					dataType: "json",//希望返回的数据类型
-					success: function (msg) {//成功的方法  msg为返回数据
-						if (msg.msg === "1") {
-							alert("排班成功");
-							location.reload();
-							layer.close(index); //关闭弹窗
-						} else if (msg.msg === "0") {
-							alert("排班失败");
-						}
-					},
-					error: function () {//错误的方法
-						alert("服务器正忙")
-					}
-				});
 
-			}
-		});
-	}
 
 
 </script>
