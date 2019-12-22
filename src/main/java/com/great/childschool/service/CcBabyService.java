@@ -46,6 +46,25 @@ public class CcBabyService
         return ccBabyDeptMapper.deletebaby(bid);
     }
 
+    //	根据bid查到pid
+    public CcTblParentBaby findp (int bid){
+        return ccBabyDeptMapper.findp(bid);
+    }
+
+    /**
+     * 幼儿管理-删除家长方法
+     * by 陈超
+     */
+    public int deleteparent(int pid){
+        return ccBabyDeptMapper.deleteparent(pid);
+    }
+    /**
+     * 幼儿管理-删除亲子关系
+     * by 陈超
+     */
+    public int deletepb(CcTblParentBaby ccTblParentBaby){
+        return ccBabyDeptMapper.deletepb(ccTblParentBaby);
+    }
 
     /**
      * 幼儿管理-修改方法
@@ -68,4 +87,40 @@ public class CcBabyService
         return ccBabyDeptMapper.addbaby(ccTblBaby);
     }
 
+    /**
+     * 幼儿管理-入园信息增加宝宝
+     * by 陈超
+     */
+    @Transactional
+    public int  addAdmissionb(CcTblBaby ccTblBaby){
+        return ccBabyDeptMapper.addAdmissionb(ccTblBaby);
+    }
+
+
+    /**
+     * 幼儿管理-入园信息增加家长
+     * by 陈超
+     */
+    @Transactional
+    public int  addAdmissionp(CcTblParent ccTblParent){
+        return ccBabyDeptMapper.addAdmissionp(ccTblParent);
+    }
+
+
+    /**
+     * 幼儿管理-入园信息增加亲子关系
+     * by 陈超
+     */
+    public int  addAdmissionpb(CcTblParentBaby ccTblParentBaby){
+        return ccBabyDeptMapper.addAdmissionpb(ccTblParentBaby)
+;    }
+
+    public CcTblBaby findbid (String bname){
+        return ccBabyDeptMapper.findbid(bname);
+    }
+
+    public CcTblParent findpid (String pname){
+
+        return ccBabyDeptMapper.findpid(pname);
+    }
 }

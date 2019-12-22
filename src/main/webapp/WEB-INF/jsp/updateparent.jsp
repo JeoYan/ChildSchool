@@ -48,11 +48,11 @@
 		<div class="layui-inline">
 			<label class="layui-form-label">宝宝名称</label>
 			<div class="layui-input-inline" >
-				<select name="bname" id="demoReload1">
+				<select name="bname" id="bname">
 					<option value=""></option>
 
 					<c:forEach items="${requestScope.baby}" begin="0" step="1" var="y">
-						<option value="${y.bname}">${y.bname}</option>
+						<option value="${y.bid}">${y.bname}</option>
 					</c:forEach>
 
 				</select>

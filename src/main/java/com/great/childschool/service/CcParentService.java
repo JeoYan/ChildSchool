@@ -19,7 +19,7 @@ public class CcParentService
 
 
     /**
-     * 幼儿管理-数据显示
+     * 家长管理-数据显示
      * by 陈超
      */
     @Transactional
@@ -28,7 +28,7 @@ public class CcParentService
         return ccParentDeptMapper.findTblParent(ccTableInf);
     }
     /**
-     * 幼儿管理-分页
+     * 家长管理-分页
      * by 陈超
      */
     @Transactional
@@ -38,18 +38,41 @@ public class CcParentService
     }
 
     /**
-     * 幼儿管理-删除方法
+     * 家长管理-删除家长方法
      * by 陈超
      */
     @Transactional
-    public int deleteparent(int bid)
+    public int deleteparent(int pid)
     {
-        return ccParentDeptMapper.deleteparent(bid);
+        return ccParentDeptMapper.deleteparent(pid);
     }
+	//	根据bid查到pid
+	public CcTblParentBaby findb (int pid){
 
+		return ccParentDeptMapper.findb(pid);
+	}
+
+	/**
+	 * 家长管理-删除方法
+	 * by 陈超
+	 */
+	@Transactional
+	public int deletebaby(int bid)
+	{
+		return ccParentDeptMapper.deletebaby(bid);
+	}
+
+	/**
+	 * 家长管理-删除亲子关系
+	 * by 陈超
+	 */
+	public int deletepb(CcTblParentBaby ccTblParentBaby){
+
+		return ccParentDeptMapper.deletepb(ccTblParentBaby);
+	}
 
     /**
-     * 幼儿管理-修改方法
+     * 家长管理-修改方法
      * by 陈超
      */
     @Transactional
@@ -59,18 +82,18 @@ public class CcParentService
         return ccParentDeptMapper.updateparent(ccTblParent);
     }
 
-    /**
-     * 幼儿管理-增加
-     * by 陈超
-     */
-    @Transactional
-    public int  addparent(CcTblParent ccTblParent){
+//    /**
+//     * 家长管理-增加
+//     * by 陈超
+//     */
+//    @Transactional
+//    public int  addparent(CcTblParent ccTblParent){
+//
+//        return ccParentDeptMapper.addparent(ccTblParent);
+//    }
 
-        return ccParentDeptMapper.addparent(ccTblParent);
-    }
-
     /**
-     * 幼儿管理-下拉框获取宝宝名称
+     * 家长管理-下拉框获取宝宝名称
      * by 陈超
      */
     @Transactional
@@ -78,11 +101,5 @@ public class CcParentService
         return  ccParentDeptMapper.findbaby();
     }
 
-//    /**
-//     * 幼儿管理-下拉框-查询亲子关系
-//     * by 陈超
-//     */
-//    public List<CcTblParentBaby> findrelation(){
-//        return ccParentDeptMapper.findrelation();
-//    }
+
 }

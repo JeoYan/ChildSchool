@@ -11,10 +11,31 @@ public class CcTblParent
   private String pphone;
   private String pjob;
   private int sid;
+  private int bid;
   private String prelation;
   private String bname;
   private String pdate;
+  private String identitycard;
 
+  public String getIdentitycard()
+  {
+    return identitycard;
+  }
+
+  public int getBid()
+  {
+    return bid;
+  }
+
+  public void setBid(int bid)
+  {
+    this.bid = bid;
+  }
+
+  public void setIdentitycard(String identitycard)
+  {
+    this.identitycard = identitycard;
+  }
 
   public String getBname()
   {

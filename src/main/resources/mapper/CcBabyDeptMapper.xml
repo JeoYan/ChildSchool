@@ -51,7 +51,15 @@
     <delete id="deletebaby" parameterType="java.lang.Integer" >
             delete from tbl_baby where bid=#{bid}
         </delete>
-
+    <select id="findp" parameterType="java.lang.Integer" resultType="com.great.childschool.entity.CcTblParentBaby">
+        select * from tbl_parent_baby where bid=#{bid}
+    </select>
+    <delete id="deleteparent" parameterType="java.lang.Integer" >
+            delete from tbl_parent where pid=#{pid}
+        </delete>
+    <delete id="deletepb" parameterType="com.great.childschool.entity.CcTblParentBaby" >
+            delete from tbl_parent_baby where bid=#{bid} and pid=#{pid}
+        </delete>
 
     <!--   幼儿管理-角色更新sql-->
     <!--    by 陈超-->
@@ -67,6 +75,34 @@
             values(#{bname},#{bsex},#{bbirth},#{bdate},1)
     </insert>
 
+<!--    入园信息增加宝宝-->
+    <!--    by 陈超-->
+    <insert id="addAdmissionb" useGeneratedKeys="true" keyProperty="bid" parameterType="com.great.childschool.entity.CcTblBaby" >
+        insert into tbl_baby    (bname ,bsex,bbirth,bdate,baddress,cid)
+            values(#{bname},#{bsex},#{bbirth},#{bdate},#{baddress},1)
+    </insert>
+
+<!--    入园信息增加家长-->
+    <!--    by 陈超-->
+    <insert id="addAdmissionp" useGeneratedKeys="true" keyProperty="pid" parameterType="com.great.childschool.entity.CcTblParent" >
+        insert into tbl_parent    (pname, ppsw,pphone,pjob,sid,pdate,identitycard)
+            values(#{pname},123,#{pphone},#{pjob},1,#{pdate},#{identitycard})
+    </insert>
+
+<!--    入园信息增加亲子关系-->
+    <!--    by 陈超-->
+    <insert id="addAdmissionpb" useGeneratedKeys="true" keyProperty="pbid" parameterType="com.great.childschool.entity.CcTblParentBaby" >
+        insert into tbl_parent_baby    (pid,bid, prelation)
+            values(#{pid},#{bid},#{prelation})
+    </insert>
+<!--    根据宝宝名查询宝宝id-->
+    <select id="findbid" parameterType="java.lang.String" resultType="com.great.childschool.entity.CcTblBaby">
+        select bid from tbl_baby where bname=#{bname}
+    </select>
+<!--    根据家长名查询家长id-->
+    <select id="findpid" parameterType="java.lang.String" resultType="com.great.childschool.entity.CcTblParent">
+        select pid from tbl_parent where pname=#{pname}
+    </select>
 
 </mapper>
 

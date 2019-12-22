@@ -123,34 +123,52 @@
 				layer.open({
 					type: 2,
 					title: '新增',
-					content: '/ChildSchool/xzbaby.action',
+					content: '/ChildSchool/Admission.action',
 					maxmin: true,
-					area: ['500px', '400px'],
+					area: ['1000px', '520px'],
 					btn: ['确定', '取消'],
 					yes: function (index, layero) {
-						//教师名称
+						//幼儿名称
 						var bname=$(layero).find('iframe')[0].contentWindow.bname.value;
 						//性别
 						var bsex=$(layero).find('iframe')[0].contentWindow.bsex.value;
 						//出生年月
 						var bbirth=$(layero).find('iframe')[0].contentWindow.bbirth.value;
+						//入园时间
+						var bdate=$(layero).find('iframe')[0].contentWindow.bdate.value;
+						//宝宝地址
+						var baddress=$(layero).find('iframe')[0].contentWindow.baddress.value;
 
-						var ob={bname:bname,bsex:bsex,bbirth:bbirth};
+						//家长名称
+						var pname=$(layero).find('iframe')[0].contentWindow.pname.value;
+						//亲子关系
+						var prelation=$(layero).find('iframe')[0].contentWindow.prelation.value;
+
+						//家长手机
+						var pphone=$(layero).find('iframe')[0].contentWindow.pphone.value;
+						//家长职业
+						var pjob=$(layero).find('iframe')[0].contentWindow.pjob.value;
+						//家长身份证
+						var identitycard=$(layero).find('iframe')[0].contentWindow.identitycard.value;
+
+						var ob={bname:bname,bsex:bsex,bbirth:bbirth,bdate:bdate,baddress:baddress,
+							pname:pname,prelation:prelation,pjob:pjob,pphone:pphone,identitycard:identitycard};
+
 						alert(ob);
 						$.ajax({
 							type:"POST",//提交方式
-							url:"/ChildSchool/addbaby.action",//提交地址
+							url:"/ChildSchool/addAdmission.action",//提交地址
 							data:ob,//数据
 							dataType:"json",//希望返回的数据类型
 							async:true,//异步操作
 							success:function (msg) {
 								alert(msg);
 								if(msg.msg==1){
-									alert("增加成功");
+									alert("增加入园信息成功");
 									table.reload('test');
 									layer.close(index);
 								}else if(msg.msg=="2"){
-									alert("增加失败");
+									alert("增加入园信息失败");
 								}
 
 							},
@@ -161,6 +179,48 @@
 					}
 				});
 			},
+			// add: function () {
+			// 	layer.open({
+			// 		type: 2,
+			// 		title: '新增',
+			// 		content: '/ChildSchool/xzbaby.action',
+			// 		maxmin: true,
+			// 		area: ['500px', '400px'],
+			// 		btn: ['确定', '取消'],
+			// 		yes: function (index, layero) {
+			// 			//教师名称
+			// 			var bname=$(layero).find('iframe')[0].contentWindow.bname.value;
+			// 			//性别
+			// 			var bsex=$(layero).find('iframe')[0].contentWindow.bsex.value;
+			// 			//出生年月
+			// 			var bbirth=$(layero).find('iframe')[0].contentWindow.bbirth.value;
+			//
+			// 			var ob={bname:bname,bsex:bsex,bbirth:bbirth};
+			// 			alert(ob);
+			// 			$.ajax({
+			// 				type:"POST",//提交方式
+			// 				url:"/ChildSchool/addbaby.action",//提交地址
+			// 				data:ob,//数据
+			// 				dataType:"json",//希望返回的数据类型
+			// 				async:true,//异步操作
+			// 				success:function (msg) {
+			// 					alert(msg);
+			// 					if(msg.msg==1){
+			// 						alert("增加成功");
+			// 						table.reload('test');
+			// 						layer.close(index);
+			// 					}else if(msg.msg=="2"){
+			// 						alert("增加失败");
+			// 					}
+			//
+			// 				},
+			// 				error:function () {
+			// 					alert("服务器正忙")
+			// 				}
+			// 			})
+			// 		}
+			// 	});
+			// },
 			uploadFile:function () {
 				layer.open({
 					type:2,
@@ -186,7 +246,7 @@
 			//删除
 			if(obj.event === 'del'){
 
-				var v=confirm('真的删除行么');
+				var v=confirm('删除时会连带家长一起删除，确定么');
 					alert(data.bid);
 					var id =data.bid;
 					if (v==true){

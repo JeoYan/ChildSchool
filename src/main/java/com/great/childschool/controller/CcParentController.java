@@ -10,9 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+
 import java.util.List;
 
 
@@ -26,18 +24,18 @@ public class CcParentController
 	 * 家长管理-新增弹窗
 	 * by 陈超
 	 */
-	@RequestMapping("/xzparent.action")
-	@Log(operationType = "访问操作", operationName = "访问新增弹窗")
-	public ModelAndView xzteacher(){
-		ModelAndView modelAndView =new ModelAndView();
-		modelAndView.setViewName("addparent");
-
-		List<CcTblBaby> list1 = ccParentService.findbaby();
-		System.out.println("list1"+list1);
-		modelAndView.addObject("baby",list1);
-
-		return modelAndView;
-	}
+//	@RequestMapping("/xzparent.action")
+//	@Log(operationType = "访问操作", operationName = "访问新增弹窗")
+//	public ModelAndView xzteacher(){
+//		ModelAndView modelAndView =new ModelAndView();
+//		modelAndView.setViewName("addparent");
+//
+//		List<CcTblBaby> list1 = ccParentService.findbaby();
+//		System.out.println("list1"+list1);
+//		modelAndView.addObject("baby",list1);
+//
+//		return modelAndView;
+//	}
 
 	/**
 	 * 调用家长管理页面
@@ -52,14 +50,7 @@ public class CcParentController
 		return modelAndView;
 	}
 
-	@RequestMapping("/Admission.action")
-	@Log(operationType = "访问操作", operationName = "访问欢迎页")
-	public ModelAndView Admission(){
-		ModelAndView modelAndView =new ModelAndView();
-		modelAndView.setViewName("Admission");
 
-		return modelAndView;
-	}
 	/**
 	 * 家长管理-修改弹窗
 	 * by 陈超
@@ -116,45 +107,45 @@ public class CcParentController
 	 * by 陈超
 	 */
 
-	@RequestMapping("/addparent.action")
-	@ResponseBody
-	@Log(operationType = "增加操作", operationName = "添加家长")
-	public MSG add(CcTblParent ccTblParent, HttpServletRequest request)
-	{
-		String pname=request.getParameter("pname");
-		String bname=request.getParameter("bname");
-		String prelation=request.getParameter("prelation");
-		String pphone=request.getParameter("pphone");
-		String pjob=request.getParameter("pjob");
-
-		Date date =new Date();
-		SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd");
-		String time =sdf.format(date);
-
-		ccTblParent.setPname(pname);
-		ccTblParent.setBname(bname);
-		ccTblParent.setPrelation(prelation);
-		ccTblParent.setPphone(pphone);
-		ccTblParent.setPjob(pjob);
-		ccTblParent.setPdate(time);
-
-		int flag =ccParentService.addparent(ccTblParent);
-
-		MSG msg =new MSG();
-
-		if (flag >0 )
-		{
-			msg.setMsg("1");
-			System.out.println("增加家长成功");
-		}
-		else
-		{
-			msg.setMsg("2");
-			System.out.println("增加家长失败");
-		}
-		return msg;
-
-	}
+//	@RequestMapping("/addparent.action")
+//	@ResponseBody
+//	@Log(operationType = "增加操作", operationName = "添加家长")
+//	public MSG add(CcTblParent ccTblParent, HttpServletRequest request)
+//	{
+//		String pname=request.getParameter("pname");
+//		String bname=request.getParameter("bname");
+//		String prelation=request.getParameter("prelation");
+//		String pphone=request.getParameter("pphone");
+//		String pjob=request.getParameter("pjob");
+//
+//		Date date =new Date();
+//		SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd");
+//		String time =sdf.format(date);
+//
+//		ccTblParent.setPname(pname);
+//		ccTblParent.setBname(bname);
+//		ccTblParent.setPrelation(prelation);
+//		ccTblParent.setPphone(pphone);
+//		ccTblParent.setPjob(pjob);
+//		ccTblParent.setPdate(time);
+//
+//		int flag =ccParentService.addparent(ccTblParent);
+//
+//		MSG msg =new MSG();
+//
+//		if (flag >0 )
+//		{
+//			msg.setMsg("1");
+//			System.out.println("增加家长成功");
+//		}
+//		else
+//		{
+//			msg.setMsg("2");
+//			System.out.println("增加家长失败");
+//		}
+//		return msg;
+//
+//	}
 
 	/**
 	 * 家长管理--修改逻辑
@@ -201,19 +192,28 @@ public class CcParentController
 	public MSG deletebaby(String pid)
 	{
 		System.out.println("pid"+pid);
-		int msg = ccParentService.deleteparent(Integer .valueOf(pid));
-		MSG msg1 =new MSG();
+		CcTblParentBaby ccTblParentBaby =new CcTblParentBaby();
+		ccTblParentBaby=ccParentService.findb(Integer.valueOf(pid));
+		int bid =ccTblParentBaby.getBid();
+		int msg1 = ccParentService.deleteparent(Integer .valueOf(pid));
+		int msg2 =ccParentService.deletebaby(bid);
 
-		if (msg >0)
+		ccTblParentBaby.setBid(bid);
+		ccTblParentBaby.setPid(Integer .valueOf(pid));
+		int msg3 =ccParentService.deletepb(ccTblParentBaby);
+
+		MSG msg =new MSG();
+
+		if (msg1 >0 && msg2>0 && msg3>0)
 		{
-			msg1.setMsg("1");
+			msg.setMsg("1");
 			System.out.println("删除成功");
 		} else
 		{
-			msg1.setMsg("2");
+			msg.setMsg("2");
 			System.out.println("删除失败");
 		}
-		return msg1;
+		return msg;
 	}
 
 

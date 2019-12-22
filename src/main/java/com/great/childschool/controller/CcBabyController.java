@@ -35,7 +35,15 @@ public class CcBabyController
 
 		return modelAndView;
 	}
+			//新增弹窗
+	@RequestMapping("/Admission.action")
+	@Log(operationType = "访问操作", operationName = "访问欢迎页")
+	public ModelAndView Admission(){
+		ModelAndView modelAndView =new ModelAndView();
+		modelAndView.setViewName("Admission");
 
+		return modelAndView;
+	}
 	/**
 	 * 调用幼儿管理页面
 	 * by 陈超
@@ -95,49 +103,48 @@ public class CcBabyController
 		return msg;
 	}
 
-	/**
-	 * 幼儿管理--增加逻辑
-	 * by 陈超
-	 */
-
-	@RequestMapping("/addbaby.action")
-	@ResponseBody
-	@Log(operationType = "增加操作", operationName = "添加宝宝")
-	public MSG add(CcTblBaby ccTblBaby,HttpServletRequest request)
-	{
-
-		String bname=request.getParameter("bname");
-		String bsex=request.getParameter("bsex");
-		String bbirth=request.getParameter("bbirth");
-
-		Date date =new Date();
-		SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd");
-		String time =sdf.format(date);
-		System.out.println();
-		ccTblBaby.setBdate(time);
-		ccTblBaby.setBname(bname);
-		ccTblBaby.setBsex(bsex);
-		ccTblBaby.setBbirth(bbirth);
-
-		System.out.println();
-		int flag =ccBabyService.addbaby(ccTblBaby);
-		System.out.println(flag);
-
-		MSG msg =new MSG();
-
-		if (flag >0 )
-		{
-			msg.setMsg("1");
-			System.out.println("增加宝宝成功");
-		}
-		else
-		{
-			msg.setMsg("2");
-			System.out.println("增加宝宝失败");
-		}
-		return msg;
-
-	}
+//	/**
+//	 * 幼儿管理--增加逻辑
+//	 * by 陈超
+//	 */
+//	@RequestMapping("/addbaby.action")
+//	@ResponseBody
+//	@Log(operationType = "增加操作", operationName = "添加宝宝")
+//	public MSG add(CcTblBaby ccTblBaby,HttpServletRequest request)
+//	{
+//
+//		String bname=request.getParameter("bname");
+//		String bsex=request.getParameter("bsex");
+//		String bbirth=request.getParameter("bbirth");
+//
+//		Date date =new Date();
+//		SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd");
+//		String time =sdf.format(date);
+//		System.out.println();
+//		ccTblBaby.setBdate(time);
+//		ccTblBaby.setBname(bname);
+//		ccTblBaby.setBsex(bsex);
+//		ccTblBaby.setBbirth(bbirth);
+//
+//		System.out.println();
+//		int flag =ccBabyService.addbaby(ccTblBaby);
+//		System.out.println(flag);
+//
+//		MSG msg =new MSG();
+//
+//		if (flag >0 )
+//		{
+//			msg.setMsg("1");
+//			System.out.println("增加宝宝成功");
+//		}
+//		else
+//		{
+//			msg.setMsg("2");
+//			System.out.println("增加宝宝失败");
+//		}
+//		return msg;
+//
+//	}
 
 	/**
 	 * 幼儿管理--修改逻辑
@@ -180,21 +187,96 @@ public class CcBabyController
 	public MSG deletebaby(String bid)
 	{
 		System.out.println("bid"+bid);
-		int msg = ccBabyService.deletebaby(Integer .valueOf(bid));
-		MSG msg1 =new MSG();
+		CcTblParentBaby ccTblParentBaby =new CcTblParentBaby();
+		ccTblParentBaby=ccBabyService.findp(Integer.valueOf(bid));
+		int pid=ccTblParentBaby.getPid();
+		int msg1= ccBabyService.deletebaby(Integer .valueOf(bid));
+		int msg2=ccBabyService.deleteparent(pid);
+
+		ccTblParentBaby.setBid(Integer.valueOf(bid));
+		ccTblParentBaby.setPid(pid);
+		int msg3 =ccBabyService.deletepb(ccTblParentBaby);
+
+		MSG msg =new MSG();
 		System.out.println();
-		if (msg >0)
+		if (msg1 >0&&msg2 >0&&msg3 >0)
 		{
-			msg1.setMsg("1");
+			msg.setMsg("1");
 			System.out.println("删除成功");
 		} else
 		{
-			msg1.setMsg("2");
+			msg.setMsg("2");
 			System.out.println("删除失败");
 		}
-		return msg1;
+		return msg;
 	}
 
 
+	/**
+	 * 幼儿管理--入园信息增加
+	 * by 陈超
+	 */
+	@RequestMapping("/addAdmission.action")
+	@ResponseBody
+	@Log(operationType = "增加操作", operationName = "添加宝宝")
+	public MSG add(CcTblBaby ccTblBaby,CcTblParent ccTblParent,CcTblParentBaby ccTblParentBaby,HttpServletRequest request)
+	{
+		//宝宝
+		String bname=request.getParameter("bname");
+		String bsex=request.getParameter("bsex");
+		String bbirth=request.getParameter("bbirth");
+		String baddress=request.getParameter("baddress");
+		//家长
+		String pname=request.getParameter("pname");
+		String pphone=request.getParameter("pphone");
+		String pjob=request.getParameter("pjob");
+		String identitycard=request.getParameter("identitycard");
 
+		String prelation=request.getParameter("prelation");
+
+		Date date =new Date();
+		SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd");
+		String time =sdf.format(date);
+
+		ccTblBaby.setBdate(time);
+		ccTblBaby.setBname(bname);
+		ccTblBaby.setBsex(bsex);
+		ccTblBaby.setBbirth(bbirth);
+		ccTblBaby.setBaddress(baddress);
+
+		ccTblParent.setPname(pname);
+		ccTblParent.setPjob(pjob);
+		ccTblParent.setPphone(pphone);
+		ccTblParent.setPdate(time);
+		ccTblParent.setIdentitycard(identitycard);
+
+		int flag1 =ccBabyService.addAdmissionb(ccTblBaby);
+		int flag2 =ccBabyService.addAdmissionp(ccTblParent);
+
+		ccTblBaby=ccBabyService.findbid(bname);
+		ccTblParent=ccBabyService.findpid(pname);
+
+		ccTblParentBaby.setBid(ccTblBaby.getBid());
+		ccTblParentBaby.setPid(ccTblParent.getPid());
+		ccTblParentBaby.setPrelation(prelation);
+
+		int flag3 =ccBabyService.addAdmissionpb(ccTblParentBaby);
+		System.out.println(flag1);
+
+		MSG msg =new MSG();
+
+		if (flag1 >0 &&flag2 >0&&flag3 >0)
+		{
+			msg.setMsg("1");
+			System.out.println("增加入园信息成功");
+
+		}
+		else
+		{
+			msg.setMsg("2");
+			System.out.println("增加入园信息失败");
+		}
+		return msg;
+
+	}
 }

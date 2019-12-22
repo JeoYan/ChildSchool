@@ -8,7 +8,7 @@
     <!--    by 陈超-->
     <select id="findTblParent" parameterType="com.great.childschool.entity.CcTableInf" resultType="com.great.childschool.entity.CcTblParent">
 
-        select p.pid,p.pname,b.bname ,pb.prelation,p.pphone,p.pjob,p.pdate
+        select p.pid,p.pname,b.bname ,b.bid,pb.prelation,p.pphone,p.pjob,p.pdate
         from tbl_parent p,tbl_baby b,tbl_parent_baby pb
         <where>
             b.bid=pb.bid and p.pid=pb.pid
@@ -31,7 +31,7 @@
     <!--    by 陈超-->
     <select id="totalPage1" parameterType="com.great.childschool.entity.CcTableInf" resultType="com.great.childschool.entity.CcTblParent">
 
-        select p.pid,p.pname,b.bname ,pb.prelation,p.pphone,p.pjob,p.pdate
+        select p.pid,p.pname,b.bname ,b.bid,pb.prelation,p.pphone,p.pjob,p.pdate
         from tbl_parent p,tbl_baby b,tbl_parent_baby pb
         <where>
             b.bid=pb.bid and p.pid=pb.pid
@@ -52,21 +52,26 @@
     <delete id="deleteparent" parameterType="java.lang.Integer" >
             delete from tbl_parent where pid=#{pid}
         </delete>
-
+    <select id="findb" parameterType="java.lang.Integer" resultType="com.great.childschool.entity.CcTblParentBaby">
+        select * from tbl_parent_baby where pid=#{pid}
+    </select>
+    <delete id="deletebaby" parameterType="java.lang.Integer" >
+            delete from tbl_baby where bid=#{bid}
+        </delete>
+    <delete id="deletepb" parameterType="java.lang.Integer" >
+            delete from tbl_parent_baby where bid=#{bid} and pid=#{pid}
+        </delete>
 
     <!--   家长管理-角色更新sql-->
     <!--    by 陈超-->
     <update id="updateparent" parameterType="com.great.childschool.entity.CcTblParent">
 
-        update  tbl_baby set bname=#{bname},bsex=#{bsex},bbirth=#{bbirth} where bid=#{bid}
+        update  tbl_parent set pname=#{pname},bname=#{bname},prelation=#{prelation},pphone=#{pphone},pjob=#{pjob} where pid=#{pid}
     </update>
+    <update id="updateparent" parameterType="com.great.childschool.entity.CcTblParent">
 
-    <!--   家长管理&#45;&#45;增加教师sql-->
-    <!--    by 陈超-->
-    <insert id="addparent" useGeneratedKeys="true" keyProperty="bid" parameterType="com.great.childschool.entity.CcTblParent" >
-        insert into tbl_baby    (bname ,bsex,bbirth,bdate,cid)
-            values(#{bname},#{bsex},#{bbirth},#{bdate},1)
-    </insert>
+        update  tbl_parent_baby set prelation=#{prelation} where pid=#{pid}
+    </update>
 
     <!--   家长管理-下拉框-查询宝宝sql-->
     <!--    by 陈超-->
@@ -74,16 +79,24 @@
        select * from tbl_baby
     </select>
 
-<!--    &lt;!&ndash;   家长管理-下拉框-查询亲子关系sql&ndash;&gt;-->
-<!--    &lt;!&ndash;    by 陈超&ndash;&gt;-->
-<!--    <select id="findrelation" resultType="com.great.childschool.entity.CcTblParentBaby">-->
-<!--       select * from tbl_parent_baby-->
-<!--    </select>-->
+
 
 
 
 </mapper>
 
+        <!--    &lt;!&ndash;   家长管理&#45;&#45;增加教师sql&ndash;&gt;-->
+        <!--    &lt;!&ndash;    by 陈超&ndash;&gt;-->
+        <!--    <insert id="addparent" useGeneratedKeys="true" keyProperty="bid" parameterType="com.great.childschool.entity.CcTblParent" >-->
+        <!--        insert into tbl_baby    (bname ,bsex,bbirth,bdate,cid)-->
+        <!--            values(#{bname},#{bsex},#{bbirth},#{bdate},1)-->
+        <!--    </insert>-->
+
+        <!--    &lt;!&ndash;   家长管理-下拉框-查询亲子关系sql&ndash;&gt;-->
+        <!--    &lt;!&ndash;    by 陈超&ndash;&gt;-->
+        <!--    <select id="findrelation" resultType="com.great.childschool.entity.CcTblParentBaby">-->
+        <!--       select * from tbl_parent_baby-->
+        <!--    </select>-->
 
 
 

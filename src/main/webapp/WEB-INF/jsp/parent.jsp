@@ -58,7 +58,7 @@
 		<input class="layui-input" name="pname" id="demoReload" autocomplete="off">
 	</div>
 	<button class="layui-btn" data-type="reload">查询</button>
-	<button class="layui-btn layui-btn-normal" data-type="add" >新增</button>
+<%--	<button class="layui-btn layui-btn-normal" data-type="add" >新增</button>--%>
 	</div>
 </div>
 
@@ -90,6 +90,7 @@
 				{field: 'pid', title: '家长编号', sort: true, fixed: 'center'} ,
 				{field: 'pname', title: '家长名称'} ,
 				{field: 'bname', title: '宝宝名称' } ,
+				{field: 'bid', title: '宝宝id', sort: true,hide:true} ,
 				{field: 'prelation', title: '亲子关系'} ,
 				{field: 'pphone', title: '联系方式', sort: true} ,
 				{field: 'pjob', title: '职业'},
@@ -121,53 +122,53 @@
 				}, 'data');
 			},
 			//增加
-			add: function () {
-				layer.open({
-					type: 2,
-					title: '新增',
-					content: '/ChildSchool/xzparent.action',
-					maxmin: true,
-					area: ['500px', '400px'],
-					btn: ['确定', '取消'],
-					yes: function (index, layero) {
-						//家长名称
-						var pname=$(layero).find('iframe')[0].contentWindow.pname.value;
-						//宝宝名称
-						var bname=$(layero).find('iframe')[0].contentWindow.bname.value;
-						//亲子关系
-						var prelation=$(layero).find('iframe')[0].contentWindow.prelation.value;
-						//联系方式
-						var pphone=$(layero).find('iframe')[0].contentWindow.pphone.value;
-						//职业
-						var pjob=$(layero).find('iframe')[0].contentWindow.pjob.value;
-
-
-						var ob={pname:pname,bname:bname,prelation:prelation,pphone:pphone,pjob:pjob};
-						alert(ob);
-						$.ajax({
-							type:"POST",//提交方式
-							url:"/ChildSchool/addparent.action",//提交地址
-							data:ob,//数据
-							dataType:"json",//希望返回的数据类型
-							async:true,//异步操作
-							success:function (msg) {
-								alert(msg);
-								if(msg.msg==1){
-									alert("增加成功");
-									table.reload('test');
-									layer.close(index);
-								}else if(msg.msg=="2"){
-									alert("增加失败");
-								}
-
-							},
-							error:function () {
-								alert("服务器正忙")
-							}
-						})
-					}
-				});
-			},
+			// add: function () {
+			// 	layer.open({
+			// 		type: 2,
+			// 		title: '新增',
+			// 		content: '/ChildSchool/xzparent.action',
+			// 		maxmin: true,
+			// 		area: ['500px', '400px'],
+			// 		btn: ['确定', '取消'],
+			// 		yes: function (index, layero) {
+			// 			//家长名称
+			// 			var pname=$(layero).find('iframe')[0].contentWindow.pname.value;
+			// 			//宝宝名称
+			// 			var bname=$(layero).find('iframe')[0].contentWindow.bname.value;
+			// 			//亲子关系
+			// 			var prelation=$(layero).find('iframe')[0].contentWindow.prelation.value;
+			// 			//联系方式
+			// 			var pphone=$(layero).find('iframe')[0].contentWindow.pphone.value;
+			// 			//职业
+			// 			var pjob=$(layero).find('iframe')[0].contentWindow.pjob.value;
+			//
+			//
+			// 			var ob={pname:pname,bname:bname,prelation:prelation,pphone:pphone,pjob:pjob};
+			// 			alert(ob);
+			// 			$.ajax({
+			// 				type:"POST",//提交方式
+			// 				url:"/ChildSchool/addparent.action",//提交地址
+			// 				data:ob,//数据
+			// 				dataType:"json",//希望返回的数据类型
+			// 				async:true,//异步操作
+			// 				success:function (msg) {
+			// 					alert(msg);
+			// 					if(msg.msg==1){
+			// 						alert("增加成功");
+			// 						table.reload('test');
+			// 						layer.close(index);
+			// 					}else if(msg.msg=="2"){
+			// 						alert("增加失败");
+			// 					}
+			//
+			// 				},
+			// 				error:function () {
+			// 					alert("服务器正忙")
+			// 				}
+			// 			})
+			// 		}
+			// 	});
+			// },
 			uploadFile:function () {
 				layer.open({
 					type:2,
@@ -193,8 +194,8 @@
 			//删除
 			if(obj.event === 'del'){
 
-				var v=confirm('真的删除行么');
-					alert(data.pid);
+				var v=confirm('删除时会连带宝宝一起删除，确定么');
+
 					var id =data.pid;
 					if (v==true){
 					var ob= {pid:id};
@@ -226,7 +227,7 @@
 			//编辑
 			else if(obj.event === 'edit'){
 				alert(data.bname);
-
+				alert(data.bid);
 				layer.open({
 					type: 2,
 					title: '修改',
@@ -236,8 +237,11 @@
 					btn: ['确定', '取消'],
 					success: function (layero,index) {
 						var body = layer.getChildFrame('body', index);
-						body.find("#bname").val(data.bname)
-
+						body.find("#pname").val(data.pname);
+						body.find("#bname").val(data.bid);
+						body.find("#prelation").val(data.prelation);
+						body.find("#pjob").val(data.pjob);
+						body.find("#pphone").val(data.pphone)
 					},
 					yes:function (index,layero) {
 						//家长名称
