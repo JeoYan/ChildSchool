@@ -6,9 +6,124 @@
 <mapper namespace="com.great.childschool.mapper.TjzBackMapper">
 
 
-    <!-- 查询课程管理-->
+    <!-- 家长修改密码-->
+    <update id="parentChangePassword" parameterType="com.great.childschool.entity.TjzTblParent" >
+       UPDATE tbl_parent SET ppsw=#{ppsw} WHERE pid=#{pid}
+    </update>
+
+    <!-- 家长查询旧密码是否正确-->
+    <select id="parentOldPassword" parameterType="com.great.childschool.entity.TjzTblParent" resultType="com.great.childschool.entity.TjzTblParent">
+       SELECT tbl_parent.ppsw
+       FROM tbl_parent
+       WHERE tbl_parent.pid=#{pid}
+    </select>
+
+
+    <!-- 家长查询课程-->
+    <select id="parentCourseTable" parameterType="map" resultType="com.great.childschool.entity.TjzTbCourse">
+        SELECT co.couid,sub.subname,co.cdate,co.corder,sub.subid
+        FROM tbl_baby ba,tbl_course co,tbl_subject sub
+        WHERE ba.bid=#{bid}
+        AND ba.cid=co.cid
+        AND co.subid = sub.subid
+        AND co.cdate &gt;= #{startDate}
+        AND co.cdate &lt;= #{endDate}
+    </select>
+
+
+    <!-- 家长查询孩子班级-->
+    <select id="parentCourseQuery" parameterType="map" resultType="com.great.childschool.entity.TjzTbClassRoom">
+        SELECT ba.bid,ba.bname,cl.cid,cl.cname,wo.wname,cl.classroom
+        FROM tbl_parent_baby pb,tbl_baby ba,tbl_classroom cl,tbl_worker wo
+        WHERE pb.pid=#{pid}
+        AND pb.bid=ba.bid
+        AND ba.cid=cl.cid
+        AND wo.wid=cl.wid
+    </select>
+
+
+    <!--家长查询孩子班级数量-->
+    <select id="parentCourseQueryNum" parameterType="map" resultType="int">
+        SELECT COUNT(ba.bid)
+       FROM tbl_parent_baby pb,tbl_baby ba,tbl_classroom cl,tbl_worker wo
+        WHERE pb.pid=#{pid}
+        AND pb.bid=ba.bid
+        AND ba.cid=cl.cid
+        AND wo.wid=cl.wid
+    </select>
+
+
+    <!-- 教师查询班级-->
+    <select id="teacherCourseQuery" parameterType="map" resultType="com.great.childschool.entity.TjzTbClassRoom">
+        SELECT cl.cid,cl.cname,wo.wname,cl.classroom,cl.courseadddate
+        FROM tbl_classroom cl,tbl_worker wo
+        WHERE cl.wid=wo.wid
+        AND wo.wid=#{wid}
+        <if test="cName !=null and cName!=''">
+            AND cl.cname like '%' #{cName} '%'
+        </if>
+        <if test="startDate !=null and startDate!=''">
+            AND cl.courseadddate &gt;= #{startDate}
+        </if>
+        <if test="endDate !=null and endDate!=''">
+            AND cl.courseadddate &lt;= #{endDate}
+        </if>
+        LIMIT #{pstart},#{psize}
+    </select>
+
+    <!--教师查询班级数量-->
+    <select id="teacherCourseQueryNum" parameterType="map" resultType="int">
+        SELECT COUNT(cl.cid)
+        FROM tbl_classroom cl,tbl_worker wo
+        WHERE cl.wid=wo.wid
+        AND wo.wid=#{wid}
+        <if test="cName !=null and cName!=''">
+            AND cl.cname like '%' #{cName} '%'
+        </if>
+        <if test="startDate !=null and startDate!=''">
+            AND cl.courseadddate &gt;= #{startDate}
+        </if>
+        <if test="endDate !=null and endDate!=''">
+            AND cl.courseadddate &lt;= #{endDate}
+        </if>
+    </select>
+
+    <!-- 教师查询课程-->
+    <select id="teacherCourseTable" parameterType="map" resultType="com.great.childschool.entity.TjzTbCourse">
+        SELECT co.couid,sub.subname,co.cdate,co.corder,sub.subid
+        FROM tbl_course co,tbl_subject sub,tbl_classroom cl
+        WHERE co.subid = sub.subid
+        AND cl.wid=#{wid}
+        AND cl.cid=#{cid}
+        AND cl.cid=co.cid
+        AND co.cdate &gt;= #{startDate}
+        AND co.cdate &lt;= #{endDate}
+    </select>
+
+    <!-- 园长排课-->
+    <update id="addSubject">
+            UPDATE tbl_course set subid =#{subId} WHERE couid=#{couId}
+     </update>
+
+    <!-- 科目下拉框-->
+    <select id="findSubject" parameterType="int" resultType="com.great.childschool.entity.TjzTbSubject">
+        SELECT * FROM tbl_subject
+    </select>
+
+    <!-- 园长查询课程-->
+    <select id="courseTable" parameterType="map" resultType="com.great.childschool.entity.TjzTbCourse">
+        SELECT co.couid,sb.subname,co.cdate,co.corder,sb.subid
+        FROM tbl_course co,tbl_subject sb,tbl_classroom cl
+        WHERE co.subid=sb.subid
+        AND co.cid=cl.cid
+        AND cl.cid=#{cid}
+        AND co.cdate &gt;= #{startDate}
+        AND co.cdate &lt;= #{endDate}
+    </select>
+
+    <!-- 园长查询班级-->
     <select id="courseManagement" parameterType="map" resultType="com.great.childschool.entity.TjzTbClassRoom">
-        SELECT cl.cname,wo.wname,cl.classroom,cl.courseadddate
+        SELECT cl.cid,cl.cname,wo.wname,cl.classroom,cl.courseadddate
         FROM tbl_classroom cl,tbl_worker wo
         WHERE cl.wid=wo.wid
             <if test="cName !=null and cName!=''">
@@ -23,7 +138,7 @@
         LIMIT #{pstart},#{psize}
     </select>
 
-    <!--查询课程管理数量-->
+    <!--园长查询班级数量-->
     <select id="courseManagementNum" parameterType="map" resultType="int">
         SELECT COUNT(cl.cid)
         FROM tbl_classroom cl,tbl_worker wo
@@ -41,43 +156,59 @@
 
     <!-- 查询日志-->
     <select id="findLog" parameterType="map" resultType="com.great.childschool.entity.TjzTbLog">
-        SELECT * FROM tb_log
-        <where>
-            <if test="userName !=null and userName!=''">
-                AND operator like '%' #{userName} '%'
+        SELECT l.lid,l.ltime,l.levent,wo.wname FROM tbl_log l,tbl_worker wo
+        WHERE l.wid=wo.wid
+            <if test="wName !=null and wName!=''">
+                AND wo.wname like '%' #{wName} '%'
             </if>
             <if test="startDate !=null and startDate!=''">
-                AND operationtime &gt;= #{startDate}
+                AND l.ltime &gt;= #{startDate}
             </if>
             <if test="endDate !=null and endDate!=''">
-                AND operationtime &lt;= #{endDate}
+                AND l.ltime &lt;= #{endDate}
             </if>
-        </where>
         LIMIT #{pstart},#{psize}
     </select>
 
     <!--    查询日志数量-->
     <select id="findLogNum" parameterType="map" resultType="int">
-        SELECT COUNT(logid) FROM tb_log
-        <where>
-            <if test="userName !=null and userName!=''">
-                AND operator like '%' #{userName} '%'
-            </if>
-            <if test="startDate !=null and startDate!=''">
-                AND operationtime &gt;= #{startDate}
-            </if>
-            <if test="endDate !=null and endDate!=''">
-                AND operationtime &lt;= #{endDate}
-            </if>
-        </where>
+        SELECT COUNT(l.lid) FROM tbl_log l,tbl_worker wo
+        WHERE l.wid=wo.wid
+        <if test="wName !=null and wName!=''">
+            AND wo.wname like '%' #{wName} '%'
+        </if>
+        <if test="startDate !=null and startDate!=''">
+            AND l.ltime &gt;= #{startDate}
+        </if>
+        <if test="endDate !=null and endDate!=''">
+            AND l.ltime &lt;= #{endDate}
+        </if>
     </select>
 
-    <!--    增加日志-->
+    <!--    添加日志-->
     <insert id="addLog" parameterType="com.great.childschool.entity.TjzTbLog">
-        INSERT INTO tb_log(operator,operationtime,operationalmatters)
-        VALUES (#{operator},#{operationTime},#{operationalMatters})
+        INSERT INTO tbl_log(wid,ltime,levent)
+        VALUES (#{wid},#{lTime},#{lEvent})
     </insert>
 
+    <!-- 批量插入未排班课程 -->
+    <insert id ="insertCodeBatch" parameterType="java.util.List" >
+        <selectKey resultType ="java.lang.Integer" keyProperty= "id"
+                   order= "AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey >
+        insert into tbl_course
+        (cdate, cid, subid, corder)
+        values
+        <foreach collection ="list" item="course" index= "index" separator =",">
+            (
+            #{course.cDate},
+            #{course.cid},
+            #{course.subId},
+            #{course.cOrder}
+            )
+        </foreach >
+    </insert >
 
 
 </mapper>

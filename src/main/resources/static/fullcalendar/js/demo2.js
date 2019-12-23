@@ -6,46 +6,42 @@ $(function () {
 	var ob = {msg1: "get"};
 	//对象转换成字符串
 	var str = JSON.stringify(ob);
-	// $.ajax({
-	// 	type: "POST",//提交的方式
-	// 	url: "ScheduleAjaxServlet",//提交的地址
-	// 	data: "msg=" + str,//提交的数据
-	// 	dataType: "text",//希望返回的数据类型
-	// 	async: true,//异步操作
-	// 	success: function (msg) {//成功的方法  msg为返回数据
-	// 		var ob2 = JSON.parse(msg);
-	// 		$.each(ob2, function (i, n) {
-	// 			calendar.addEvent({
-	// 				id: n['PERSONID'],// 日程标题;
-	// 				title: n['PERSONNAME'],// 日程标题
-	// 				start: new Date(n['SCHEDULEDATE']),// 日程起始时间
-	// 				end: new Date(n['SCHEDULEDATE']),// 日程结束时间
-	// 				allDay: true
-	// 				// 日程是否全天
-	// 			});
-	// 		})
-	//
-	// 	},
-	// 	error: function () {//错误的方法
-	// 		alert("服务器正忙")
-	// 	}
-	// });
+	alert($("#aa").val());
+	$.ajax({
+		type: "POST",//提交的方式
+		url: "ScheduleAjaxServlet?id="+$("#aa").val(),//提交的地址
+		data: "msg=" + str,//提交的数据
+		dataType: "text",//希望返回的数据类型
+		async: true,//异步操作
+		success: function (msg) {//成功的方法  msg为返回数据
+			var ob2 = JSON.parse(msg);
+			$.each(ob2, function (i, n) {
+				calendar.addEvent({
+					id: n['PERSONID'],// 日程标题;
+					title: n['PERSONNAME'],// 日程标题
+					start: new Date(n['SCHEDULEDATE']),// 日程起始时间
+					end: new Date(n['SCHEDULEDATE']),// 日程结束时间
+					allDay: true
+					// 日程是否全天
+				});
+			})
+
+		},
+		error: function () {//错误的方法
+			alert("服务器正忙")
+		}
+	});
 
 
 	// 日历插件初始化
 	calendarEl = document.getElementById('calendar');
 	// calendarEl=$("#calendar");
 	calendar = new FullCalendar.Calendar(calendarEl, {
-		// header: {
-		// 	left: 'prev,next today',
-		// 	center: 'title',
-		// 	right: 'month,agendaWeek,agendaDay'
-		// },
 		plugins: ['interaction', 'dayGrid'],
 		defaultDate: new Date(),
 		editable: true,
 		eventLimit: true, // allow "more" link when too many events
-		navLinks: true, // 开启单击天/周名称导航视图
+		navLinks: false, // 开启单击天/周名称导航视图
 		selectable: true,
 		selectMirror: true,
 		select: function (arg) {

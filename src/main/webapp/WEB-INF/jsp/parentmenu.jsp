@@ -101,7 +101,7 @@
 						</a>
 						<dl class="layui-nav-child">
 							<dd><a lay-href="template/personalpage.html">宝宝作业</a></dd>
-							<dd><a lay-href="/ChildSchool/web/coursemanagement.action">课程表</a></dd>
+							<dd><a lay-href="/ChildSchool/web/parentcoursequery.action">课程表</a></dd>
 							</dl>
 					</li>
 
@@ -147,7 +147,7 @@
 						</a>
 						<dl class="layui-nav-child">
 							<dd><a lay-href="set/system/website.html">宝宝信息</a></dd>
-							<dd><a lay-href="set/system/email.html">修改密码</a></dd>
+							<dd><a lay-href="/ChildSchool/web/parentchangepassword.action">修改密码</a></dd>
 							<dd><a lay-href="set/system/email22.html">退出</a></dd>
 						</dl>
 					</li>

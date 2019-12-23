@@ -22,9 +22,10 @@
 	<script type="text/javascript" src=<%=path + "/js/core/main.js" %>></script>
 	<script type="text/javascript" src=<%=path + "/js/daygrid/main.js" %>></script>
 	<script type="text/javascript" src=<%=path + "/js/interaction/main.js" %>></script>
-	<script type="text/javascript" src=<%=path + "/js/demo.js" %>></script>
+	<script type="text/javascript" src=<%=path + "/js/demo2.js" %>></script>
 </head>
 <body>
+<input hidden id="aa" value=${i.PERSONID}>
 <div id='calendar'></div>
 <div id="caidan" title="请输入排班日程" hidden="hidden">
 	<form class="form-inline">

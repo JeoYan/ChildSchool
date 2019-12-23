@@ -144,10 +144,6 @@ public class CcTeacherController
 		//用获取到的mid更改tbl_menu_role的sid为3
 		ccTeacherService.updateMenuRoleSid( tblMenuList1,wid);
 
-
-
-
-
 		System.out.println("wid"+wid);
 		System.out.println("rid"+rid);
 

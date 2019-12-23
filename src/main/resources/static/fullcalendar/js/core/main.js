@@ -571,7 +571,7 @@ Docs & License: https://fullcalendar.io/
         ];
     }
     function arrayToUtcDate(a) {
-        // according to web standards (and Safari), a month index is required.
+        // according to fullcalendar standards (and Safari), a month index is required.
         // massage if only given a year.
         if (a.length === 1) {
             a = a.concat([0]);

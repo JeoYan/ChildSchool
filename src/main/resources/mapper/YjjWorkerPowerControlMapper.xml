@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--家长登入Mybatis数据库配置文件
+    by 严俊杰
+-->
+<mapper namespace="com.great.childschool.mapper.YjjWorkerPowerControlMapper">
+    <select id="findWorker" parameterType="YjjSearchInfo" resultType="TblWorker">
+        select * from (select @rownum:=@rownum+1 as RN,A.* FROM (select @rownum:=0,tbl_worker.*,tbl_worker_role.rid,tbl_role.rname from tbl_role, tbl_worker,tbl_worker_role
+        where tbl_worker_role.wid=tbl_worker.wid and tbl_role.rid=tbl_worker_role.rid
+        <if test="wName!=null and wName!=''">
+            AND wname like "%" #{wName}"%"
+        </if>
+            <if test="rid!=null and rid!=''">
+                AND tbl_role.rid =#{rid}
+            </if>
+        )A )B where B.RN BETWEEN ((${page} - 1)* ${limit}+1) AND ${page}*${limit}
+    </select>
+    <!--    总条数-->
+    <select id="totalPage" parameterType="YjjSearchInfo" resultType="TblWorker">
+        select * from (select @rownum:=@rownum+1 as RN,A.* FROM (select @rownum:=0,tbl_worker.*,tbl_worker_role.rid,tbl_role.rname from tbl_role, tbl_worker,tbl_worker_role
+        where tbl_worker_role.wid=tbl_worker.wid and tbl_role.rid=tbl_worker_role.rid
+        <if test="wName!=null and wName!=''">
+            AND wname like "%" #{wName}"%"
+        </if>
+        <if test="rid!=null and rid!=''">
+            AND tbl_role.rid =#{rid}
+        </if>
+        )A )B
+    </select>
+
+
+
+
+</mapper>

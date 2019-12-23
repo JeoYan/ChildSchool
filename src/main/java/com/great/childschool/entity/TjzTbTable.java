@@ -1,5 +1,10 @@
 package com.great.childschool.entity;
 
+
+/**
+ * 数据表格实体类
+ * by 汤建志
+ */
 public class TjzTbTable
 {
 	private String code;
