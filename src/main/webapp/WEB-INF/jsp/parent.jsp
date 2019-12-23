@@ -234,7 +234,7 @@
 					title: '修改',
 					content: '/ChildSchool/xgparent.action',
 					maxmin: true,
-					area: ['500px', '500px'],
+					area: ['500px', '400px'],
 					btn: ['确定', '取消'],
 					success: function (layero,index) {
 						var body = layer.getChildFrame('body', index);

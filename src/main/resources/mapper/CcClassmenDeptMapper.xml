@@ -8,10 +8,13 @@
     <!--    by 陈超-->
     <select id="find" parameterType="com.great.childschool.entity.CcTableInf" resultType="com.great.childschool.entity.CcTblClassroom">
 
-        select  c.cid, c.cname, w.wname,c.classroom,c.courseadddate
-        from tbl_classroom c,tbl_worker w
+        select  c.cid, b.bname,c.cname, w.wname,c.courseadddate
+        from tbl_classroom c,tbl_worker w ,tbl_baby b
         <where>
-            c.wid=w.wid
+            b.cid=c.cid and c.wid=w.wid
+            <if test="bname != null and bname !='' " >
+                and b.bname like '%${bname}%'
+            </if>
             <if test="cname != null and cname !='' " >
                 and c.cname like '%${cname}%'
             </if>
@@ -31,11 +34,13 @@
     <!--    by 陈超-->
     <select id="totalPage" parameterType="com.great.childschool.entity.CcTableInf" resultType="com.great.childschool.entity.CcTblClassroom">
 
-        select  c.cid, c.cname, w.wname,c.classroom,c.courseadddate
-        from tbl_classroom c,tbl_worker w
-
+        select  c.cid, b.bname,c.cname, w.wname,c.courseadddate
+        from tbl_classroom c,tbl_worker w ,tbl_baby b
         <where>
-            c.wid=w.wid
+            b.cid=c.cid and c.wid=w.wid
+            <if test="bname != null and bname !='' " >
+                and b.bname like '%${bname}%'
+            </if>
             <if test="cname != null and cname !='' " >
                 and c.cname like '%${cname}%'
             </if>

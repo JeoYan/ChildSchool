@@ -55,8 +55,14 @@
 
 		班级名称:
 	<div class="layui-inline">
-		<input class="layui-input" name="bname" id="demoReload" autocomplete="off">
+		<input class="layui-input" name="cname" id="demoReload" autocomplete="off">
 	</div>
+
+		宝宝名称:
+		<div class="layui-inline">
+			<input class="layui-input" name="bname" id="demoReload1" autocomplete="off">
+		</div>
+
 	<button class="layui-btn" data-type="reload">查询</button>
 	<button class="layui-btn layui-btn-normal" data-type="add" >新增</button>
 	</div>
@@ -87,11 +93,11 @@
 			// method:'post',
 
 			cols: [[
-				{field: 'cid', title: '班级编号' , sort: true, fixed: 'center'} ,
+				{type: 'numbers', title: '序号'} ,
+				{field: 'cid', title: '班级编号' , sort: true, fixed: 'center',hide:true} ,
 				{field: 'bname', title: '宝宝名称'} ,
 				{field: 'cname', title: '班级名称'} ,
 				{field: 'wname', title: '班主任', sort: true} ,
-				{field: 'classroom', title: '所在教室'},
 				{field: 'courseadddate', title: '创建时间'},
 
 				{fixed: 'right', title:'操作', toolbar: '#barDemo'}
@@ -104,6 +110,7 @@
 			//查询
 			reload: function(){
 				var demoReload = $('#demoReload');
+				var demoReload1 = $('#demoReload1');
 				var demo1= $('#demo1');
 				var demo2= $('#demo2');
 				//执行重载
@@ -114,6 +121,7 @@
 					,where: {
 
 						cname: demoReload.val(),
+						bname: demoReload1.val(),
 						starttime:demo1.val(),
 						endtime:demo2.val()
 					}
@@ -129,16 +137,16 @@
 					area: ['500px', '500px'],
 					btn: ['确定', '取消'],
 					yes: function (index, layero) {
-						//幼儿名称
+						//教室名称
 						var cname=$(layero).find('iframe')[0].contentWindow.cname.value;
-						//性别
+						//教师名称
 						var wname=$(layero).find('iframe')[0].contentWindow.wname.value;
-						//性别
-						var classroom=$(layero).find('iframe')[0].contentWindow.classroom.value;
+						//宝宝名称
+						var bname=$(layero).find('iframe')[0].contentWindow.bname.value;
 
 
-						var ob={cname:cname,wname:wname,classroom:classroom
-							};
+
+						var ob={cname:cname,wname:wname,bname:bname};
 
 						alert(ob);
 						$.ajax({
@@ -238,14 +246,15 @@
 
 					},
 					yes:function (index,layero) {
-						//幼儿名称
+						//教室名称
 						var cname=$(layero).find('iframe')[0].contentWindow.cname.value;
-						//性别
+						//教师名称
 						var wname=$(layero).find('iframe')[0].contentWindow.wname.value;
-						//性别
-						var classroom=$(layero).find('iframe')[0].contentWindow.classroom.value;
+						//宝宝名称
+						var bname=$(layero).find('iframe')[0].contentWindow.bname.value;
+
 						var bid = data.bid;
-						var ob = {bid: bid, cname: cname,wname:wname,classroom:classroom};
+						var ob = {bid: bid, cname: cname,wname:wname,bname:bname};
 						$.ajax({
 							type: "POST",//提交方式
 							url: "/ChildSchool/updateclassmen.action",//路径

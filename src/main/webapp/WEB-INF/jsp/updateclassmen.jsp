@@ -39,10 +39,28 @@
 <form class="layui-form" action="">
 	<div class="layui-form" lay-filter="layui-btn-normal" id="layui-btn-normal" style="padding: 20px 0 0 0;">
 		<div class="layui-form-item" style="text-align: center">
-			<label class="layui-form-label">班级名称</label>
+			<label class="layui-form-label">宝宝名称</label>
 			<div class="layui-input-inline">
-				<input type="text"  name="cname" id="cname" lay-verify="required" placeholder="请输入家长名称" autocomplete="off" class="layui-input">
+				<input type="text"  name="bname" id="bname" lay-verify="required" placeholder="请输入家长名称" autocomplete="off" class="layui-input">
 			</div>
+		</div>
+
+		<div class="layui-form-item" >
+			<div class="layui-inline">
+				<label class="layui-form-label">班级名称</label>
+				<div class="layui-input-inline">
+					<select name="cname" id="cname">
+						<option value="">请选择班级</option>
+
+
+						<c:forEach items="${requestScope.class}" begin="0" step="1" var="y">
+							<option value="${y.cid}">${y.cname}</option>
+						</c:forEach>
+
+					</select>
+				</div>
+			</div>
+
 		</div>
 
 		<div class="layui-form-item" >
@@ -61,24 +79,6 @@
 			</div>
 
 		</div>
-
-		<div class="layui-form-item" >
-			<div class="layui-inline">
-				<label class="layui-form-label">所在教室</label>
-				<div class="layui-input-inline">
-					<select name="classroom" id="classroom">
-						<option value="">请选择教室</option>
-
-						<c:forEach items="${requestScope.class}" begin="0" step="1" var="y">
-							<option value="${y.cid}">${y.classroom}</option>
-						</c:forEach>
-
-					</select>
-				</div>
-			</div>
-
-		</div>
-
 
 		<div class="layui-form-item layui-hide" style="text-align: center">
 			<input type="button" lay-submit lay-filter="LAY-user-front-submit" id="LAY-user-front-submit" value="确认">

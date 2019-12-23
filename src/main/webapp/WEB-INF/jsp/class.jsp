@@ -55,8 +55,9 @@
 
 		班级名称:
 	<div class="layui-inline">
-		<input class="layui-input" name="bname" id="demoReload" autocomplete="off">
+		<input class="layui-input" name="cname" id="demoReload" autocomplete="off">
 	</div>
+
 	<button class="layui-btn" data-type="reload">查询</button>
 	<button class="layui-btn layui-btn-normal" data-type="add" >新增</button>
 	</div>

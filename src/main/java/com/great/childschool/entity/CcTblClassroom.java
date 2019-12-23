@@ -6,6 +6,7 @@ public class CcTblClassroom
 
   private int cid;
   private String cname;
+  private String bname;
   private String wname;
   private String classroom;
   private String courseadddate;
@@ -69,5 +70,15 @@ public class CcTblClassroom
   public void setCourseadddate(String courseadddate)
   {
     this.courseadddate = courseadddate;
+  }
+
+  public String getBname()
+  {
+    return bname;
+  }
+
+  public void setBname(String bname)
+  {
+    this.bname = bname;
   }
 }

@@ -6,6 +6,7 @@ import com.great.childschool.entity.CcTableInf;
 import com.great.childschool.entity.CcTblClassroom;
 import com.great.childschool.entity.MSG;
 import com.great.childschool.service.CcClassService;
+import com.great.childschool.service.CcClassmenService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,7 +23,7 @@ import java.util.List;
 public class CcClassmenController
 {
 	@Resource
-	private CcClassService ccClassService;
+	private CcClassmenService ccClassmenService;
 
 	/**
 	 * 幼儿管理-新增弹窗
@@ -69,11 +70,11 @@ public class CcClassmenController
 	@RequestMapping("/classmenxs.action")
 	@ResponseBody
 	@Log(operationType = "查询操作", operationName = "查询宝宝")
-	public MSG table(String cname,String starttime, String endtime, int page){
+	public MSG table(String cname,String bname,String starttime, String endtime, int page){
 
 		CcTableInf ccTableInf =new CcTableInf();
 		ccTableInf.setCname(cname);
-
+		ccTableInf.setBname(bname);
 		ccTableInf.setStarttime(starttime);
 		ccTableInf.setEndtime(endtime);
 		System.out.println("starttime"+starttime);
@@ -81,13 +82,13 @@ public class CcClassmenController
 		ccTableInf.setPage((page-1)*5);
 
 		//调用查询数据方法
-		List<CcTblClassroom> list= ccClassService.find(ccTableInf);
+		List<CcTblClassroom> list= ccClassmenService.find(ccTableInf);
 		System.out.println("list"+list.toString());
 		for (int i = 0; i <list.size() ; i++)
 		{
 			System.out.println(list.get(i).getWname());
 		}
-		List<CcTblClassroom> totalPagelist= ccClassService.totalPage(ccTableInf);
+		List<CcTblClassroom> totalPagelist= ccClassmenService.totalPage(ccTableInf);
 		System.out.println("totalPagelist"+totalPagelist.toString());
 
 
