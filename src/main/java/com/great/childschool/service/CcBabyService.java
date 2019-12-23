@@ -115,6 +115,14 @@ public class CcBabyService
         return ccBabyDeptMapper.addAdmissionpb(ccTblParentBaby)
 ;    }
 
+    /**
+     * 幼儿管理-下拉框获取班级教室名称
+     * by 陈超
+     */
+    public List<CcTblClassroom> findcname(){
+        return  ccBabyDeptMapper.findcname();
+    }
+
     public CcTblBaby findbid (String bname){
         return ccBabyDeptMapper.findbid(bname);
     }

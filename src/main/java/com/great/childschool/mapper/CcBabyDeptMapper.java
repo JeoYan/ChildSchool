@@ -73,6 +73,12 @@ public interface CcBabyDeptMapper
 	 */
 	public int  addAdmissionpb(CcTblParentBaby ccTblParentBaby);
 
+	/**
+	 * 幼儿管理-下拉框获取班级教室名称
+	 * by 陈超
+	 */
+	public List<CcTblClassroom> findcname();
+
 	public CcTblBaby findbid (String bname);
 	public CcTblParent findpid (String pname);
 }

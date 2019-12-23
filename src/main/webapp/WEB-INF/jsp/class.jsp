@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <%--/**--%>
-<%--* 幼儿管理---%>
+<%--* 班级管理---%>
 <%--* by 陈超--%>
 <%--*/--%>
 <%--
@@ -23,7 +23,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>幼儿管理</title>
+	<title>班级管理</title>
 	<meta name="renderer" content="webkit">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -37,7 +37,7 @@
 
 
 <div class="demoTable">
-	<h1 style="text-align: center">幼儿管理</h1>
+	<h1 style="text-align: center">班级管理</h1>
 	<div >
 		查询条件:
 	</div>
@@ -53,7 +53,7 @@
 
 	<br>
 
-	宝宝名称:
+		班级名称:
 	<div class="layui-inline">
 		<input class="layui-input" name="bname" id="demoReload" autocomplete="off">
 	</div>
@@ -80,20 +80,19 @@
 		table.render({
 			elem: '#test',
 			height: 312 ,
-			url: '/ChildSchool/babyxs.action' ,
+			url: '/ChildSchool/classxs.action' ,
 			page: 1,
 			limit:5,
 			limits:[5],
 			// method:'post',
 
 			cols: [[
-				{field: 'bid', title: '宝宝编号' , sort: true, fixed: 'center'} ,
-				{field: 'bname', title: '宝宝名称'} ,
+				{field: 'cid', title: '班级编号' , sort: true, fixed: 'center'} ,
 				{field: 'cname', title: '班级名称'} ,
-				{field: 'cid', title: '班级id',hide:true} ,
-				{field: 'bsex', title: '性别', sort: true} ,
-				{field: 'bbirth', title: '出生年月'},
-				{field: 'bdate', title: '创建时间'},
+				{field: 'wname', title: '班主任', sort: true} ,
+				{field: 'wid', title: '班主任id', sort: true,hide:true} ,
+				{field: 'classroom', title: '所在教室'},
+				{field: 'courseadddate', title: '创建时间'},
 
 				{fixed: 'right', title:'操作', toolbar: '#barDemo'}
 			]]
@@ -114,7 +113,7 @@
 					}
 					,where: {
 
-						bname: demoReload.val(),
+						cname: demoReload.val(),
 						starttime:demo1.val(),
 						endtime:demo2.val()
 					}
@@ -125,43 +124,27 @@
 				layer.open({
 					type: 2,
 					title: '新增',
-					content: '/ChildSchool/Admission.action',
+					content: '/ChildSchool/xzclass.action',
 					maxmin: true,
-					area: ['1000px', '520px'],
+					area: ['500px', '500px'],
 					btn: ['确定', '取消'],
 					yes: function (index, layero) {
-						//幼儿名称
-						var bname=$(layero).find('iframe')[0].contentWindow.bname.value;
-						//班级名称
-						var cid=$(layero).find('iframe')[0].contentWindow.cname.value;
-						//性别
-						var bsex=$(layero).find('iframe')[0].contentWindow.bsex.value;
-						//出生年月
-						var bbirth=$(layero).find('iframe')[0].contentWindow.bbirth.value;
-						//入园时间
-						var bdate=$(layero).find('iframe')[0].contentWindow.bdate.value;
-						//宝宝地址
-						var baddress=$(layero).find('iframe')[0].contentWindow.baddress.value;
+						//教室名称
+						var cname=$(layero).find('iframe')[0].contentWindow.cname.value;
 
-						//家长名称
-						var pname=$(layero).find('iframe')[0].contentWindow.pname.value;
-						//亲子关系
-						var prelation=$(layero).find('iframe')[0].contentWindow.prelation.value;
-
-						//家长手机
-						var pphone=$(layero).find('iframe')[0].contentWindow.pphone.value;
-						//家长职业
-						var pjob=$(layero).find('iframe')[0].contentWindow.pjob.value;
-						//家长身份证
-						var identitycard=$(layero).find('iframe')[0].contentWindow.identitycard.value;
-
-						var ob={bname:bname,cid:cid,bsex:bsex,bbirth:bbirth,bdate:bdate,baddress:baddress,
-							pname:pname,prelation:prelation,pjob:pjob,pphone:pphone,identitycard:identitycard};
+						//教师
+						var wid=$(layero).find('iframe')[0].contentWindow.wname.value;
+						//教室
+						var cid=$(layero).find('iframe')[0].contentWindow.classroom.value;
+						alert(cname);
+						alert(wid);
+						alert(cid);
+						var ob={cname:cname,wid:wid,cid:cid};
 
 						alert(ob);
 						$.ajax({
 							type:"POST",//提交方式
-							url:"/ChildSchool/addAdmission.action",//提交地址
+							url:"/ChildSchool/addclass.action",//提交地址
 							data:ob,//数据
 							dataType:"json",//希望返回的数据类型
 							async:true,//异步操作
@@ -183,48 +166,7 @@
 					}
 				});
 			},
-			// add: function () {
-			// 	layer.open({
-			// 		type: 2,
-			// 		title: '新增',
-			// 		content: '/ChildSchool/xzbaby.action',
-			// 		maxmin: true,
-			// 		area: ['500px', '400px'],
-			// 		btn: ['确定', '取消'],
-			// 		yes: function (index, layero) {
-			// 			//教师名称
-			// 			var bname=$(layero).find('iframe')[0].contentWindow.bname.value;
-			// 			//性别
-			// 			var bsex=$(layero).find('iframe')[0].contentWindow.bsex.value;
-			// 			//出生年月
-			// 			var bbirth=$(layero).find('iframe')[0].contentWindow.bbirth.value;
-			//
-			// 			var ob={bname:bname,bsex:bsex,bbirth:bbirth};
-			// 			alert(ob);
-			// 			$.ajax({
-			// 				type:"POST",//提交方式
-			// 				url:"/ChildSchool/addbaby.action",//提交地址
-			// 				data:ob,//数据
-			// 				dataType:"json",//希望返回的数据类型
-			// 				async:true,//异步操作
-			// 				success:function (msg) {
-			// 					alert(msg);
-			// 					if(msg.msg==1){
-			// 						alert("增加成功");
-			// 						table.reload('test');
-			// 						layer.close(index);
-			// 					}else if(msg.msg=="2"){
-			// 						alert("增加失败");
-			// 					}
-			//
-			// 				},
-			// 				error:function () {
-			// 					alert("服务器正忙")
-			// 				}
-			// 			})
-			// 		}
-			// 	});
-			// },
+
 			uploadFile:function () {
 				layer.open({
 					type:2,
@@ -251,15 +193,15 @@
 			if(obj.event === 'del'){
 
 				var v=confirm('删除时会连带家长一起删除，确定么');
-					alert(data.bid);
-					var id =data.bid;
+					alert(data.cid);
+					var id =data.cid;
 					if (v==true){
-					var ob= {bid:id};
+					var ob= {cid:id};
 					alert(ob);
 					//走AJAX
 					$.ajax({
 						type:"POST",//提交方式
-						url:"/ChildSchool/deletebaby.action",//路径
+						url:"/ChildSchool/deleteclass.action",//路径
 						data:ob,//数据
 						dataType:"json",//希望返回的数据类型
 						async:true,//异步操作
@@ -282,34 +224,41 @@
 			}
 			//编辑
 			else if(obj.event === 'edit'){
-				alert(data.bname);
-				alert(data.cid);
-
+				alert(data.cname);
+				alert(data.wid);
+				alert(data.classroom);
 				layer.open({
 					type: 2,
 					title: '修改',
-					content: '/ChildSchool/xgbaby.action',
+					content: '/ChildSchool/xgclass.action',
 					maxmin: true,
 					area: ['500px', '500px'],
 					btn: ['确定', '取消'],
 					success: function (layero,index) {
 						var body = layer.getChildFrame('body', index);
-						body.find("#bname").val(data.bname);
-						body.find("#cname").val(data.cid);
-
+						body.find("#cname").val(data.cname);
+						body.find("#wname").val(data.wname);
+						body.find("#classroom").val(data.classroom);
 					},
 					yes:function (index,layero) {
-						var bname = $(layero).find('iframe')[0].contentWindow.bname.value;
-						var bsex = $(layero).find('iframe')[0].contentWindow.bsex.value;
-						//班级名称
-						var cid=$(layero).find('iframe')[0].contentWindow.cname.value;
+						//教室名称
+						var cname=$(layero).find('iframe')[0].contentWindow.cname.value;
+						//
+						// //教师
+						// var wname=$(layero).find('iframe')[0].contentWindow.wname.value;
+						//教室
+						var classroom=$(layero).find('iframe')[0].contentWindow.classroom.value;
+						var wid=data.wid;
+						var cid =data.cid;
+						alert(cname);
+						alert(wid);
+						alert(cid);
+						var ob={ cid: cid,cname:cname,wid:wid,classroom:classroom};
 
-						var bid = data.bid;
-
-						var ob = {bid: bid,cid:cid,bname: bname,bsex:bsex};
+						alert(ob);
 						$.ajax({
 							type: "POST",//提交方式
-							url: "/ChildSchool/updatebaby.action",//路径
+							url: "/ChildSchool/updateclass.action",//路径
 							data: ob,//数据
 							dataType: "json",//希望返回的数据类型
 							async: true,//异步操作

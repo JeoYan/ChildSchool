@@ -73,15 +73,32 @@
 		</div>
 
 		<div class="layui-inline">
-		<label class="layui-form-label">入园日期</label>
-		<div class="layui-inline">
-			<input class="layui-input" type="date" name="bdate" id="bdate" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" >
-		</div>
+			<label class="layui-form-label">就读班级</label>
+			<div class="layui-input-inline">
+				<select name="cname" id="cname">
+					<option value="">请选择班级</option>
+
+
+					<c:forEach items="${requestScope.cname}" begin="0" step="1" var="y">
+						<option value="${y.cid}">${y.cname}</option>
+					</c:forEach>
+
+				</select>
+			</div>
 		</div>
 
 	</div>
 
+
 	<div class="layui-form-item">
+
+		<div class="layui-inline">
+			<label class="layui-form-label">入园日期</label>
+			<div class="layui-inline">
+				<input class="layui-input" type="date" name="bdate" id="bdate" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" >
+			</div>
+		</div>
+
 		<label class="layui-form-label">宝宝地址</label>
 		<div class="layui-input-inline">
 			<input type="text" width="500px" name="baddress" id="baddress" lay-verify="required" lay-reqtext="用户名是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input">

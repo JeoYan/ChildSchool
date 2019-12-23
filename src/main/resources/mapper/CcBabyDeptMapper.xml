@@ -7,19 +7,20 @@
     <!--   幼儿管理&#45;&#45;数据显示sql-->
     <!--    by 陈超-->
     <select id="findTblBaby" parameterType="com.great.childschool.entity.CcTableInf" resultType="com.great.childschool.entity.CcTblBaby">
-        select bid,bname ,bsex,bbirth,bdate from tbl_baby
+        select b.bid,b.bname ,c.cid,c.cname,b.bsex,b.bbirth,b.bdate
+        from tbl_baby b,tbl_classroom c
 
         <where>
-
+            b.cid=c.cid
             <if test="bname != null and bname !='' " >
-                and bname like '%${bname}%'
+                and b.bname like '%${bname}%'
             </if>
             <if test="starttime != null and starttime != '' " >
 
-                    and bdate = #{starttime}
+                    and b.bdate = #{starttime}
                 </if>
             <if test="endtime != null and endtime != '' " >
-                and bdate =#{endtime}
+                and b.bdate =#{endtime}
             </if>
 
         </where>
@@ -31,19 +32,29 @@
     <!--    by 陈超-->
     <select id="totalPage1" parameterType="com.great.childschool.entity.CcTableInf" resultType="com.great.childschool.entity.CcTblBaby">
 
-        select bid,bname ,bsex,bbirth,bdate from tbl_baby
-        <where>
+        select b.bid,b.bname ,c.cid,c.cname,b.bsex,b.bbirth,b.bdate
+        from tbl_baby b,tbl_classroom c
 
+        <where>
+            b.cid=c.cid
             <if test="bname != null and bname !='' " >
-                and bname like '%${bname}%'
+                and b.bname like '%${bname}%'
             </if>
-            <if test="starttime != null and starttime != ''" >
-                and bdate = #{starttime}
+            <if test="starttime != null and starttime != '' " >
+
+                and b.bdate = #{starttime}
             </if>
-            <if test="endtime != null and endtime != ''" >
-                and bdate =#{endtime}
+            <if test="endtime != null and endtime != '' " >
+                and b.bdate =#{endtime}
             </if>
+
         </where>
+    </select>
+
+    <!--   幼儿管理-下拉框-查询班级名称sql-->
+    <!--    by 陈超-->
+    <select id="findcname" resultType="com.great.childschool.entity.CcTblClassroom">
+       select * from tbl_classroom
     </select>
 
     <!--   幼儿管理-删除sql-->
@@ -65,21 +76,21 @@
     <!--    by 陈超-->
     <update id="updatebaby" parameterType="com.great.childschool.entity.CcTblBaby">
 
-        update  tbl_baby set bname=#{bname},bsex=#{bsex},bbirth=#{bbirth} where bid=#{bid}
+        update  tbl_baby set bname=#{bname},cid=#{cid},bsex=#{bsex}where bid=#{bid}
     </update>
 
     <!--   幼儿管理&#45;&#45;增加幼儿sql-->
     <!--    by 陈超-->
     <insert id="addbaby" useGeneratedKeys="true" keyProperty="bid" parameterType="com.great.childschool.entity.CcTblBaby" >
         insert into tbl_baby    (bname ,bsex,bbirth,bdate,cid)
-            values(#{bname},#{bsex},#{bbirth},#{bdate},1)
+            values(#{bname},#{bsex},#{bbirth},#{bdate},#{cid})
     </insert>
 
 <!--    入园信息增加宝宝-->
     <!--    by 陈超-->
     <insert id="addAdmissionb" useGeneratedKeys="true" keyProperty="bid" parameterType="com.great.childschool.entity.CcTblBaby" >
         insert into tbl_baby    (bname ,bsex,bbirth,bdate,baddress,cid)
-            values(#{bname},#{bsex},#{bbirth},#{bdate},#{baddress},1)
+            values(#{bname},#{bsex},#{bbirth},#{bdate},#{baddress},#{cid})
     </insert>
 
 <!--    入园信息增加家长-->

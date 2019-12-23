@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%--/**--%>
-<%--* 家长管理-修改界面--%>
+<%--* 班级成员管理-修改界面--%>
 <%--* by 陈超--%>
 <%--*/--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -39,49 +39,44 @@
 <form class="layui-form" action="">
 	<div class="layui-form" lay-filter="layui-btn-normal" id="layui-btn-normal" style="padding: 20px 0 0 0;">
 		<div class="layui-form-item" style="text-align: center">
-			<label class="layui-form-label">家长名称</label>
+			<label class="layui-form-label">班级名称</label>
 			<div class="layui-input-inline">
-				<input type="text"  name="pname" id="pname" lay-verify="required" placeholder="请输入家长名称" autocomplete="off" class="layui-input">
-			</div>
-		</div>
-
-		<div class="layui-inline">
-			<label class="layui-form-label">宝宝名称</label>
-			<div class="layui-input-inline" >
-				<select name="bname" id="bname">
-					<option value=""></option>
-
-					<c:forEach items="${requestScope.baby}" begin="0" step="1" var="y">
-						<option value="${y.bid}">${y.bname}</option>
-					</c:forEach>
-
-				</select>
+				<input type="text"  name="cname" id="cname" lay-verify="required" placeholder="请输入家长名称" autocomplete="off" class="layui-input">
 			</div>
 		</div>
 
 		<div class="layui-form-item" >
-			<label class="layui-form-label">亲子关系</label>
 			<div class="layui-inline">
-				<select name="prelation"  id="prelation" lay-filter="LAY-user-adminrole-type">
-					<option value="爸爸">爸爸</option>
-					<option value="妈妈">妈妈</option>
+				<label class="layui-form-label">班主任</label>
+				<div class="layui-input-inline">
+					<select name="wname" id="wname">
+						<option value="">请选择班主任</option>
 
-				</select>
+						<c:forEach items="${requestScope.work}" begin="0" step="1" var="y">
+							<option value="${y.wid}">${y.wname}</option>
+						</c:forEach>
+
+					</select>
+				</div>
 			</div>
+
 		</div>
 
-		<div class="layui-form-item" style="text-align: center">
-			<label class="layui-form-label">联系方式</label>
-			<div class="layui-input-inline">
-				<input type="text"  name="pphone" id="pphone" lay-verify="required" placeholder="请输入联系方式" autocomplete="off" class="layui-input">
-			</div>
-		</div>
+		<div class="layui-form-item" >
+			<div class="layui-inline">
+				<label class="layui-form-label">所在教室</label>
+				<div class="layui-input-inline">
+					<select name="classroom" id="classroom">
+						<option value="">请选择教室</option>
 
-		<div class="layui-form-item" style="text-align: center">
-			<label class="layui-form-label">职业</label>
-			<div class="layui-input-inline">
-				<input type="text"  name="pjob" id="pjob" lay-verify="required" placeholder="请输入职业名称" autocomplete="off" class="layui-input">
+						<c:forEach items="${requestScope.class}" begin="0" step="1" var="y">
+							<option value="${y.cid}">${y.classroom}</option>
+						</c:forEach>
+
+					</select>
+				</div>
 			</div>
+
 		</div>
 
 

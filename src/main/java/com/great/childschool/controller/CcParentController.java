@@ -154,23 +154,32 @@ public class CcParentController
 	@RequestMapping("/updateparent.action")
 	@ResponseBody
 	@Log(operationType = "更新操作", operationName = "修改家长信息")
-	public MSG update(int pid,String pname,String bname,String prelation,String pphone,String pjob)
+	public MSG update(int pid,String pname,String bid,String prelation,String pphone,String pjob)
 	{
 
 		CcTblParent ccTblParent =new CcTblParent();
-//		tblParent.setpid(pid);
+
+		CcTblParentBaby ccTblParentBaby =new CcTblParentBaby();
+
+		ccTblParent.setPid(pid);
 		ccTblParent.setPname(pname);
-		ccTblParent.setBname(bname);
-		ccTblParent.setPrelation(prelation);
 		ccTblParent.setPphone(pphone);
 		ccTblParent.setPjob(pjob);
 
+		int flag1 = ccParentService.updateparent(ccTblParent);
 
-		int flag = ccParentService.updateparent(ccTblParent);
+		CcTblBaby ccTblBaby=ccParentService.findbname(Integer.valueOf(bid));
+		ccTblBaby.setBname(ccTblBaby.getBname());
+		ccTblBaby.setBid(Integer.valueOf(bid));
+		int flag2 =ccParentService.updatebaby(ccTblBaby);
+
+		ccTblParentBaby.setPid(pid);
+		ccTblParentBaby.setPrelation(prelation);
+		int flag3 =ccParentService.updatepb(ccTblParentBaby);
 
 		MSG msg =new MSG();
 
-		if (flag >0)
+		if (flag1 >0 && flag2 >0 && flag3 >0)
 		{
 			msg.setMsg("1");
 			System.out.println("修改成功");

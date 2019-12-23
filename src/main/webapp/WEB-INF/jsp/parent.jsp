@@ -228,6 +228,7 @@
 			else if(obj.event === 'edit'){
 				alert(data.bname);
 				alert(data.bid);
+				alert(data.prelation);
 				layer.open({
 					type: 2,
 					title: '修改',
@@ -244,10 +245,12 @@
 						body.find("#pphone").val(data.pphone)
 					},
 					yes:function (index,layero) {
+						// //家长id
+						// var pid=$(layero).find('iframe')[0].contentWindow.pid.value;
 						//家长名称
 						var pname=$(layero).find('iframe')[0].contentWindow.pname.value;
-						//宝宝名称
-						var bname=$(layero).find('iframe')[0].contentWindow.bname.value;
+						//宝宝id
+						var bid=$(layero).find('iframe')[0].contentWindow.bname.value;
 						//亲子关系
 						var prelation=$(layero).find('iframe')[0].contentWindow.prelation.value;
 						//联系方式
@@ -255,7 +258,7 @@
 						//职业
 						var pjob=$(layero).find('iframe')[0].contentWindow.pjob.value;
 						var pid = data.pid;
-						var ob = {pid: pid, pname:pname,bname: bname,prelation:prelation,pphone:pphone,pjob:pjob};
+						var ob = {pid: pid, pname:pname,bid: bid,prelation:prelation,pphone:pphone,pjob:pjob};
 						$.ajax({
 							type: "POST",//提交方式
 							url: "/ChildSchool/updateparent.action",//路径

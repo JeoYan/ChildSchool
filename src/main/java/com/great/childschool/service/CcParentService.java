@@ -82,6 +82,31 @@ public class CcParentService
         return ccParentDeptMapper.updateparent(ccTblParent);
     }
 
+	//根据bid查bname
+	public CcTblBaby findbname(int bid){
+    	return ccParentDeptMapper.findbname(bid);
+	}
+	/**
+	 * 家长管理-修改宝宝名字方法
+	 * by 陈超
+	 */
+	public int updatebaby(CcTblBaby ccTblBaby){
+
+		return ccParentDeptMapper.updatebaby(ccTblBaby);
+	}
+
+	/**
+	 * 家长管理-修改亲子关系方法
+	 * by 陈超
+	 */
+	public int updatepb(CcTblParentBaby ccTblParentBaby){
+
+		return ccParentDeptMapper.updatepb(ccTblParentBaby);
+	}
+
+
+
+
 //    /**
 //     * 家长管理-增加
 //     * by 陈超

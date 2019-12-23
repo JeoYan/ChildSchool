@@ -42,6 +42,9 @@ public class CcBabyController
 		ModelAndView modelAndView =new ModelAndView();
 		modelAndView.setViewName("Admission");
 
+		List<CcTblClassroom> list = ccBabyService.findcname();
+		System.out.println("list"+list);
+		modelAndView.addObject("cname",list);
 		return modelAndView;
 	}
 	/**
@@ -66,6 +69,10 @@ public class CcBabyController
 	public ModelAndView xgteacher(){
 		ModelAndView modelAndView =new ModelAndView();
 		modelAndView.setViewName("updatebaby");
+
+		List<CcTblClassroom> list = ccBabyService.findcname();
+		System.out.println("list"+list);
+		modelAndView.addObject("cname",list);
 		return modelAndView;
 	}
 
@@ -153,14 +160,15 @@ public class CcBabyController
 	@RequestMapping("/updatebaby.action")
 	@ResponseBody
 	@Log(operationType = "更新操作", operationName = "修改宝宝信息")
-	public MSG update(int bid,String bname,String bbirth,String bsex)
+	public MSG update(int bid,String bname,int cid,String bsex)
 	{
 
 		CcTblBaby ccTblBaby =new CcTblBaby();
 		ccTblBaby.setBid(bid);
-		ccTblBaby.setBbirth(bbirth);
+
 		ccTblBaby.setBsex(bsex);
 		ccTblBaby.setBname(bname);
+		ccTblBaby.setCid(cid);
 		int flag = ccBabyService.updatebaby(ccTblBaby);
 
 		MSG msg =new MSG();
@@ -226,6 +234,7 @@ public class CcBabyController
 		String bsex=request.getParameter("bsex");
 		String bbirth=request.getParameter("bbirth");
 		String baddress=request.getParameter("baddress");
+		String cid=request.getParameter("cid");
 		//家长
 		String pname=request.getParameter("pname");
 		String pphone=request.getParameter("pphone");
@@ -243,6 +252,7 @@ public class CcBabyController
 		ccTblBaby.setBsex(bsex);
 		ccTblBaby.setBbirth(bbirth);
 		ccTblBaby.setBaddress(baddress);
+		ccTblBaby.setCid(Integer.valueOf(cid));
 
 		ccTblParent.setPname(pname);
 		ccTblParent.setPjob(pjob);

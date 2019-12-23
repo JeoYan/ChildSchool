@@ -10,6 +10,7 @@ public class CcTblBaby
   private String bsex;
   private String bdate;
   private int cid;
+  private String cname;
   private String baddress;
 
 
@@ -80,4 +81,13 @@ public class CcTblBaby
     this.baddress = baddress;
   }
 
+  public String getCname()
+  {
+    return cname;
+  }
+
+  public void setCname(String cname)
+  {
+    this.cname = cname;
+  }
 }

@@ -43,10 +43,24 @@ public interface CcParentDeptMapper
 	public int deletepb(CcTblParentBaby ccTblParentBaby);
 
 	/**
-	 * 家长管理-修改方法
+	 * 家长管理-修改家长信息
 	 * by 陈超
 	 */
 	public int updateparent(CcTblParent ccTblParent);
+
+	//根据bid查bname
+	public CcTblBaby findbname(int bid);
+	/**
+	 * 家长管理-修改宝宝名字方法
+	 * by 陈超
+	 */
+	public int updatebaby(CcTblBaby ccTblBaby);
+
+	/**
+	 * 家长管理-修改亲子关系方法
+	 * by 陈超
+	 */
+	public int updatepb(CcTblParentBaby ccTblParentBaby);
 
 //	/**
 //	 * 家长管理-增加方法
