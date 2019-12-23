@@ -7,12 +7,15 @@ package com.great.childschool.entity;
  */
 public class TjzTbClassRoom
 {
+
 	private int cid;
 	private String cName;
 	private String classroom;
 	private int wid;
 	private String courseAddDate;
 	private String wName;
+	private int bid;
+	private String bName;
 
 	public TjzTbClassRoom()
 	{
@@ -78,9 +81,23 @@ public class TjzTbClassRoom
 		this.wName = wName;
 	}
 
-	@Override
-	public String toString()
+	public int getBid()
 	{
-		return "TjzTbClassRoom{" + "cid=" + cid + ", cName='" + cName + '\'' + ", classroom='" + classroom + '\'' + ", wid=" + wid + ", courseAddDate='" + courseAddDate + '\'' + ", wName='" + wName + '\'' + '}';
+		return bid;
+	}
+
+	public void setBid(int bid)
+	{
+		this.bid = bid;
+	}
+
+	public String getbName()
+	{
+		return bName;
+	}
+
+	public void setbName(String bName)
+	{
+		this.bName = bName;
 	}
 }

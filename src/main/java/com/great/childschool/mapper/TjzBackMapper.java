@@ -1,10 +1,7 @@
 package com.great.childschool.mapper;
 
 
-import com.great.childschool.entity.TjzTbCourse;
-import com.great.childschool.entity.TjzTbLog;
-import com.great.childschool.entity.TjzTbClassRoom;
-import com.great.childschool.entity.TjzTbSubject;
+import com.great.childschool.entity.*;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -15,7 +12,18 @@ import java.util.Map;
 public interface TjzBackMapper
 {
 
+	//家长修改密码
+	public int parentChangePassword(TjzTblParent parent);
 
+	//家长查询旧密码是否正确
+	public TjzTblParent parentOldPassword(int pid);
+
+	//家长查看班级
+	public List<TjzTbClassRoom> parentCourseQuery(Map<String, Object> map);
+
+	public int parentCourseQueryNum(Map<String, Object> map);
+
+	public List<TjzTbCourse> parentCourseTable(Map<String, Object> map);
 
 	//教师查看班级
 	public List<TjzTbClassRoom> teacherCourseQuery(Map<String, Object> map);

@@ -6,9 +6,54 @@
 <mapper namespace="com.great.childschool.mapper.TjzBackMapper">
 
 
+    <!-- 家长修改密码-->
+    <update id="parentChangePassword" parameterType="com.great.childschool.entity.TjzTblParent" >
+       UPDATE tbl_parent SET ppsw=#{ppsw} WHERE pid=#{pid}
+    </update>
+
+    <!-- 家长查询旧密码是否正确-->
+    <select id="parentOldPassword" parameterType="com.great.childschool.entity.TjzTblParent" resultType="com.great.childschool.entity.TjzTblParent">
+       SELECT tbl_parent.ppsw
+       FROM tbl_parent
+       WHERE tbl_parent.pid=#{pid}
+    </select>
 
 
-    <!-- 查询课程管理-->
+    <!-- 家长查询课程-->
+    <select id="parentCourseTable" parameterType="map" resultType="com.great.childschool.entity.TjzTbCourse">
+        SELECT co.couid,sub.subname,co.cdate,co.corder,sub.subid
+        FROM tbl_baby ba,tbl_course co,tbl_subject sub
+        WHERE ba.bid=#{bid}
+        AND ba.cid=co.cid
+        AND co.subid = sub.subid
+        AND co.cdate &gt;= #{startDate}
+        AND co.cdate &lt;= #{endDate}
+    </select>
+
+
+    <!-- 家长查询课程-->
+    <select id="parentCourseQuery" parameterType="map" resultType="com.great.childschool.entity.TjzTbClassRoom">
+        SELECT ba.bid,ba.bname,cl.cid,cl.cname,wo.wname,cl.classroom
+        FROM tbl_parent_baby pb,tbl_baby ba,tbl_classroom cl,tbl_worker wo
+        WHERE pb.pid=#{pid}
+        AND pb.bid=ba.bid
+        AND ba.cid=cl.cid
+        AND wo.wid=cl.wid
+    </select>
+
+
+    <!--查询课程管理数量-->
+    <select id="parentCourseQueryNum" parameterType="map" resultType="int">
+        SELECT COUNT(ba.bid)
+       FROM tbl_parent_baby pb,tbl_baby ba,tbl_classroom cl,tbl_worker wo
+        WHERE pb.pid=#{pid}
+        AND pb.bid=ba.bid
+        AND ba.cid=cl.cid
+        AND wo.wid=cl.wid
+    </select>
+
+
+    <!-- 教师查询课程-->
     <select id="teacherCourseQuery" parameterType="map" resultType="com.great.childschool.entity.TjzTbClassRoom">
         SELECT cl.cid,cl.cname,wo.wname,cl.classroom,cl.courseadddate
         FROM tbl_classroom cl,tbl_worker wo
@@ -67,7 +112,6 @@
     <select id="findSubject" parameterType="int" resultType="com.great.childschool.entity.TjzTbSubject">
         SELECT * FROM tbl_subject
     </select>
-
 
     <!-- 查询课程-->
     <select id="courseTable" parameterType="map" resultType="com.great.childschool.entity.TjzTbCourse">

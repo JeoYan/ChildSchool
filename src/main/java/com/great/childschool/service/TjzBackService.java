@@ -21,7 +21,57 @@ public class TjzBackService
 
 
 
-	//园长班级分页
+	//家长修改密码
+	public int parentChangePassword(TjzTblParent parent){
+		return tjzBackMapper.parentChangePassword(parent);
+	};
+
+	//家长查询旧密码是否正确
+	public TjzTblParent parentOldPassword(int pid){
+		return tjzBackMapper.parentOldPassword(pid);
+	};
+
+	//家长查看课程表
+	public Map<String, List<TjzTbCourse>>  parentCourseTable(Map<String, Object> map2 )
+	{
+		Map<String, List<TjzTbCourse>> map = null;
+		List<TjzTbCourse> lis=tjzBackMapper.parentCourseTable(map2);
+		map = new HashMap<>();
+		for (int i = 0; i < lis.size(); i++)
+		{
+
+			TjzTbCourse tjzTbCourse = lis.get(i);
+			if (map.containsKey(tjzTbCourse.getcOrder()))
+			{
+				List<TjzTbCourse> list = map.get(tjzTbCourse.getcOrder());
+				list.add(tjzTbCourse);
+			} else
+			{
+				List<TjzTbCourse> list = new ArrayList<>();
+				list.add(tjzTbCourse);
+				map.put(tjzTbCourse.getcOrder(), list);
+			}
+		}
+		return map;
+	}
+
+
+	//家长班级分页
+	@Transactional
+	public TjzTbTable parentCourseQuery(String pid)
+	{
+		TjzTbTable tbBean = new TjzTbTable();
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("pid", pid);
+		List<TjzTbClassRoom> list = tjzBackMapper.parentCourseQuery(map);
+		tbBean.setData(list);
+		tbBean.setCount(String.valueOf(tjzBackMapper.parentCourseQueryNum(map)));
+		tbBean.setCode("0");
+		tbBean.setMsg(null);
+		return tbBean;
+	}
+
+	//教师班级分页
 	@Transactional
 	public TjzTbTable teacherCourseQuery(String page, String limit, String startDate, String endDate, String cName,String wid)
 	{
