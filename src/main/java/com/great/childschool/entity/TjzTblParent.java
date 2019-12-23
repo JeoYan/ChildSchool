@@ -1,7 +1,10 @@
 package com.great.childschool.entity;
 
 
-
+/**
+ * 家长实体类
+ * by 汤建志
+ */
 public class TjzTblParent
 {
 

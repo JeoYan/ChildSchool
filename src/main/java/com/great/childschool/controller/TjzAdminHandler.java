@@ -18,6 +18,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
+
+/**
+ * 控制类
+ * by 汤建志
+ */
+
 @Controller
 @RequestMapping("/BackAction")
 public class TjzAdminHandler
@@ -25,8 +31,22 @@ public class TjzAdminHandler
 	@Resource
 	private TjzBackService tjzBackService;
 
+	/**
+	 * 查询日志
+	 * by 汤建志
+	 */
+	@RequestMapping("/findLog.action")
+	@ResponseBody
+	public TjzTbTable findLog(String page, String limit, String startDate, String endDate, String wName)
+	{
+		TjzTbTable tbBean = tjzBackService.showLogTable(page, limit, startDate, endDate, wName);
+		return tbBean;
+	}
 
-	//家长修改密码
+	/**
+	 * 家长修改密码
+	 * by 汤建志
+	 */
 	@RequestMapping("/parentChangePassword.action")
 	@ResponseBody
 	@Log(operationType = "修改密码", operationName = "家长修改密码")
@@ -69,9 +89,12 @@ public class TjzAdminHandler
 
 }
 
-	//家长上下周
+	/**
+	 * 家长查看上下周课程表
+	 * by 汤建志
+	 */
 	@RequestMapping("/parentWeekCourseTable.action")
-	@Log(operationType = "查询操作", operationName = "课程表")
+//	@Log(operationType = "查询操作", operationName = "查询课程表")
 	public String parentWeekCourseTable(HttpServletRequest request, HttpServletResponse response, String bid)
 	{
 		String nowDate = request.getParameter("now-Date");
@@ -101,9 +124,12 @@ public class TjzAdminHandler
 	}
 
 
-	//家长本周
+	/**
+	 * 家长查看本周课程表
+	 * by 汤建志
+	 */
 	@RequestMapping("/parentCourseTable.action")
-	@Log(operationType = "查询操作", operationName = "课程表")
+//	@Log(operationType = "查询操作", operationName = "查询课程表")
 	public String parentCourseTable(HttpServletRequest request, String bid)
 	{
 
@@ -130,10 +156,14 @@ public class TjzAdminHandler
 	}
 
 
-	//家长班级
+
+	/**
+	 * 家长查看孩子所在班级信息
+	 * by 汤建志
+	 */
 	@RequestMapping("/parentCourseQuery.action")
 	@ResponseBody
-	@Log(operationType = "查询操作", operationName = "课程管理")
+//	@Log(operationType = "查询操作", operationName = "课程管理")
 	public TjzTbTable parentCourseQuery(HttpServletRequest request)
 	{
 
@@ -142,10 +172,13 @@ public class TjzAdminHandler
 		return tbBean;
 	}
 
-
+	/**
+	 * 教师查看班级信息
+	 * by 汤建志
+	 */
 	@RequestMapping("/teacherCourseQuery.action")
 	@ResponseBody
-	@Log(operationType = "查询操作", operationName = "课程管理")
+//	@Log(operationType = "查询操作", operationName = "课程管理")
 	public TjzTbTable teacherCourseQuery(HttpServletRequest request, String page, String limit, String startDate, String endDate, String cName)
 	{
 
@@ -155,8 +188,12 @@ public class TjzAdminHandler
 	}
 
 
+	/**
+	 * 教师查看上下周课程表
+	 * by 汤建志
+	 */
 	@RequestMapping("/teacherWeekcourseTable.action")
-	@Log(operationType = "查询操作", operationName = "课程表")
+//	@Log(operationType = "查询操作", operationName = "课程表")
 	public String teacherWeekcourseTable(HttpServletRequest request, HttpServletResponse response, String cid, String wid)
 	{
 		String nowDate = request.getParameter("now-Date");
@@ -191,8 +228,12 @@ public class TjzAdminHandler
 	}
 
 
+	/**
+	 * 教师查看本周课程表
+	 * by 汤建志
+	 */
 	@RequestMapping("/teacherCourseTable.action")
-	@Log(operationType = "查询操作", operationName = "课程表")
+//	@Log(operationType = "查询操作", operationName = "课程表")
 	public String teacherCourseTable(HttpServletRequest request, String cid, String bid)
 	{
 
@@ -222,7 +263,10 @@ public class TjzAdminHandler
 		}
 	}
 
-
+	/**
+	 * 批量插入空课程表
+	 * by 汤建志
+	 */
 	@RequestMapping("/insertCodeBatch.action")
 	public int insertCodeBatch()
 	{
@@ -242,7 +286,10 @@ public class TjzAdminHandler
 	}
 
 
-	//查询科目
+	/**
+	 * 科目下拉框
+	 * by 汤建志
+	 */
 	@RequestMapping("/findSubject.action")
 	public ModelAndView findSubject(HttpServletRequest req)
 	{
@@ -253,9 +300,13 @@ public class TjzAdminHandler
 		return modelAndView;
 	}
 
-	//添加课程
+	/**
+	 * 排课
+	 * by 汤建志
+	 */
 	@RequestMapping("/addSubject.action")
 	@ResponseBody
+	@Log(operationType = "插入操作", operationName = "园长排课")
 	public TjzTbTable addSubject(HttpServletRequest req)
 	{
 		TjzTbTable tjzTbTable = new TjzTbTable();
@@ -276,9 +327,12 @@ public class TjzAdminHandler
 		return tjzTbTable;
 	}
 
-
+	/**
+	 * 园长查看上下周课程表
+	 * by 汤建志
+	 */
 	@RequestMapping("/weekcourseTable.action")
-	@Log(operationType = "查询操作", operationName = "课程表")
+//	@Log(operationType = "查询操作", operationName = "课程表")
 	public String weekcourseTable(HttpServletRequest request, HttpServletResponse response, String cid)
 	{
 		String nowDate = request.getParameter("now-Date");
@@ -349,8 +403,12 @@ public class TjzAdminHandler
 		}
 	}
 
+	/**
+	 * 园长查看本周课程表
+	 * by 汤建志
+	 */
 	@RequestMapping("/courseTable.action")
-	@Log(operationType = "查询操作", operationName = "课程表")
+//	@Log(operationType = "查询操作", operationName = "课程表")
 	public String courseTable(HttpServletRequest request, String cid)
 	{
 
@@ -400,9 +458,13 @@ public class TjzAdminHandler
 	}
 
 
+	/**
+	 * 园长课程管理
+	 * by 汤建志
+	 */
 	@RequestMapping("/courseManagement.action")
 	@ResponseBody
-	@Log(operationType = "查询操作", operationName = "课程管理")
+//	@Log(operationType = "管理操作", operationName = "课程管理")
 	public TjzTbTable courseManagement(String page, String limit, String startDate, String endDate, String cName)
 	{
 
@@ -410,13 +472,7 @@ public class TjzAdminHandler
 		return tbBean;
 	}
 
-	@RequestMapping("/findLog.action")
-	@ResponseBody
-	public TjzTbTable FindLog(String page, String limit, String startDate, String endDate, String userName)
-	{
-		TjzTbTable tbBean = tjzBackService.showLogTable(page, limit, startDate, endDate, userName);
-		return tbBean;
-	}
+
 
 
 }

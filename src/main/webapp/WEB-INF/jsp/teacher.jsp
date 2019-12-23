@@ -96,8 +96,6 @@
 			page: 1,
 			limit:5,
 			limits:[5],
-			// method:'post',
-
 			cols: [[
 				{field: 'wid', title: '教师编号', width:130 , sort: true, fixed: 'left'}      ,
 				{field: 'wname', title: '教师名称', width:130} ,
@@ -107,7 +105,6 @@
 			]]
 
 		});
-
 
 		var $ = layui.$, active = {
 

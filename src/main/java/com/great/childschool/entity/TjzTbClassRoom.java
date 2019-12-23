@@ -2,8 +2,8 @@ package com.great.childschool.entity;
 
 
 /**
- * 汤建志
  * 班级实体类
+ * by 汤建志
  */
 public class TjzTbClassRoom
 {
@@ -99,5 +99,11 @@ public class TjzTbClassRoom
 	public void setbName(String bName)
 	{
 		this.bName = bName;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "TjzTbClassRoom{" + "cid=" + cid + ", cName='" + cName + '\'' + ", classroom='" + classroom + '\'' + ", wid=" + wid + ", courseAddDate='" + courseAddDate + '\'' + ", wName='" + wName + '\'' + ", bid=" + bid + ", bName='" + bName + '\'' + '}';
 	}
 }
