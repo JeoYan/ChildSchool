@@ -3,13 +3,11 @@ package com.great.childschool.controller;
 
 import com.great.childschool.aoplog.Log;
 import com.great.childschool.entity.*;
-
 import com.great.childschool.service.CcBabyService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
@@ -57,6 +55,10 @@ public class CcBabyController
 		ModelAndView modelAndView =new ModelAndView();
 		modelAndView.setViewName("baby");
 
+		List<CcTblClassroom> list = ccBabyService.findcname();
+		System.out.println("list"+list);
+		modelAndView.addObject("cname",list);
+
 		return modelAndView;
 	}
 
@@ -83,11 +85,11 @@ public class CcBabyController
 	@RequestMapping("/babyxs.action")
 	@ResponseBody
 	@Log(operationType = "查询操作", operationName = "查询宝宝")
-	public MSG table(String bname,String starttime, String endtime, int page){
+	public MSG table(String bname,String cname,String starttime, String endtime, int page){
 
 		CcTableInf ccTableInf =new CcTableInf();
 		ccTableInf.setBname(bname);
-
+		ccTableInf.setCname(cname);
 		ccTableInf.setStarttime(starttime);
 		ccTableInf.setEndtime(endtime);
 		System.out.println("starttime"+starttime);
@@ -110,49 +112,6 @@ public class CcBabyController
 		return msg;
 	}
 
-//	/**
-//	 * 幼儿管理--增加逻辑
-//	 * by 陈超
-//	 */
-//	@RequestMapping("/addbaby.action")
-//	@ResponseBody
-//	@Log(operationType = "增加操作", operationName = "添加宝宝")
-//	public MSG add(CcTblBaby ccTblBaby,HttpServletRequest request)
-//	{
-//
-//		String bname=request.getParameter("bname");
-//		String bsex=request.getParameter("bsex");
-//		String bbirth=request.getParameter("bbirth");
-//
-//		Date date =new Date();
-//		SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd");
-//		String time =sdf.format(date);
-//		System.out.println();
-//		ccTblBaby.setBdate(time);
-//		ccTblBaby.setBname(bname);
-//		ccTblBaby.setBsex(bsex);
-//		ccTblBaby.setBbirth(bbirth);
-//
-//		System.out.println();
-//		int flag =ccBabyService.addbaby(ccTblBaby);
-//		System.out.println(flag);
-//
-//		MSG msg =new MSG();
-//
-//		if (flag >0 )
-//		{
-//			msg.setMsg("1");
-//			System.out.println("增加宝宝成功");
-//		}
-//		else
-//		{
-//			msg.setMsg("2");
-//			System.out.println("增加宝宝失败");
-//		}
-//		return msg;
-//
-//	}
-
 	/**
 	 * 幼儿管理--修改逻辑
 	 * by 陈超
@@ -162,7 +121,6 @@ public class CcBabyController
 	@Log(operationType = "更新操作", operationName = "修改宝宝信息")
 	public MSG update(int bid,String bname,int cid,String bsex)
 	{
-
 		CcTblBaby ccTblBaby =new CcTblBaby();
 		ccTblBaby.setBid(bid);
 
@@ -176,11 +134,11 @@ public class CcBabyController
 		if (flag >0)
 		{
 			msg.setMsg("1");
-			System.out.println("修改成功");
+			System.out.println("修改宝宝成功");
 		} else
 		{
 			msg.setMsg("2");
-			System.out.println("修改失败");
+			System.out.println("修改宝宝失败");
 		}
 		return msg;
 	}
@@ -210,11 +168,11 @@ public class CcBabyController
 		if (msg1 >0&&msg2 >0&&msg3 >0)
 		{
 			msg.setMsg("1");
-			System.out.println("删除成功");
+			System.out.println("删除宝宝成功");
 		} else
 		{
 			msg.setMsg("2");
-			System.out.println("删除失败");
+			System.out.println("删除宝宝失败");
 		}
 		return msg;
 	}
@@ -226,7 +184,7 @@ public class CcBabyController
 	 */
 	@RequestMapping("/addAdmission.action")
 	@ResponseBody
-	@Log(operationType = "增加操作", operationName = "添加宝宝")
+	@Log(operationType = "增加操作", operationName = "添加入园信息")
 	public MSG add(CcTblBaby ccTblBaby,CcTblParent ccTblParent,CcTblParentBaby ccTblParentBaby,HttpServletRequest request)
 	{
 		//宝宝

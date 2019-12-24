@@ -47,6 +47,7 @@ public class CcParentService
         return ccParentDeptMapper.deleteparent(pid);
     }
 	//	根据bid查到pid
+	@Transactional
 	public CcTblParentBaby findb (int pid){
 
 		return ccParentDeptMapper.findb(pid);
@@ -83,6 +84,7 @@ public class CcParentService
     }
 
 	//根据bid查bname
+	@Transactional
 	public CcTblBaby findbname(int bid){
     	return ccParentDeptMapper.findbname(bid);
 	}
@@ -90,6 +92,7 @@ public class CcParentService
 	 * 家长管理-修改宝宝名字方法
 	 * by 陈超
 	 */
+	@Transactional
 	public int updatebaby(CcTblBaby ccTblBaby){
 
 		return ccParentDeptMapper.updatebaby(ccTblBaby);
@@ -99,12 +102,11 @@ public class CcParentService
 	 * 家长管理-修改亲子关系方法
 	 * by 陈超
 	 */
+	@Transactional
 	public int updatepb(CcTblParentBaby ccTblParentBaby){
 
 		return ccParentDeptMapper.updatepb(ccTblParentBaby);
 	}
-
-
 
 
 //    /**

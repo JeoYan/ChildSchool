@@ -111,6 +111,7 @@ public class CcBabyService
      * 幼儿管理-入园信息增加亲子关系
      * by 陈超
      */
+    @Transactional
     public int  addAdmissionpb(CcTblParentBaby ccTblParentBaby){
         return ccBabyDeptMapper.addAdmissionpb(ccTblParentBaby)
 ;    }
@@ -119,14 +120,19 @@ public class CcBabyService
      * 幼儿管理-下拉框获取班级教室名称
      * by 陈超
      */
+    @Transactional
     public List<CcTblClassroom> findcname(){
         return  ccBabyDeptMapper.findcname();
     }
 
+    //根据宝宝名查询宝宝id
+    @Transactional
     public CcTblBaby findbid (String bname){
         return ccBabyDeptMapper.findbid(bname);
     }
 
+    //	根据家长名查询家长id
+    @Transactional
     public CcTblParent findpid (String pname){
 
         return ccBabyDeptMapper.findpid(pname);

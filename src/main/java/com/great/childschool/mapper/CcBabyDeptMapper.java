@@ -21,7 +21,6 @@ public interface CcBabyDeptMapper
 	public List<CcTblBaby> totalPage1(CcTableInf ccTableInf);
 
 
-
 	/**
 	 * 幼儿管理-删除宝宝方法
 	 * by 陈超
@@ -79,6 +78,9 @@ public interface CcBabyDeptMapper
 	 */
 	public List<CcTblClassroom> findcname();
 
+//根据宝宝名查询宝宝id
 	public CcTblBaby findbid (String bname);
+
+//	根据家长名查询家长id
 	public CcTblParent findpid (String pname);
 }

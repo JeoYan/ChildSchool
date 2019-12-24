@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.great.childschool.mapper.CcClassDeptMapper">
 
-    <!--   家长管理&#45;&#45;数据显示sql-->
+    <!--   班级管理&#45;&#45;数据显示sql-->
     <!--    by 陈超-->
     <select id="find" parameterType="com.great.childschool.entity.CcTableInf" resultType="com.great.childschool.entity.CcTblClassroom">
 
@@ -27,7 +27,7 @@
 
     </select>
 
-    <!--   家长管理&#45;&#45;页数显示sql-->
+    <!--   班级管理&#45;&#45;页数显示sql-->
     <!--    by 陈超-->
     <select id="totalPage" parameterType="com.great.childschool.entity.CcTableInf" resultType="com.great.childschool.entity.CcTblClassroom">
 
@@ -55,7 +55,7 @@
             values(#{cname},#{classroom},#{wid},#{courseadddate})
     </insert>
 
-    <!--   家长管理-删除sql-->
+    <!--   班级管理-删除sql-->
     <!--    by 陈超-->
     <delete id="deleteclass" parameterType="java.lang.Integer" >
             delete from tbl_classroom where cid=#{cid}

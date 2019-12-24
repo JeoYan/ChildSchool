@@ -41,7 +41,7 @@
 	<div class="layui-form-item" style="text-align: center">
 		<label class="layui-form-label">宝宝名称</label>
 		<div class="layui-input-inline">
-			<input type="text"  name="bname" id="bname" lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+			<input type="text"  name="bname" id="bname" lay-verify="required" placeholder="请输入宝宝名称" autocomplete="off" class="layui-input">
 		</div>
 	</div>
 
@@ -65,10 +65,10 @@
 
 	<div class="layui-form-item" >
 		<div class="layui-inline">
-			<label class="layui-form-label">班主任</label>
+			<label class="layui-form-label">教师</label>
 			<div class="layui-input-inline">
 				<select name="wname" id="wname">
-					<option value="">请选择班主任</option>
+					<option value="">请选择教师</option>
 
 					<c:forEach items="${requestScope.work}" begin="0" step="1" var="y">
 						<option value="${y.wid}">${y.wname}</option>

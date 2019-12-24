@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%--/**--%>
-<%--* 教师管理-修改界面--%>
+<%--* 幼儿管理-修改界面--%>
 <%--* by 陈超--%>
 <%--*/--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -41,7 +41,7 @@
 		<div class="layui-form-item" style="text-align: center">
 			<label class="layui-form-label">宝宝名称</label>
 			<div class="layui-input-inline">
-				<input type="text"  name="bname" id="bname" lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+				<input type="text"  name="bname" id="bname" lay-verify="required" placeholder="请输入宝宝名称" autocomplete="off" class="layui-input">
 			</div>
 		</div>
 

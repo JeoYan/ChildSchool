@@ -4,11 +4,11 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.great.childschool.mapper.CcClassmenDeptMapper">
 
-    <!--   家长管理&#45;&#45;数据显示sql-->
+    <!--   班级成员管理&#45;&#45;数据显示sql-->
     <!--    by 陈超-->
     <select id="find" parameterType="com.great.childschool.entity.CcTableInf" resultType="com.great.childschool.entity.CcTblClassroom">
 
-        select  c.cid, b.bname,c.cname, w.wname,c.courseadddate
+        select  c.cid, b.bname,b.bid,c.cname, w.wname,w.wid,c.courseadddate
         from tbl_classroom c,tbl_worker w ,tbl_baby b
         <where>
             b.cid=c.cid and c.wid=w.wid
@@ -30,11 +30,11 @@
 
     </select>
 
-    <!--   家长管理&#45;&#45;页数显示sql-->
+    <!--   班级成员管理&#45;&#45;页数显示sql-->
     <!--    by 陈超-->
     <select id="totalPage" parameterType="com.great.childschool.entity.CcTableInf" resultType="com.great.childschool.entity.CcTblClassroom">
 
-        select  c.cid, b.bname,c.cname, w.wname,c.courseadddate
+        select  c.cid, b.bname,b.bid,c.cname, w.wname,w.wid,c.courseadddate
         from tbl_classroom c,tbl_worker w ,tbl_baby b
         <where>
             b.cid=c.cid and c.wid=w.wid
@@ -53,48 +53,56 @@
         </where>
     </select>
 
-<!--    &lt;!&ndash;   家长管理-删除sql&ndash;&gt;-->
-<!--    &lt;!&ndash;    by 陈超&ndash;&gt;-->
-<!--    <delete id="deleteparent" parameterType="java.lang.Integer" >-->
-<!--            delete from tbl_parent where pid=#{pid}-->
-<!--        </delete>-->
-<!--    <select id="findb" parameterType="java.lang.Integer" resultType="com.great.childschool.entity.CcTblParentBaby">-->
-<!--        select * from tbl_parent_baby where pid=#{pid}-->
-<!--    </select>-->
-<!--    <delete id="deletebaby" parameterType="java.lang.Integer" >-->
-<!--            delete from tbl_baby where bid=#{bid}-->
-<!--        </delete>-->
-<!--    <delete id="deletepb" parameterType="java.lang.Integer" >-->
-<!--            delete from tbl_parent_baby where bid=#{bid} and pid=#{pid}-->
-<!--        </delete>-->
-
-<!--    &lt;!&ndash;   家长管理-角色更新sql&ndash;&gt;-->
-<!--    &lt;!&ndash;    by 陈超&ndash;&gt;-->
-<!--    <update id="updateparent" parameterType="com.great.childschool.entity.CcTblParent">-->
-
-<!--        update  tbl_parent set pname=#{pname},pphone=#{pphone},pjob=#{pjob} where pid=#{pid}-->
-<!--    </update>-->
-<!--    <select id="findbname" resultType="com.great.childschool.entity.CcTblBaby">-->
-<!--       select * from tbl_baby  where bid=#{bid}-->
-<!--    </select>-->
-<!--    <update id="updatebaby" parameterType="com.great.childschool.entity.CcTblBaby">-->
-
-<!--        update  tbl_baby  set bname=#{bname} where bid=#{bid}-->
-<!--    </update>-->
-<!--    <update id="updatepb" parameterType="com.great.childschool.entity.CcTblParentBaby">-->
-
-<!--        update  tbl_parent_baby set prelation=#{prelation} where pid=#{pid}-->
-<!--    </update>-->
+    <!--   班级成员管理-删除sql-->
+    <!--    by 陈超-->
+    <select id="findp" parameterType="java.lang.Integer" resultType="com.great.childschool.entity.CcTblParentBaby">
+        select * from tbl_parent_baby where bid=#{bid}
+    </select>
+    <delete id="deletebaby" parameterType="com.great.childschool.entity.CcTblBaby" >
+            delete from tbl_baby where bid=#{bid} and cid=#{cid}
+        </delete>
+    <delete id="deleteparent" parameterType="java.lang.Integer" >
+            delete from tbl_parent where pid=#{pid}
+        </delete>
+    <delete id="deletepb" parameterType="com.great.childschool.entity.CcTblParentBaby" >
+            delete from tbl_parent_baby where bid=#{bid} and pid=#{pid}
+        </delete>
 
 <!--    &lt;!&ndash;   家长管理-下拉框-查询宝宝sql&ndash;&gt;-->
 <!--    &lt;!&ndash;    by 陈超&ndash;&gt;-->
 <!--    <select id="findbaby" resultType="com.great.childschool.entity.CcTblBaby">-->
-<!--       select * from tbl_baby-->
+<!--       select  from tbl_baby where bname=#{bname}-->
 <!--    </select>-->
 
 
 
+    <!--   班级成员管理-角色更新sql-->
+    <!--    by 陈超-->
+    <update id="updateb" parameterType="com.great.childschool.entity.CcTblBaby">
+        update  tbl_baby  set bname=#{bname},cid=#{cid} where bid=#{bid}
+    </update>
+    <update id="updatec" parameterType="com.great.childschool.entity.CcTblClassroom">
 
+        update  tbl_classroom set cname=#{cname},wid=#{wid} where cid=#{cid}
+    </update>
+
+    <!--   班级成员管理-下拉框-查询班级教室sql-->
+    <!--    by 陈超-->
+    <select id="findclassroom" resultType="com.great.childschool.entity.CcTblClassroom">
+       select * from tbl_classroom
+    </select>
+
+    <!--   班级成员管理-下拉框-查询教师sql-->
+    <!--    by 陈超-->
+    <select id="findtea" resultType="com.great.childschool.entity.TblWorker">
+     select * from tbl_worker w,tbl_worker_role r where w.wid=r.wid and r.rid=1
+    </select>
+
+    <!--   班级成员管理-根据cid查询对应的教室名称Sql-->
+    <!--    by 陈超-->
+    <select id="findcname" parameterType="java.lang.Integer" resultType="com.great.childschool.entity.CcTblClassroom">
+        select * from tbl_classroom where cid=#{cid}
+    </select>
 
 </mapper>
 

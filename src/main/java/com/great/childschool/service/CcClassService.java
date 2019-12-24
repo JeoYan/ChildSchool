@@ -1,8 +1,6 @@
 package com.great.childschool.service;
 
-
 import com.great.childschool.entity.*;
-import com.great.childschool.mapper.CcBabyDeptMapper;
 import com.great.childschool.mapper.CcClassDeptMapper;
 
 import org.springframework.stereotype.Service;
@@ -53,6 +51,7 @@ public class CcClassService
      * 班级管理-修改方法
      * by 陈超
      */
+    @Transactional
     public int updateclass(CcTblClassroom ccTblClassroom){
         return ccClassDeptMapper.updateclass(ccTblClassroom);
     }
@@ -81,6 +80,7 @@ public class CcClassService
      * 班级管理-下拉框获取班级教室名称
      * by 陈超
      */
+    @Transactional
     public List<CcTblClassroom> findclassroom(){
         return ccClassDeptMapper.findclassroom();
     }
@@ -89,6 +89,7 @@ public class CcClassService
      * 班级管理-根据cid查询对应的教室
      * by 陈超
      */
+    @Transactional
     public CcTblClassroom findclassroom1(int cid){
         return ccClassDeptMapper.findclassroom1(cid);
     }
@@ -98,6 +99,7 @@ public class CcClassService
      * 班级管理-下拉框获取班级教师名称
      * by 陈超
      */
+    @Transactional
     public List<TblWorker> findtea(){
         return ccClassDeptMapper.findtea();
     }
