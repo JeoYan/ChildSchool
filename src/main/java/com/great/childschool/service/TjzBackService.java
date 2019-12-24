@@ -25,6 +25,23 @@ public class TjzBackService
 	@Resource
 	private TjzBackMapper tjzBackMapper;
 
+	/**
+	 * 按月统计日志
+	 * by 汤建志
+	 */
+	@Transactional
+	public List<TjzLogCount> logCountByMonth( ){
+		return tjzBackMapper.logCountByMonth( );
+	};
+
+	/**
+	 * 按人员统计日志
+	 * by 汤建志
+	 */
+	@Transactional
+	public List<TjzLogCount> logCountByWid( ){
+		return tjzBackMapper.logCountByWid( );
+	};
 
 
 	/**

@@ -16,6 +16,18 @@ import java.util.Map;
 public interface TjzBackMapper
 {
 
+	/**
+	 * 按月统计日志
+	 * by 汤建志
+	 */
+	public List<TjzLogCount> logCountByMonth( );
+
+	/**
+	 * 按人员统计日志
+	 * by 汤建志
+	 */
+	public List<TjzLogCount> logCountByWid( );
+
 
 	/**
 	 * 家长修改密码

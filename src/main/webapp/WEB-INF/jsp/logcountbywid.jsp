@@ -9,39 +9,36 @@
 <%
 	String path = request.getContextPath();
 %>
+
 <html>
 <head>
-	<title>学员统计</title>
+	<title>按人员统计日志</title>
 	<script  src=<%=path+"/js/jquery-3.4.1.js" %>></script>
 	<script  src=<%=path+"/js/echarts.js" %>></script>
 </head>
 <body>
 <div id="main" style="width: 95%;height:95%; align-content: center" ></div>
 
-
-
 <script type="text/javascript">
-	var nameArr = [];
-	var boyArr = [];
-	var girlArr= [];
+	var countArr = [];
+	var wNameArr= [];
 
 	$(function() {
 		$.ajax({
 			method : "POST",
-			url : "/ChildSchool/studentCount.action",
+			url : "/ChildSchool/BackAction/logCountByWid.action",
 			dataType : "json",
-			success : function(studentCountList) {
+			success : function(logCounts) {
+				for (var i = 0; i < logCounts.length; i++) {
 
-				for (var i = 0; i < studentCountList.length; i++) {
-					//alert(postCountList[i].name);
-					nameArr.push(studentCountList[i].classname);
-					boyArr.push(studentCountList[i].boy);
-					girlArr.push(studentCountList[i].girl);
+
+					countArr.push(logCounts[i].count);
+					wNameArr.push(logCounts[i].wName);
+
 
 				}
-				// alert(nameArr);
 
-				createEchars();// 创建饼图
+				createEchars();//
 
 			},
 			error : function() {
@@ -51,20 +48,22 @@
 	});
 
 
-	// 基于准备好的dom，初始化echarts实例
+
 	var myChart = echarts.init(document.getElementById('main'));
+
+
 
 	function createEchars(){
 		var option = {
 			title : {
-				text: '学员统计'
+				text: '按月统计日志'
 
 			},
 			tooltip : {
 				trigger: 'axis'
 			},
 			legend: {
-				data:['男','女']
+				data:['操作数量']
 			},
 			toolbox: {
 				show : true,
@@ -78,9 +77,9 @@
 			calculable : true,
 			xAxis : [
 				{
+					name:'人员',
 					type : 'category',
-					//班级
-					data : nameArr
+					data : wNameArr
 				}
 			],
 			yAxis : [
@@ -90,63 +89,29 @@
 			],
 			series : [
 				{
-					name:'男',
+					name:'操作数量',
 					type:'bar',
-					data:boyArr,
+					data:countArr,
 					markPoint : {
 						data : [
-							{type : 'max', name: '男'},
-							{type : 'min', name: '女'}
+							{type : 'max'},
+							{type : 'min'}
 						]
 					},
 					markLine : {
 						data : [
-							{type : 'average', name: '平均人数'}
-						]
-					}
-				},
-				{
-					name:'女',
-					type:'bar',
-					data:girlArr,
-					markPoint : {
-						data : [
-							{type : 'max', name: '男'},
-							{type : 'min', name: '女'}
-							// {name : '最高人数', value : 182.2, xAxis: 7, yAxis: 183},
-							// {name : '最低人数', value : 2.3, xAxis: 11, yAxis: 3}
-						]
-					},
-					markLine : {
-						data : [
-							{type : 'average', name : '平均人数'}
+							{type : 'average'}
 						]
 					}
 				}
+
 			]
 		};
 		// 使用刚指定的配置项和数据显示图表。
 		myChart.setOption(option);
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
 </script>
-
-
-
-
-
 
 
 </body>

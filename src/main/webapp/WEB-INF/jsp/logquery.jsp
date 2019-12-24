@@ -2,6 +2,7 @@
 <%
 	String layuiPath = request.getContextPath() + "/layuiadmin/layui/";
 %>
+<!DOCTYPE html>
 <html>
 <head>
 	<meta charset="utf-8">
@@ -31,6 +32,9 @@
 		<input class="layui-input" name="id" id="wName" autocomplete="off">
 	</div>
 	<button class="layui-btn" data-type="reload">查询</button>
+	<button type="button" class="layui-btn"  onclick="logCountByMonth()">按月统计日志</button>
+	<button type="button" class="layui-btn"  onclick="logCountByWid()">按人员统计日志</button>
+<%--	<button class="layui-btn " data-type="add">增加用户</button>--%>
 </div>
 <table id="demo" lay-filter="test"></table>
 </div>
@@ -43,7 +47,8 @@
 			, url: '/ChildSchool/BackAction/findLog.action' //数据接口
 			, page: true //开启分页
 			, cols: [[ //表头
-				{field: 'lTime', title: '操作时间', sort: true, fixed: 'left'}
+				{field: 'lDate', title: '操作日期', sort: true, fixed: 'left'}
+				,{field: 'lTime', title: '操作时间'}
 				, {field: 'wName', title: '操作人'}
 				, {field: 'lEvent', title: '操作事项', sort: true}
 
@@ -65,11 +70,7 @@
 						curr: 1 //重新从第 1 页开始
 					}
 					, where: {
-						// key: {
-						// 	// id: startDate.val()
-						// 	// ,id: endDate.val()
-						// 	id: userName.val()
-						// }
+
 
 						startDate: startDate.val(),
 						endDate: endDate.val(),
@@ -86,6 +87,30 @@
 
 
 	});
+	function logCountByMonth() {
+		layer.open({
+			type: 2
+			, title: '统计日志'
+			, offset: 'auto'
+			, content: '/ChildSchool/BackAction/logCountByMonthView.action'
+			, area: ['800px', '600px']
+			, btn: ['关闭']
+			// , shade: 0
+
+		});
+	}
+	function logCountByWid() {
+		layer.open({
+			type: 2
+			, title: '统计日志'
+			, offset: 'auto'
+			, content: '/ChildSchool/BackAction/logCountByWidView.action'
+			, area: ['800px', '600px']
+			, btn: ['关闭',]
+			// , shade: 0
+
+		});
+	}
 </script>
 
 </body>

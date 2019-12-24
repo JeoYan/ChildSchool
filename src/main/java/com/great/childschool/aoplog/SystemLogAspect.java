@@ -84,8 +84,10 @@ public class SystemLogAspect
 							log.setlEvent(operationName);
 							log.setWid(Integer.valueOf(req.getSession().getAttribute("wid").toString()));
 							Date day=new Date();
-							SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-							log.setlTime(df.format(day));
+							SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+							SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+							log.setlDate(dateFormat.format(day));
+							log.setlTime(timeFormat.format(day));
 							int flag = tjzBackService.addLog(log);
 							if (flag > 0)
 							{
