@@ -7,8 +7,8 @@
     <!--   教师管理&#45;&#45;数据显示sql-->
     <!--    by 陈超-->
     <select id="findTableInf" parameterType="com.great.childschool.entity.CcTableInf" resultType="com.great.childschool.entity.TblWorker">
-    select w.wid,w.wname,a.rname,w.wdate from tbl_worker w ,
-        (select r.rname,s.wid from tbl_role r,
+    select w.wid,w.wname,a.rname,a.rid,w.wdate from tbl_worker w ,
+        (select r.rname,r.rid ,s.wid from tbl_role r,
             (select * from tbl_worker_role ) s
                 where r.rid=s.rid) a
         <where>
@@ -29,8 +29,8 @@
     <!--    by 陈超-->
     <select id="totalPage" parameterType="com.great.childschool.entity.CcTableInf" resultType="com.great.childschool.entity.TblWorker">
 
-        select w.wid,w.wname,a.rname,w.wdate from tbl_worker w ,
-        (select r.rname,s.wid from tbl_role r,
+        select w.wid,w.wname,a.rname,a.rid,w.wdate from tbl_worker w ,
+        (select r.rname,r.rid ,s.wid from tbl_role r,
         (select * from tbl_worker_role ) s
         where r.rid=s.rid) a
         <where>
@@ -54,22 +54,23 @@
     <delete id="deletemenu" parameterType="java.lang.Integer" >
             delete from tbl_menu_role where wid=#{wid}
         </delete>
+    <delete id="deletewrole" parameterType="java.lang.Integer" >
+            delete from tbl_worker_role where wid=#{wid}
+        </delete>
 
-    <!--   教师管理&#45;&#45;根据wName查询wid  sql-->
-    <!--    by 陈超-->
-    <select id="findwid" parameterType="java.lang.String" resultType="integer">
-       select wid from tbl_worker where wname=#{wname}
-    </select>
+<!--    &lt;!&ndash;   教师管理&#45;&#45;根据wName查询wid  sql&ndash;&gt;-->
+<!--    &lt;!&ndash;    by 陈超&ndash;&gt;-->
+<!--    <select id="findwid" parameterType="java.lang.String" resultType="integer">-->
+<!--       select wid from tbl_worker where wname=#{wname}-->
+<!--    </select>-->
 
 
     <!--   教师管理&#45;&#45;增加教师sql-->
     <!--    by 陈超-->
-
     <insert id="addteacher" useGeneratedKeys="true" keyProperty="wid" parameterType="com.great.childschool.entity.TblWorker" >
-        insert into tbl_worker    (wname,wpsw,wsex,wdate,sid)
-            values(#{wname},123,'男',#{wdate},1)
+        insert into tbl_worker    (wname,wpsw,wbrith,wsex,wdate,sid)
+            values(#{wname},123,#{wbrith},#{wsex},#{wdate},1)
     </insert>
-
 
     <!--   教师管理&#45;&#45;工作人员角色关系表 增加sql-->
     <!--    by 陈超-->
@@ -84,13 +85,26 @@
        select * from tbl_role
     </select>
 
-    <!--   教师管理&#45;&#45;角色更新sql-->
-    <!--    by 陈超-->
+
+<!--       教师管理&#45;&#45;角色修改-->
+<!--        by 陈超-->
+<!--        根据wid修改工作人员表-->
     <update id="updateteacher" parameterType="com.great.childschool.entity.TblWorker">
 
-        update  tbl_worker set wname=#{wname},rname=#{rname} where wid=#{wid}
+        update  tbl_worker  set wname=#{wname} where wid=#{wid}
     </update>
 
+<!--       教师管理-根据wid更新工作人员角色关系表sql-->
+    <update id="updatername" parameterType="com.great.childschool.entity.TblWorkerRole">
+
+        update  tbl_worker_role  set rid=#{rid} where wid=#{wid}
+    </update>
+
+    <!--    &lt;!&ndash;   教师管理&#45;&#45;rid获取rname&ndash;&gt;-->
+    <!--    &lt;!&ndash;    by 陈超&ndash;&gt;-->
+    <!--    <select id="findrname" parameterType="java.lang.Integer" resultType="java.lang.String">-->
+    <!--       select rname from tbl_role where rid=#{rid};-->
+    <!--    </select>-->
 
 </mapper>
 

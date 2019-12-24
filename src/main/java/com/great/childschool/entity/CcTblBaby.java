@@ -4,22 +4,17 @@ package com.great.childschool.entity;
 public class CcTblBaby
 {
 
-  private long bid;
+  private int bid;
   private String bname;
   private String bbirth;
   private String bsex;
   private String bdate;
-  private long cid;
+  private int cid;
+  private String cname;
   private String baddress;
 
 
-  public long getBid() {
-    return bid;
-  }
 
-  public void setBid(long bid) {
-    this.bid = bid;
-  }
 
 
   public String getBname() {
@@ -58,14 +53,25 @@ public class CcTblBaby
   }
 
 
-  public long getCid() {
+  public int getBid()
+  {
+    return bid;
+  }
+
+  public void setBid(int bid)
+  {
+    this.bid = bid;
+  }
+
+  public int getCid()
+  {
     return cid;
   }
 
-  public void setCid(long cid) {
+  public void setCid(int cid)
+  {
     this.cid = cid;
   }
-
 
   public String getBaddress() {
     return baddress;
@@ -75,4 +81,13 @@ public class CcTblBaby
     this.baddress = baddress;
   }
 
+  public String getCname()
+  {
+    return cname;
+  }
+
+  public void setCname(String cname)
+  {
+    this.cname = cname;
+  }
 }

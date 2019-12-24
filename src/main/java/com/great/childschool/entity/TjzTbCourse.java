@@ -1,8 +1,8 @@
 package com.great.childschool.entity;
 
 /**
- * 汤建志
  * 课程实体类
+ * by 汤建志
  */
 public class TjzTbCourse
 {
@@ -98,5 +98,11 @@ public class TjzTbCourse
 	public void setSubName(String subName)
 	{
 		this.subName = subName;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "TjzTbCourse{" + "couId=" + couId + ", cDate='" + cDate + '\'' + ", wid=" + wid + ", cid=" + cid + ", tid=" + tid + ", subId=" + subId + ", subName='" + subName + '\'' + ", cOrder='" + cOrder + '\'' + '}';
 	}
 }

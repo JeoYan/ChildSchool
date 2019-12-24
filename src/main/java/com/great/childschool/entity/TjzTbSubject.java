@@ -1,5 +1,10 @@
 package com.great.childschool.entity;
 
+
+/**
+ * 科目实体类
+ * by 汤建志
+ */
 public class TjzTbSubject
 {
 	private int subId;
@@ -27,5 +32,11 @@ public class TjzTbSubject
 	public void setSubName(String subName)
 	{
 		this.subName = subName;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "TjzTbSubject{" + "subId=" + subId + ", subName='" + subName + '\'' + '}';
 	}
 }

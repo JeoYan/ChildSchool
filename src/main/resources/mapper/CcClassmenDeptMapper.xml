@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.great.childschool.mapper.CcClassmenDeptMapper">
+
+    <!--   家长管理&#45;&#45;数据显示sql-->
+    <!--    by 陈超-->
+    <select id="find" parameterType="com.great.childschool.entity.CcTableInf" resultType="com.great.childschool.entity.CcTblClassroom">
+
+        select  c.cid, b.bname,c.cname, w.wname,c.courseadddate
+        from tbl_classroom c,tbl_worker w ,tbl_baby b
+        <where>
+            b.cid=c.cid and c.wid=w.wid
+            <if test="bname != null and bname !='' " >
+                and b.bname like '%${bname}%'
+            </if>
+            <if test="cname != null and cname !='' " >
+                and c.cname like '%${cname}%'
+            </if>
+            <if test="starttime != null and starttime != ''" >
+                and c.courseadddate = #{starttime}
+            </if>
+            <if test="endtime != null and endtime != ''" >
+                and c.courseadddate =#{endtime}
+            </if>
+        </where>
+
+        limit #{page} ,5
+
+    </select>
+
+    <!--   家长管理&#45;&#45;页数显示sql-->
+    <!--    by 陈超-->
+    <select id="totalPage" parameterType="com.great.childschool.entity.CcTableInf" resultType="com.great.childschool.entity.CcTblClassroom">
+
+        select  c.cid, b.bname,c.cname, w.wname,c.courseadddate
+        from tbl_classroom c,tbl_worker w ,tbl_baby b
+        <where>
+            b.cid=c.cid and c.wid=w.wid
+            <if test="bname != null and bname !='' " >
+                and b.bname like '%${bname}%'
+            </if>
+            <if test="cname != null and cname !='' " >
+                and c.cname like '%${cname}%'
+            </if>
+            <if test="starttime != null and starttime != ''" >
+                and c.courseadddate = #{starttime}
+            </if>
+            <if test="endtime != null and endtime != ''" >
+                and c.courseadddate =#{endtime}
+            </if>
+        </where>
+    </select>
+
+<!--    &lt;!&ndash;   家长管理-删除sql&ndash;&gt;-->
+<!--    &lt;!&ndash;    by 陈超&ndash;&gt;-->
+<!--    <delete id="deleteparent" parameterType="java.lang.Integer" >-->
+<!--            delete from tbl_parent where pid=#{pid}-->
+<!--        </delete>-->
+<!--    <select id="findb" parameterType="java.lang.Integer" resultType="com.great.childschool.entity.CcTblParentBaby">-->
+<!--        select * from tbl_parent_baby where pid=#{pid}-->
+<!--    </select>-->
+<!--    <delete id="deletebaby" parameterType="java.lang.Integer" >-->
+<!--            delete from tbl_baby where bid=#{bid}-->
+<!--        </delete>-->
+<!--    <delete id="deletepb" parameterType="java.lang.Integer" >-->
+<!--            delete from tbl_parent_baby where bid=#{bid} and pid=#{pid}-->
+<!--        </delete>-->
+
+<!--    &lt;!&ndash;   家长管理-角色更新sql&ndash;&gt;-->
+<!--    &lt;!&ndash;    by 陈超&ndash;&gt;-->
+<!--    <update id="updateparent" parameterType="com.great.childschool.entity.CcTblParent">-->
+
+<!--        update  tbl_parent set pname=#{pname},pphone=#{pphone},pjob=#{pjob} where pid=#{pid}-->
+<!--    </update>-->
+<!--    <select id="findbname" resultType="com.great.childschool.entity.CcTblBaby">-->
+<!--       select * from tbl_baby  where bid=#{bid}-->
+<!--    </select>-->
+<!--    <update id="updatebaby" parameterType="com.great.childschool.entity.CcTblBaby">-->
+
+<!--        update  tbl_baby  set bname=#{bname} where bid=#{bid}-->
+<!--    </update>-->
+<!--    <update id="updatepb" parameterType="com.great.childschool.entity.CcTblParentBaby">-->
+
+<!--        update  tbl_parent_baby set prelation=#{prelation} where pid=#{pid}-->
+<!--    </update>-->
+
+<!--    &lt;!&ndash;   家长管理-下拉框-查询宝宝sql&ndash;&gt;-->
+<!--    &lt;!&ndash;    by 陈超&ndash;&gt;-->
+<!--    <select id="findbaby" resultType="com.great.childschool.entity.CcTblBaby">-->
+<!--       select * from tbl_baby-->
+<!--    </select>-->
+
+
+
+
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--<?xml version="1.0" encoding="UTF-8"?>-->
+<!--<!DOCTYPE mapper-->
+<!--        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"-->
+<!--        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">-->
+<!--&lt;!&ndash;<mapper namespace="DeptSqlMap">&ndash;&gt;-->
+<!--<mapper namespace="com.great.mapper.DeptMapper">-->
+<!--&lt;!&ndash;    11.21课堂案例加作业&ndash;&gt;-->
+<!--&lt;!&ndash;    //字段别名不同映射的查询&ndash;&gt;-->
+<!--    <resultMap id="DeptMap" type="com.great.entity.Dept">-->
+<!--        <result column="userid" property="USERID" ></result>-->
+<!--        <result column="username" property="USERNAME" ></result>-->
+<!--        <result column="userjob" property="USERJOB" ></result>-->
+<!--        &lt;!&ndash;        column 数据库的字段 property 实体类的字段&ndash;&gt;-->
+<!--    </resultMap >-->
+<!--    <select id="find1" parameterType="java.lang.Integer" resultMap="DeptMap" >-->
+<!--        select *-->
+<!--        from USERTABLE-->
+<!--        where USERID= #{USERID}-->
+<!--    </select>-->
+
+<!--&lt;!&ndash;    查询&ndash;&gt;-->
+<!--    <select id="find" parameterType="java.lang.Integer" resultType="com.great.entity.Dept" >-->
+<!--        select *-->
+<!--        from USERTABLE-->
+<!--        where USERID= #{USERID}-->
+<!--    </select>-->
+
+<!--&lt;!&ndash;    添加&ndash;&gt;-->
+<!--    <insert id="add" parameterType="java.lang.Object"  >-->
+<!--       insert into USERTABLE (-->
+<!--       USERNAME,USERSEX,USERREGISTIME,TYPEID-->
+<!--       )-->
+<!--       values-->
+<!--      ( #{USERNAME},#{USERSEX},#{USERREGISTIME},#{TYPEID})-->
+<!--    </insert>-->
+
+<!--&lt;!&ndash;    删除&ndash;&gt;-->
+<!--    <delete id="delete" parameterType="java.lang.String"  >-->
+<!--       delete USERTABLE where USERNAME=#{USERNAME}-->
+<!--    </delete>-->
+<!--&lt;!&ndash;    //修改&ndash;&gt;-->
+<!--    <update id="update" parameterType="java.lang.String"  >-->
+<!--      update USERTABLE set USERSEX=#{USERSEX} where USERNAME=#{USERNAME}-->
+<!--    </update>-->
+
+<!--    &lt;!&ndash;    map查询&ndash;&gt;-->
+<!--    <select id="findReturnMap" parameterType="java.lang.Integer" resultType="com.great.entity.Dept" >-->
+<!--&#45;&#45; 正常 用这个结果集类型：java.util.HashMap-->
+<!--&#45;&#45; map2()的另外一个 用这个结果集类型：com.great.entity.Dept-->
+<!--        select *-->
+<!--        from USERTABLE-->
+<!--        where USERID= #{USERID}-->
+<!--    </select>-->
+
+<!--    &lt;!&ndash;    动态SQL查询&ndash;&gt;-->
+<!--    <select id="selectDept" parameterType="com.great.entity.Dept" resultMap="DeptMap" >-->
+<!--        select *-->
+<!--        from USERTABLE-->
+
+<!--        <where>-->
+<!--            &lt;!&ndash;    //判断语句  &gt；大于  &lt；小于&ndash;&gt;-->
+<!--            <if test=" USERID != null and USERID !=0 ">-->
+<!--                and USERID &gt;=1-->
+<!--            </if>-->
+<!--            <if test=" USERNAME != null and USERNAME !='' ">-->
+<!--                     and USERNAME =#{USERNAME}-->
+<!--            </if>-->
+<!--            <if test=" USERJOB != null and USERJOB !='' ">-->
+<!--                and USERJOB =#{USERJOB}-->
+<!--            </if>-->
+<!--        </where>-->
+<!--    </select>-->
+
+<!--    &lt;!&ndash;    动态SQL更新&ndash;&gt;-->
+<!--    <update id="updateDept" parameterType="com.great.entity.Dept" >-->
+
+<!--        update USERTABLE-->
+<!--        <set>-->
+<!--            USERSEX = #{USERSEX}-->
+<!--        </set>-->
+<!--        <where>-->
+
+<!--            <if test=" USERNAME != null and USERNAME !='' ">-->
+<!--                and USERNAME =#{USERNAME}-->
+<!--            </if>-->
+
+<!--        </where>-->
+<!--    </update>-->
+
+<!--    &lt;!&ndash;    使用数组进行多个id查询查询&ndash;&gt;-->
+<!--    <select id="chaxunDept" parameterType="java.util.ArrayList" resultMap="DeptMap">-->
+<!--        select *-->
+<!--        from USERTABLE-->
+<!--        <where>-->
+
+<!--        <foreach collection="array" item="item" index="index" separator="or" >-->
+<!--        USERID=#{item}-->
+<!--        </foreach>-->
+
+<!--        </where>-->
+<!--    </select>-->
+<!--&lt;!&ndash;    批量增加&ndash;&gt;-->
+<!--    <insert id="addSql" parameterType="java.util.List" useGeneratedKeys="false">-->
+<!--        insert all-->
+<!--        <foreach collection="list" item="item" index="index" >-->
+<!--            &lt;!&ndash;    用list接添加的数据，标题，内容，用逗号分隔&ndash;&gt;-->
+
+<!--             into USERTABLE (-->
+<!--            USERID,USERNAME,USERJOB-->
+<!--            ) values-->
+<!--            (-->
+<!--            #{item.USERID}, #{item.USERNAME}, #{item.USERJOB}-->
+<!--            )-->
+<!--        </foreach>-->
+<!--        SELECT 1 FROM USERTABLE-->
+<!--    </insert>-->
+
+
+<!--    &lt;!&ndash;    11.22课堂案例加作业&ndash;&gt;-->
+<!--    &lt;!&ndash;    关联：三表联查javabean&ndash;&gt;-->
+<!--&lt;!&ndash;    <resultMap id="FileMap" type="com.great.entity.File">&ndash;&gt;-->
+<!--&lt;!&ndash;        <result column="FILEID" property="FILEID" ></result>&ndash;&gt;-->
+<!--&lt;!&ndash;        <result column="FILENAME" property="FILENAME" ></result>&ndash;&gt;-->
+
+<!--&lt;!&ndash;        <association property="dept" javaType="Dept" >&ndash;&gt;-->
+<!--&lt;!&ndash;            <result column="USERID" property="USERID" ></result>&ndash;&gt;-->
+<!--&lt;!&ndash;            <result column="USERNAME" property="USERNAME" ></result>&ndash;&gt;-->
+<!--&lt;!&ndash;        </association>&ndash;&gt;-->
+
+<!--&lt;!&ndash;        <association property="type" javaType="Type" >&ndash;&gt;-->
+<!--&lt;!&ndash;            <result column="TYPEID" property="TYPEID" ></result>&ndash;&gt;-->
+<!--&lt;!&ndash;            <result column="TYPENAME" property="TYPENAME" ></result>&ndash;&gt;-->
+<!--&lt;!&ndash;        </association>&ndash;&gt;-->
+
+<!--&lt;!&ndash;    </resultMap >&ndash;&gt;-->
+
+<!--&lt;!&ndash;    <select id="findobj" parameterType="com.great.entity.File" resultMap="FileMap" >&ndash;&gt;-->
+<!--&lt;!&ndash;        select F.FILEID,F.FILENAME ,U.USERID,U.USERNAME ,T.TYPEID,T.TYPENAME&ndash;&gt;-->
+<!--&lt;!&ndash;        from FILETABLE  F,USERTABLE U,TYPETABLE T&ndash;&gt;-->
+<!--&lt;!&ndash;        where   F.USERID=U.USERID&ndash;&gt;-->
+<!--&lt;!&ndash;        and F.TYPEID=T.TYPEID&ndash;&gt;-->
+<!--&lt;!&ndash;    </select>&ndash;&gt;-->
+
+<!--&lt;!&ndash;        关联：三表联查  返回类型list&ndash;&gt;-->
+<!--&lt;!&ndash;            <resultMap id="FileMap" type="com.great.entity.File">&ndash;&gt;-->
+<!--&lt;!&ndash;                <result column="FILEID" property="FILEID" ></result>&ndash;&gt;-->
+<!--&lt;!&ndash;                <result column="FILENAME" property="FILENAME" ></result>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                <association property="dept" javaType="Dept" >&ndash;&gt;-->
+<!--&lt;!&ndash;                    <result column="USERID" property="USERID" ></result>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <result column="USERNAME" property="USERNAME" ></result>&ndash;&gt;-->
+<!--&lt;!&ndash;                </association>&ndash;&gt;-->
+
+<!--&lt;!&ndash;                <association property="type" javaType="Type" >&ndash;&gt;-->
+<!--&lt;!&ndash;                    <result column="TYPEID" property="TYPEID" ></result>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <result column="TYPENAME" property="TYPENAME" ></result>&ndash;&gt;-->
+<!--&lt;!&ndash;                </association>&ndash;&gt;-->
+
+<!--&lt;!&ndash;            </resultMap >&ndash;&gt;-->
+
+<!--&lt;!&ndash;            <select id="findlist" resultType="java.util.List" resultMap="FileMap">&ndash;&gt;-->
+<!--&lt;!&ndash;                select F.FILEID,F.FILENAME ,U.USERID,U.USERNAME ,T.TYPEID,T.TYPENAME&ndash;&gt;-->
+<!--&lt;!&ndash;                from FILETABLE  F,USERTABLE U,TYPETABLE T&ndash;&gt;-->
+<!--&lt;!&ndash;                where   F.USERID=U.USERID&ndash;&gt;-->
+<!--&lt;!&ndash;                and F.TYPEID=T.TYPEID&ndash;&gt;-->
+<!--&lt;!&ndash;            </select>&ndash;&gt;-->
+
+<!--    &lt;!&ndash;    关联：两表联查  返回类型list&ndash;&gt;-->
+<!--&lt;!&ndash;    <resultMap id="FileMap" type="File">&ndash;&gt;-->
+<!--&lt;!&ndash;        <collection property="dept1" ofType="Dept" javaType="java.util.List"&ndash;&gt;-->
+<!--&lt;!&ndash;                    column="USERID" select="findDept" ></collection>&ndash;&gt;-->
+<!--&lt;!&ndash;        <collection property="type1" ofType="Type" javaType="java.util.List"&ndash;&gt;-->
+<!--&lt;!&ndash;                    column="TYPEID" select="findType" ></collection>&ndash;&gt;-->
+<!--&lt;!&ndash;    </resultMap>&ndash;&gt;-->
+
+<!--&lt;!&ndash;    <select id="findFile" parameterType="java.lang.Integer" resultMap="FileMap" >&ndash;&gt;-->
+<!--&lt;!&ndash;            select * from FILETABLE where FILEID= #{FILEID}&ndash;&gt;-->
+<!--&lt;!&ndash;        </select>&ndash;&gt;-->
+
+<!--&lt;!&ndash;    <select id="findType" parameterType="java.lang.Integer" resultType="Type" >&ndash;&gt;-->
+<!--&lt;!&ndash;            select * from TYPETABLE where TYPEID= #{TYPEID}&ndash;&gt;-->
+<!--&lt;!&ndash;        </select>&ndash;&gt;-->
+
+<!--&lt;!&ndash;    <select id="findDept" parameterType="java.lang.Integer" resultType="Dept">&ndash;&gt;-->
+<!--&lt;!&ndash;            select * from USERTABLE where USERID &gt; #{USERID}&ndash;&gt;-->
+<!--&lt;!&ndash;    </select>&ndash;&gt;-->
+
+<!--    &lt;!&ndash;    关联：三表联查  返回类型map&ndash;&gt;-->
+<!--        <resultMap id="FileMap" type="com.great.entity.File">-->
+<!--            <result column="FILEID" property="FILEID" ></result>-->
+<!--            <result column="FILENAME" property="FILENAME" ></result>-->
+
+<!--            <association property="dept" javaType="Dept" >-->
+<!--                <result column="USERID" property="USERID" ></result>-->
+<!--                <result column="USERNAME" property="USERNAME" ></result>-->
+<!--            </association>-->
+
+<!--            <association property="type" javaType="Type" >-->
+<!--                <result column="TYPEID" property="TYPEID" ></result>-->
+<!--                <result column="TYPENAME" property="TYPENAME" ></result>-->
+<!--            </association>-->
+
+<!--        </resultMap >-->
+
+<!--        <select id="findmap" resultType="java.util.Map" >-->
+<!--            select F.FILEID,F.FILENAME ,U.USERID,U.USERNAME ,T.TYPEID,T.TYPENAME-->
+<!--            from FILETABLE  F,USERTABLE U,TYPETABLE T-->
+<!--            where   F.USERID=U.USERID-->
+<!--            and F.TYPEID=T.TYPEID-->
+<!--        </select>-->
+
+<!--</mapper>-->
+
+<!--        &lt;!&ndash;    //11.21课堂案例动态SQL&ndash;&gt;-->
+<!--&lt;!&ndash;<select id="selectDept" parameterType="Dept" resultMap="DeptMap" >&ndash;&gt;-->
+<!--&lt;!&ndash;select *&ndash;&gt;-->
+<!--&lt;!&ndash;from USERTABLE&ndash;&gt;-->
+
+<!--&lt;!&ndash;<where>&ndash;&gt;-->
+<!--&lt;!&ndash;    &lt;!&ndash;    //判断语句  &gt；大于  &lt；小于&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;    <if test=" USERID != null and USERID !=0 ">&ndash;&gt;-->
+<!--&lt;!&ndash;        and USERID &gt;=1&ndash;&gt;-->
+<!--&lt;!&ndash;    </if>&ndash;&gt;-->
+<!--&lt;!&ndash;    <choose >&ndash;&gt;-->
+<!--&lt;!&ndash;        <when test="USERID != null and USERID !=0 ">   and USERID &lt;=3 </when>&ndash;&gt;-->
+<!--&lt;!&ndash;    </choose>&ndash;&gt;-->
+
+<!--&lt;!&ndash;</where>&ndash;&gt;-->
+<!--&lt;!&ndash;</select>&ndash;&gt;-->
+

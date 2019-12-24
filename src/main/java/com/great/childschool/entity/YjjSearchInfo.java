@@ -18,8 +18,9 @@ public class YjjSearchInfo
 	private int page ;
 	private String wName ;
 	private String rid;
-
-
+	private String bName;
+	private String startDate;
+	private String endDate;
 
 	public int getLimit()
 	{
@@ -59,5 +60,35 @@ public class YjjSearchInfo
 	public void setRid(String rid)
 	{
 		this.rid = rid;
+	}
+
+	public String getbName()
+	{
+		return bName;
+	}
+
+	public void setbName(String bName)
+	{
+		this.bName = bName;
+	}
+
+	public String getStartDate()
+	{
+		return startDate;
+	}
+
+	public void setStartDate(String startDate)
+	{
+		this.startDate = startDate;
+	}
+
+	public String getEndDate()
+	{
+		return endDate;
+	}
+
+	public void setEndDate(String endDate)
+	{
+		this.endDate = endDate;
 	}
 }

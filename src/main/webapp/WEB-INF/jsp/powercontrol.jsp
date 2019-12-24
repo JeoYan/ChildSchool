@@ -178,21 +178,23 @@
 		table.on('tool(demo)', function (obj) {//注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
 			var data = obj.data;//获得当前行数据
 			var wid=data.wid;
-			alert(wid);
+
 			if (obj.event === 'edit') {
 				layer.open({
 					type: 2
 					, title: '权限修改'
-					, content: '${pageContext.request.contextPath}/power/callPowerPage.action'
+
 					, maxmin: true
 					, area: ['450px', '500px']
 					, success: function (layero, index) {
 						//向子窗口设置值
 						var body = layer.getChildFrame('body', index);
-						body.find("#hiddenWid").val(wid);
+						console.log(wid);
+						//body.find("#hiddenWid").val(wid);
 						body.find("#wName").html("姓名:"+data.wname);
 						body.find("#rName").html("角色:"+data.rname);
 					}
+					, content: '${pageContext.request.contextPath}/power/callPowerPage.action?wid=' + wid
 
 					// ,value: data.USERNAME
 				});

@@ -16,11 +16,21 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<title>课程管理</title>
 	<link rel="stylesheet" href=<%=layuiPath+"css/layui.css"%>>
-	<script src=<%=layuiPath + "layui.js"%>></script>
+	<script  src=<%=layuiPath + "layui.js"%>></script>
 </head>
 <body>
 <div class="layui-fluid">
 <div class="layui-card">
+	<div>
+		<h1 style="text-align: center">
+			课程管理
+		</h1>
+	</div>
+	<div>
+		<h3 style="text-align: left">
+			查询条件
+		</h3>
+	</div>
 <div class="demoTable">
 	创建时间：
 	<div class="layui-inline">
@@ -64,7 +74,7 @@
 				,{field: 'cName', title: '班级名称', sort: true, fixed: 'left', align: 'center'}
 				, {field: 'wName', title: '班主任', align: 'center'}
 				, {field: 'classroom', title: '所在班级', sort: true, align: 'center'}
-				, {field: 'courseAddDate', title: '创建时间', align: 'center',event: 'setSign', style:'cursor: pointer;'}
+				, {field: 'courseAddDate', title: '创建时间', align: 'center'}
 				, {fixed: 'right', title: '操作', toolbar: '#barDemo', align: 'center'}
 			]]
 			, id: 'testReload'
@@ -115,11 +125,12 @@
 					, title: '配置课程'
 					, offset: 'auto'
 					, content: '/ChildSchool/BackAction/courseTable.action?cid='+data.cid
-					, area: ['700px', '500px']
+					, area: ['800px', '600px']
 					, btn: ['确定', '取消']
 					, shade: 0
 					, success: function (layero, index) {
-
+						var body = layer.getChildFrame('body', index);
+						body.find("#className").html(data.cName);
 					}
 				});
 

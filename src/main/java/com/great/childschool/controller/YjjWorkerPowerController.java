@@ -1,11 +1,14 @@
 package com.great.childschool.controller;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.great.childschool.aoplog.Log;
 import com.great.childschool.entity.*;
 import com.great.childschool.service.YjjWorkerPowerControlService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -25,15 +28,29 @@ public class YjjWorkerPowerController
 	@Resource
 	private YjjWorkerPowerControlService workerPowerControlService;
 
+//	/**
+//	 * 调用工作人员登入页面
+//	 * by 严俊杰
+//	 */
+//	@RequestMapping("powerPage.action")
+//	public ModelAndView callParentLoginPage(String wid)
+//	{
+//		ModelAndView modelAndView=new ModelAndView();
+//		modelAndView.setViewName("powercontrol");
+//		modelAndView.addObject("wid",wid);
+//		return modelAndView;
+//	}
+
 	/**
-	 * 调用工作人员登入页面
-	 * by 严俊杰
-	 */
-	@RequestMapping("powerPage.action")
-	public String callParentLoginPage()
-	{
-		return "powercontrol";
-	}
+	 //	 * 调用工作人员登入页面
+	 //	 * by 严俊杰
+	 //	 */
+		@RequestMapping("powerPage.action")
+		public String callParentLoginPage(String wid)
+		{
+			return "powercontrol";
+		}
+
 
 
 	/**
@@ -67,7 +84,6 @@ public class YjjWorkerPowerController
 		send.setData(list);
 		System.out.println(limit + "limit+----------------+page" + page);
 		return send;
-
 	}
 
 
@@ -112,29 +128,34 @@ public class YjjWorkerPowerController
 	@ResponseBody
 	public List<YjjTreeData> getMenu(String wid)
 	{
-		//获得一级菜单得到
-		List<TblMenu> firstMenuList = workerPowerControlService.findFirstMenu(Integer.valueOf(wid));
-		List<YjjTreeData> list=new ArrayList<>();
-
-		if(firstMenuList!=null)
+		List<YjjTreeData> list = new ArrayList<>();
+		if(!"".equals(wid)&&wid!=null)
 		{
-			for (TblMenu tblMenu : firstMenuList)
+			//获得一级菜单得到
+			List<TblMenu> firstMenuList = workerPowerControlService.findFirstMenu(Integer.valueOf(wid));
+
+			if (firstMenuList != null)
 			{
-				YjjTreeData treeSend=new YjjTreeData();
-				//获得wid 和mid对应的sid状态
-				YjjTblMenuRole tblmenuowner= workerPowerControlService.findMenuStatus(Integer.valueOf(wid),tblMenu.getMid());
-				//判断菜单有没有子菜单
-				List<TblMenu> childMyMenu = workerPowerControlService.findChildMenu(Integer.valueOf(wid),tblmenuowner.getMid());
-				if(childMyMenu.size()==0){
-					if(tblmenuowner.getSid()==3){
-						treeSend.setChecked(true);
+				for (TblMenu tblMenu : firstMenuList)
+				{
+					YjjTreeData treeSend = new YjjTreeData();
+					//获得wid 和mid对应的sid状态
+					YjjTblMenuRole tblmenuowner = workerPowerControlService.findMenuStatus(Integer.valueOf(wid), tblMenu.getMid());
+					//判断菜单有没有子菜单
+					List<TblMenu> childMyMenu = workerPowerControlService.findChildMenu(Integer.valueOf(wid), tblmenuowner.getMid());
+					if (childMyMenu.size() == 0)
+					{
+						if (tblmenuowner.getSid() == 3)
+						{
+							treeSend.setChecked(true);
+						}
 					}
+					treeSend.setTitle(tblMenu.getMname());
+					treeSend.setId(tblMenu.getMid());
+					treeSend.setChildren(findChild(Integer.valueOf(wid), tblMenu.getMid()));
+					treeSend.toString();
+					list.add(treeSend);
 				}
-				treeSend.setTitle(tblMenu.getMname());
-				treeSend.setId(tblMenu.getMid());
-				treeSend.setChildren(findChild(Integer.valueOf(wid),tblMenu.getMid()));
-				treeSend.toString();
-				list.add(treeSend);
 			}
 		}
 		return list;
@@ -168,12 +189,47 @@ public class YjjWorkerPowerController
 	}
 
 
+	//获得更新的数据并保存 严俊杰12.19
+	private List<Integer> menuIds=new ArrayList<>();
 	@RequestMapping("/updateTree.action")
 	@ResponseBody
-	public String updateTree(String wid){
+	public String updateTree(String wid,String data ){
+		System.out.println("------------wid--------------------"+wid);
+		System.out.println("------------data--------------------"+data);
+		Gson gson=new Gson();
+		//将gson的list数据装成list
+		List<YjjTreeData> list= gson.fromJson(data, new TypeToken<List<YjjTreeData>>() {}.getType());
+		menuIds.removeAll(menuIds);
+		List<Integer> menuIds1=getMid(list);
+		//清空用户的菜单数据
+		int i=workerPowerControlService.initSid(wid);
+		//更新树节点设置成勾选
+		int x=workerPowerControlService.updateSid(wid,menuIds1);
+		if (x>0){
+			return"OK";
+		}
+		return"NotOK";
 
-		return "ok";
 	}
+
+
+	public List<Integer> getMid(List<YjjTreeData> list){
+		for (YjjTreeData treeData : list)
+		{
+			menuIds.add(treeData.getId());
+			if(treeData.getChildren()!=null){
+				getMid(treeData.getChildren());
+			}
+		}
+		return menuIds;
+	}
+
+
+
+
+
+
+
 
 
 

@@ -25,8 +25,9 @@
 		}
 
 		.btn-schedule {
-			width: 80%;
+			width: 100%;
 			margin-left: 10%;
+			text-align: center; /*内容居中*/
 		}
 
 		.btn-default {
@@ -39,15 +40,20 @@
 </head>
 
 <body>
-<div class="container" style="width: 82%;">
+<div class="container" style="width: 82%;margin:0 auto">
 
 
 	<div style="margin-top: 30px;">
 
 		<div>
-			<h3 style="text-align: center">
+			<h1 style="text-align: center">
 				课程表<input type="hidden" id="cid">
-			</h3>
+			</h1>
+		</div>
+		<div>
+			<h2 style="text-align: center">
+				班级名称：<label  id="className"></label>
+			</h2>
 		</div>
 		<div class="layui-form">
 			<table class="layui-table">
@@ -80,18 +86,39 @@
 							<td>
 								<input type="hidden" value="${requestScope.tableHead[0]}">
 								<c:forEach items="${i.value}" begin="0" step="1" var="j">
-									<c:if test="${j.cDate==requestScope.tableHead[0]}">
-										<button type="button" class="btn btn-schedule" value="${j.subId}"
-										        onclick="showRegistered(this)" couId="${j.couId}">${j.subName}</button>
-									</c:if>
-								</c:forEach>
+								<c:if test="${j.cDate==requestScope.tableHead[0]}">
+
+									<c:choose>
+										<c:when test="${j.subId == 1}">
+											<button type="button" class="btn btn-schedule layui-btn layui-btn-primary" value="${j.subId}"
+											        onclick="showRegistered(this)" couId="${j.couId}">${j.subName}</button>
+										</c:when>
+										<c:otherwise>
+											<button type="button" class="btn btn-schedule layui-btn" value="${j.subId}"
+											        onclick="showRegistered(this)" couId="${j.couId}">${j.subName}</button>
+										</c:otherwise>
+									</c:choose>
+
+
+
+							</c:if>
+							</c:forEach>
 							</td>
 							<td>
 								<input type="hidden" value="${requestScope.tableHead[1]}">
 								<c:forEach items="${i.value}" begin="0" step="1" var="j">
 									<c:if test="${j.cDate==requestScope.tableHead[1]}">
-										<button type="button" class="btn btn-schedule" value="${j.subId}"
-										        onclick="showRegistered(this)" couId="${j.couId}">${j.subName}</button>
+										<c:choose>
+											<c:when test="${j.subId == 1}">
+												<button type="button" class="btn btn-schedule layui-btn layui-btn-primary" value="${j.subId}"
+												        onclick="showRegistered(this)" couId="${j.couId}">${j.subName}</button>
+											</c:when>
+											<c:otherwise>
+												<button type="button" class="btn btn-schedule layui-btn" value="${j.subId}"
+												        onclick="showRegistered(this)" couId="${j.couId}">${j.subName}</button>
+											</c:otherwise>
+										</c:choose>
+
 									</c:if>
 								</c:forEach>
 							</td>
@@ -99,8 +126,17 @@
 								<input type="hidden" value="${requestScope.tableHead[2]}">
 								<c:forEach items="${i.value}" begin="0" step="1" var="j">
 									<c:if test="${j.cDate==requestScope.tableHead[2]}">
-										<button type="button" class="btn btn-schedule" value="${j.subId}"
-										        onclick="showRegistered(this)" couId="${j.couId}">${j.subName}</button>
+										<c:choose>
+											<c:when test="${j.subId == 1}">
+												<button type="button" class="btn btn-schedule layui-btn layui-btn-primary" value="${j.subId}"
+												        onclick="showRegistered(this)" couId="${j.couId}">${j.subName}</button>
+											</c:when>
+											<c:otherwise>
+												<button type="button" class="btn btn-schedule layui-btn" value="${j.subId}"
+												        onclick="showRegistered(this)" couId="${j.couId}">${j.subName}</button>
+											</c:otherwise>
+										</c:choose>
+
 									</c:if>
 								</c:forEach>
 							</td>
@@ -108,8 +144,17 @@
 								<input type="hidden" value="${requestScope.tableHead[3]}">
 								<c:forEach items="${i.value}" begin="0" step="1" var="j">
 									<c:if test="${j.cDate==requestScope.tableHead[3]}">
-										<button type="button" class="btn btn-schedule" value="${j.subId}"
-										        onclick="showRegistered(this)" couId="${j.couId}">${j.subName}</button>
+										<c:choose>
+											<c:when test="${j.subId == 1}">
+												<button type="button" class="btn btn-schedule layui-btn layui-btn-primary" value="${j.subId}"
+												        onclick="showRegistered(this)" couId="${j.couId}">${j.subName}</button>
+											</c:when>
+											<c:otherwise>
+												<button type="button" class="btn btn-schedule layui-btn" value="${j.subId}"
+												        onclick="showRegistered(this)" couId="${j.couId}">${j.subName}</button>
+											</c:otherwise>
+										</c:choose>
+
 									</c:if>
 								</c:forEach>
 							</td>
@@ -117,8 +162,17 @@
 								<input type="hidden" value="${requestScope.tableHead[4]}">
 								<c:forEach items="${i.value}" begin="0" step="1" var="j">
 									<c:if test="${j.cDate==requestScope.tableHead[4]}">
-										<button type="button" class="btn btn-schedule" value="${j.subId}"
-										        onclick="showRegistered(this)" couId="${j.couId}">${j.subName}</button>
+										<c:choose>
+											<c:when test="${j.subId == 1}">
+												<button type="button" class="btn btn-schedule layui-btn layui-btn-primary" value="${j.subId}"
+												        onclick="showRegistered(this)" couId="${j.couId}">${j.subName}</button>
+											</c:when>
+											<c:otherwise>
+												<button type="button" class="btn btn-schedule layui-btn" value="${j.subId}"
+												        onclick="showRegistered(this)" couId="${j.couId}">${j.subName}</button>
+											</c:otherwise>
+										</c:choose>
+
 									</c:if>
 								</c:forEach>
 							</td>
@@ -133,11 +187,11 @@
 
 			</table>
 			<a href="/ChildSchool/BackAction/weekcourseTable.action?now-Date=${requestScope.tableHead[0]}&doWhich=上一周&cid=${requestScope.cid}">
-				<input type="button" class="btn btn-default" value="上一周" onclick="weeks(this)"/>
+				<input type="button" class="btn btn-default layui-btn" value="上一周" onclick="weeks(this)"/>
 			</a>
 
 			<a href="/ChildSchool/BackAction/weekcourseTable.action?now-Date=${requestScope.tableHead[0]}&&doWhich=下一周&cid=${requestScope.cid}">
-				<input type="button" class="btn btn-default" value="下一周" onclick="weeks(this)"/>
+				<input type="button" class="btn btn-default layui-btn" value="下一周" onclick="weeks(this)"/>
 			</a>
 
 

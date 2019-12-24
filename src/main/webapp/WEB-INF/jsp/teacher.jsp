@@ -42,8 +42,9 @@
 <%--	<div class="layui-inline">--%>
 <%--		<input class="layui-input" name="wname" id="demoReload" autocomplete="off">--%>
 <%--	</div>--%>
-	<%--	<form class="layui-form" action="">--%>
+
 	<div style="text-align: center">
+<%--		<form class="layui-form" action="">--%>
 		教师名称:
 		<div class="layui-inline">
 			<input class="layui-input" name="wname" id="demoReload" autocomplete="off">
@@ -53,8 +54,7 @@
 			<label class="layui-form-label">角色选择</label>
 			<div class="layui-input-inline" >
 				<select name="rname" id="demoReload1">
-					<option value="">请选择角色</option>
-
+					<option value=""></option>
 
 					<c:forEach items="${requestScope.role}" begin="0" step="1" var="y">
 						<option value="${y.rid}">${y.rname}</option>
@@ -66,10 +66,10 @@
 
 		<button class="layui-btn" data-type="reload">查询</button>
 		<button class="layui-btn layui-btn-normal" data-type="add" >新增</button>
-
+<%--		</form>--%>
 	</div>
 
-	<%--	</form>--%>
+
 
 
 </div>
@@ -89,6 +89,7 @@
 	layui.use('table', function(){
 		var table = layui.table
 			,upload =layui.upload;
+
 		table.render({
 			elem: '#test',
 			height: 312 ,
@@ -96,18 +97,21 @@
 			page: 1,
 			limit:5,
 			limits:[5],
-			// method:'post',
-
 			cols: [[
-				{field: 'wid', title: '教师编号', width:130 , sort: true, fixed: 'left'}      ,
-				{field: 'wname', title: '教师名称', width:130} ,
-				{field: 'rname', title: '角色', width:130, sort: true} ,
-				{field: 'wdate', title: '创建时间', width:130}      ,
-				{fixed: 'right', title:'操作', toolbar: '#barDemo', width:130}
+				{field: 'wid', title: '教师编号', sort: true, fixed: 'center'}      ,
+				{field: 'wname', title: '教师名称'} ,
+				{field: 'rname', title: '角色',  sort: true} ,
+				{field: 'rid', title: '角色id', sort: true,hide:true} ,
+				{field: 'wdate', title: '创建时间'}      ,
+				{fixed: 'right', title:'操作', toolbar: '#barDemo'}
 			]]
+		// 	,done:function(res,curr,count){
+		// 	// 隐藏列
+		// 	$(".layui-table-box").find("[data-field='rid']").css("display","none");
+		// }
+
 
 		});
-
 
 		var $ = layui.$, active = {
 
@@ -115,7 +119,8 @@
 			reload: function(){
 
 				var demoReload = $('#demoReload');
-				var demoReload1 = $('#demoReload1');
+				var demoReload1 =  $("#demoReload1").find("option:selected").text();
+
 				//执行重载
 				table.reload('test', {
 					page: {
@@ -124,7 +129,7 @@
 					,where: {
 
 						wname: demoReload.val(),
-						rname: demoReload1.val()
+						rname: demoReload1
 					}
 				}, 'data');
 			},
@@ -232,6 +237,8 @@
 			else if(obj.event === 'edit'){
 				alert(data.wname);
 				alert(data.rname);
+
+				alert(data.rid);
 				layer.open({
 					type: 2,
 					title: '修改',
@@ -242,12 +249,15 @@
 					success: function (layero,index) {
 						var body = layer.getChildFrame('body', index);
 						body.find("#wname").val(data.wname);
-						body.find("#rname").val(data.rname);
+						body.find("#rname").val(data.rid);
+
+
 					},
 					yes:function (index,layero) {
 						var wname = $(layero).find('iframe')[0].contentWindow.wname.value;
-						 var rid=$(layero).find('iframe')[0].contentWindow.rid.value;
-						// var rname=$(layero).find('iframe')[0].contentWindow.rname.value;
+						 var rid=$(layero).find('iframe')[0].contentWindow.rname.value;
+
+
 						var wid = data.wid;
 						var ob = {wid: wid, rid:rid,wname: wname};
 						$.ajax({

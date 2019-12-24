@@ -55,21 +55,17 @@ public class CcTeacherService
 		return ccTeacherDeptMapper.deletemenu(wid);
 	}
 
-
 	/**
-	 * 教师管理-据wName查询
+	 * 教师管理-删除对应的工作角色关系表
 	 * by 陈超
 	 */
-//    public int findwid(String wname){
-//        return ccTeacherDeptMapper.findwid(wname);
-//    }
+	@Transactional
+	public int deletewrole(int wid)
+	{
+		return ccTeacherDeptMapper.deletewrole(wid);
+	}
 
 
-
-    /**
-     * 教师管理-增加方法
-     * by 陈超
-     */
 
 	/**
 	 * 修改业务层获得自增长id
@@ -139,11 +135,6 @@ public class CcTeacherService
 
 
 
-
-
-
-
-
     /**
      * 教师管理-工作人员关系表 增加
      * by 陈超
@@ -155,16 +146,6 @@ public class CcTeacherService
     }
 
     /**
-     * 教师管理-修改方法
-     * by 陈超
-     */
-    @Transactional
-    public int updateteacher(TblWorker tblWorker)
-    {
-
-        return ccTeacherDeptMapper.updateteacher(tblWorker);
-    }
-    /**
      * 教师管理-查询角色方法
      * by 陈超
      */
@@ -172,6 +153,32 @@ public class CcTeacherService
     public List<TblRole>findrole(){
         return ccTeacherDeptMapper.findrole();
     }
-    
 
+
+
+	/**
+	 * 教师管理-根据wid修改工作人员表
+	 * by 陈超
+	 */
+	@Transactional
+	public int updateteacher(TblWorker tblWorker)
+	{
+
+		return ccTeacherDeptMapper.updateteacher(tblWorker);
+	}
+	/**
+	 * 教师管理-根据wid更新工作人员角色关系表修改方法
+	 * by 陈超
+	 */
+	public int updatername(TblWorkerRole tblWorkerRole){
+		return ccTeacherDeptMapper.updatername(tblWorkerRole);
+	}
+
+//	/**
+//	 * 教师管理-rid获取rname方法
+//	 * by 陈超
+//	 */
+//	public String findrname(int rid){
+//		return ccTeacherDeptMapper.findrname(rid);
+//	}
 }

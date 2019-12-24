@@ -49,7 +49,7 @@
 			<label class="layui-form-label">角色选择</label>
 			<div class="layui-input-inline">
 				<select name="rname" id="rname">
-					<option value="">请选择角色</option>
+					<option value=""></option>
 
 
 					<c:forEach items="${requestScope.role}" begin="0" step="1" var="y">

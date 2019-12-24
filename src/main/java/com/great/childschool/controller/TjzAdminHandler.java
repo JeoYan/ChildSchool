@@ -1,11 +1,11 @@
 package com.great.childschool.controller;
 
 
-
 import com.great.childschool.aoplog.Log;
 import com.great.childschool.entity.TjzTbCourse;
 import com.great.childschool.entity.TjzTbSubject;
 import com.great.childschool.entity.TjzTbTable;
+import com.great.childschool.entity.TjzTblParent;
 import com.great.childschool.service.TjzBackService;
 import com.great.childschool.tools.Tool;
 import org.springframework.stereotype.Controller;
@@ -16,8 +16,13 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.text.SimpleDateFormat;
 import java.util.*;
+
+
+/**
+ * 控制类
+ * by 汤建志
+ */
 
 @Controller
 @RequestMapping("/BackAction")
@@ -26,13 +31,250 @@ public class TjzAdminHandler
 	@Resource
 	private TjzBackService tjzBackService;
 
-	@RequestMapping("/insertCodeBatch.action")
-	public int insertCodeBatch(){
-		List<TjzTbCourse > courseList2=new ArrayList<TjzTbCourse>();
+	/**
+	 * 查询日志
+	 * by 汤建志
+	 */
+	@RequestMapping("/findLog.action")
+	@ResponseBody
+	public TjzTbTable findLog(String page, String limit, String startDate, String endDate, String wName)
+	{
+		TjzTbTable tbBean = tjzBackService.showLogTable(page, limit, startDate, endDate, wName);
+		return tbBean;
+	}
 
-		for (int i = 0; i <3 ; i++)
+	/**
+	 * 家长修改密码
+	 * by 汤建志
+	 */
+	@RequestMapping("/parentChangePassword.action")
+	@ResponseBody
+	@Log(operationType = "修改密码", operationName = "家长修改密码")
+	public TjzTbTable parentChangePassword(HttpServletRequest request, HttpServletResponse response)
+	{
+
+		String oldPassword = request.getParameter("oldPassword");
+		String newPassword = request.getParameter("newPassword");
+		String reNewPassword = request.getParameter("reNewPassword");
+		String pid = request.getSession().getAttribute("pid").toString();
+		TjzTbTable tbTable = new TjzTbTable();
+		if (!newPassword.equals(reNewPassword))
 		{
-			TjzTbCourse course=new TjzTbCourse();
+			tbTable.setMsg("0");
+		} else
+		{
+
+			TjzTblParent parent = tjzBackService.parentOldPassword(Integer.valueOf(pid));
+			if (!parent.getPpsw().equals(oldPassword))
+			{
+				tbTable.setMsg("1");
+			} else
+			{
+
+				parent.setPid(Integer.valueOf(pid));
+				parent.setPpsw(newPassword);
+				int flag=tjzBackService.parentChangePassword(parent);
+				if (flag>0){
+					tbTable.setMsg("2");
+				}else {
+					tbTable.setMsg("3");
+				}
+
+			}
+
+		}
+
+
+		return tbTable;
+
+}
+
+	/**
+	 * 家长查看上下周课程表
+	 * by 汤建志
+	 */
+	@RequestMapping("/parentWeekCourseTable.action")
+//	@Log(operationType = "查询操作", operationName = "查询课程表")
+	public String parentWeekCourseTable(HttpServletRequest request, HttpServletResponse response, String bid)
+	{
+		String nowDate = request.getParameter("now-Date");
+		String doWhich = request.getParameter("doWhich");
+		Date date = Tool.getDateType(nowDate);
+		List<Date> dateList;
+		if ("上一周".equals(doWhich))
+		{
+			dateList = Tool.dateToWeek(Tool.getLastWeekMonday(date));
+
+		} else
+		{
+			dateList = Tool.dateToWeek(Tool.getNextWeekMonday(date));
+		}
+		List<String> days = Tool.getDateType(dateList);
+		Map<String, Object> map2 = new HashMap<String, Object>();
+		map2.put("startDate", days.get(0));
+		map2.put("endDate", days.get(days.size() - 1));
+		map2.put("bid", bid);
+		Map<String, List<TjzTbCourse>> map = tjzBackService.parentCourseTable(map2);
+		request.setAttribute("bid", bid);
+		request.setAttribute("tableBody", map);
+		request.setAttribute("tableHead", days);
+		return "parentcoursetable";
+
+
+	}
+
+
+	/**
+	 * 家长查看本周课程表
+	 * by 汤建志
+	 */
+	@RequestMapping("/parentCourseTable.action")
+//	@Log(operationType = "查询操作", operationName = "查询课程表")
+	public String parentCourseTable(HttpServletRequest request, String bid)
+	{
+
+		Date date = new Date(System.currentTimeMillis());
+		List<Date> dateList = Tool.dateToWeek(date);
+		List<String> days = Tool.getDateType(dateList);
+		Map<String, Object> map2 = new HashMap<String, Object>();
+		map2.put("startDate", days.get(0));
+		map2.put("endDate", days.get(days.size() - 1));
+		map2.put("bid", bid);
+		Map<String, List<TjzTbCourse>> map = tjzBackService.parentCourseTable(map2);
+		if (null != map)
+		{
+			request.setAttribute("bid", bid);
+			request.setAttribute("tableBody", map);
+			request.setAttribute("tableHead", days);
+			return "parentcoursetable";
+		} else
+		{
+			System.out.println("fail");
+			return "parentcoursetable";
+
+		}
+	}
+
+
+
+	/**
+	 * 家长查看孩子所在班级信息
+	 * by 汤建志
+	 */
+	@RequestMapping("/parentCourseQuery.action")
+	@ResponseBody
+//	@Log(operationType = "查询操作", operationName = "课程管理")
+	public TjzTbTable parentCourseQuery(HttpServletRequest request)
+	{
+
+		String pid = request.getSession().getAttribute("pid").toString();
+		TjzTbTable tbBean = tjzBackService.parentCourseQuery(pid);
+		return tbBean;
+	}
+
+	/**
+	 * 教师查看班级信息
+	 * by 汤建志
+	 */
+	@RequestMapping("/teacherCourseQuery.action")
+	@ResponseBody
+//	@Log(operationType = "查询操作", operationName = "课程管理")
+	public TjzTbTable teacherCourseQuery(HttpServletRequest request, String page, String limit, String startDate, String endDate, String cName)
+	{
+
+		String wid = request.getSession().getAttribute("wid").toString();
+		TjzTbTable tbBean = tjzBackService.teacherCourseQuery(page, limit, startDate, endDate, cName, wid);
+		return tbBean;
+	}
+
+
+	/**
+	 * 教师查看上下周课程表
+	 * by 汤建志
+	 */
+	@RequestMapping("/teacherWeekcourseTable.action")
+//	@Log(operationType = "查询操作", operationName = "课程表")
+	public String teacherWeekcourseTable(HttpServletRequest request, HttpServletResponse response, String cid, String wid)
+	{
+		String nowDate = request.getParameter("now-Date");
+		String doWhich = request.getParameter("doWhich");
+		Date date = Tool.getDateType(nowDate);
+		List<Date> dateList;
+		if ("上一周".equals(doWhich))
+		{
+			dateList = Tool.dateToWeek(Tool.getLastWeekMonday(date));
+
+
+		} else
+		{
+
+			dateList = Tool.dateToWeek(Tool.getNextWeekMonday(date));
+
+		}
+		List<String> days = Tool.getDateType(dateList);
+		Map<String, Object> map2 = new HashMap<String, Object>();
+		map2.put("startDate", days.get(0));
+		map2.put("endDate", days.get(days.size() - 1));
+		map2.put("wid", wid);
+		map2.put("cid", cid);
+		Map<String, List<TjzTbCourse>> map = tjzBackService.teacherCourseTable(map2);
+		request.setAttribute("cid", cid);
+		request.setAttribute("wid", wid);
+		request.setAttribute("tableBody", map);
+		request.setAttribute("tableHead", days);
+		return "teachercoursetable";
+
+
+	}
+
+
+	/**
+	 * 教师查看本周课程表
+	 * by 汤建志
+	 */
+	@RequestMapping("/teacherCourseTable.action")
+//	@Log(operationType = "查询操作", operationName = "课程表")
+	public String teacherCourseTable(HttpServletRequest request, String cid, String bid)
+	{
+
+
+		String wid = request.getSession().getAttribute("wid").toString();
+		Date date = new Date(System.currentTimeMillis());
+		List<Date> dateList = Tool.dateToWeek(date);
+		List<String> days = Tool.getDateType(dateList);
+		Map<String, Object> map2 = new HashMap<String, Object>();
+		map2.put("startDate", days.get(0));
+		map2.put("endDate", days.get(days.size() - 1));
+		map2.put("wid", wid);
+		map2.put("cid", cid);
+		Map<String, List<TjzTbCourse>> map = tjzBackService.teacherCourseTable(map2);
+		if (null != map)
+		{
+			request.setAttribute("cid", cid);
+			request.setAttribute("wid", wid);
+			request.setAttribute("tableBody", map);
+			request.setAttribute("tableHead", days);
+			return "teachercoursetable";
+		} else
+		{
+			System.out.println("fail");
+			return "teachercoursetable";
+
+		}
+	}
+
+	/**
+	 * 批量插入空课程表
+	 * by 汤建志
+	 */
+	@RequestMapping("/insertCodeBatch.action")
+	public int insertCodeBatch()
+	{
+		List<TjzTbCourse> courseList2 = new ArrayList<TjzTbCourse>();
+
+		for (int i = 0; i < 3; i++)
+		{
+			TjzTbCourse course = new TjzTbCourse();
 			course.setcDate("2019-12-19");
 			course.setCid(1);
 			course.setSubId(1);
@@ -41,32 +283,39 @@ public class TjzAdminHandler
 		}
 		tjzBackService.insertCodeBatch(courseList2);
 		return 2;
-	};
+	}
 
 
-	//查询科目
+	/**
+	 * 科目下拉框
+	 * by 汤建志
+	 */
 	@RequestMapping("/findSubject.action")
 	public ModelAndView findSubject(HttpServletRequest req)
 	{
-		List<TjzTbSubject>  subjects=tjzBackService.findSubject();
+		List<TjzTbSubject> subjects = tjzBackService.findSubject();
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("courseadd");
-		modelAndView.addObject("subjects",subjects);
+		modelAndView.addObject("subjects", subjects);
 		return modelAndView;
 	}
 
-	//添加课程
+	/**
+	 * 排课
+	 * by 汤建志
+	 */
 	@RequestMapping("/addSubject.action")
 	@ResponseBody
+	@Log(operationType = "插入操作", operationName = "园长排课")
 	public TjzTbTable addSubject(HttpServletRequest req)
 	{
-		TjzTbTable tjzTbTable=new TjzTbTable();
+		TjzTbTable tjzTbTable = new TjzTbTable();
 		String subjects = req.getParameter("subjects");
 		String couId = req.getParameter("couId");
-		TjzTbCourse course=new TjzTbCourse();
+		TjzTbCourse course = new TjzTbCourse();
 		course.setCouId(Integer.valueOf(couId));
 		course.setSubId(Integer.valueOf(subjects));
-		int flag= tjzBackService.addSubject(course);
+		int flag = tjzBackService.addSubject(course);
 		if (flag > 0)
 		{
 			tjzTbTable.setMsg("1");
@@ -78,137 +327,119 @@ public class TjzAdminHandler
 		return tjzTbTable;
 	}
 
-
-
-
-
+	/**
+	 * 园长查看上下周课程表
+	 * by 汤建志
+	 */
 	@RequestMapping("/weekcourseTable.action")
-	@Log(operationType = "查询操作", operationName = "课程表")
-	public String weekcourseTable(HttpServletRequest request, HttpServletResponse response,String cid)
+//	@Log(operationType = "查询操作", operationName = "课程表")
+	public String weekcourseTable(HttpServletRequest request, HttpServletResponse response, String cid)
 	{
 		String nowDate = request.getParameter("now-Date");
 		String doWhich = request.getParameter("doWhich");
 		Date date = Tool.getDateType(nowDate);
-		int intCid=Integer.valueOf(cid);
+		int intCid = Integer.valueOf(cid);
+		Map<String, List<TjzTbCourse>> map;
+		List<String> days;
 		if ("上一周".equals(doWhich))
 		{
-
 			List<Date> dateList = Tool.dateToWeek(Tool.getLastWeekMonday(date));
 			List<String> daySting = Tool.getDateType(dateList);
 			Date toDay = new Date(System.currentTimeMillis());
 			List<Date> toDays = Tool.dateToWeek(toDay);
 			List<String> toDaysSting = Tool.getDateType(toDays);
-
-			Date date1=Tool.getDateType((toDaysSting.get(6)));
-			Date date2=Tool.getDateType((daySting.get(6)));
-			if(dateList.get(6).getTime()>toDays.get(6).getTime()){
-
-				List<String> days = Tool.getDateType(dateList);
-				Map<String, Object> map2 = new HashMap<String, Object>();
-				map2.put("startDate",days.get(0));
-				map2.put("endDate",days.get(days.size() - 1));
-				map2.put("cid", cid);
-				Map<String, List<TjzTbCourse>> map= tjzBackService.courseTable(map2);
-				request.setAttribute("cid", cid);
-				request.setAttribute("tableBody", map);
-				request.setAttribute("tableHead", days);
-				return "coursetable";
-			}else {
-
-
-				List<String> days = Tool.getDateType(toDays);
-				Map<String, Object> map2 = new HashMap<String, Object>();
-				map2.put("startDate",days.get(0));
-				map2.put("endDate",days.get(days.size() - 1));
-				map2.put("cid", cid);
-				Map<String, List<TjzTbCourse>> map= tjzBackService.courseTable(map2);
-				if (null != map)
-				{
-					request.setAttribute("cid", cid);
-					request.setAttribute("tableBody", map);
-					request.setAttribute("tableHead", days);
-					return "coursetable";
-				} else
-				{
-					System.out.println("fail");
-					return "coursetable";
-
-				}
-
-
+			Date date1 = Tool.getDateType((toDaysSting.get(6)));
+			Date date2 = Tool.getDateType((daySting.get(6)));
+			if (dateList.get(6).getTime() > toDays.get(6).getTime())
+			{
+				days = Tool.getDateType(dateList);
+			} else
+			{
+				days = Tool.getDateType(toDays);
 			}
-
-		}
-		else
-		{
-
-			List<Date> dateList = Tool.dateToWeek(Tool.getNextWeekMonday(date));
-			List<String> days = Tool.getDateType(dateList);
 			Map<String, Object> map2 = new HashMap<String, Object>();
-			map2.put("startDate",days.get(0));
-			map2.put("endDate",days.get(days.size() - 1));
+			map2.put("startDate", days.get(0));
+			map2.put("endDate", days.get(days.size() - 1));
 			map2.put("cid", cid);
-			Map<String, List<TjzTbCourse>> map= tjzBackService.courseTable(map2);
-
-			if (!(map.size()>0)){
-				List<TjzTbCourse > courseList2=new ArrayList<TjzTbCourse>();
-				for (int i = 0; i <5 ; i++)
+			map = tjzBackService.courseTable(map2);
+		} else
+		{
+			List<Date> dateList = Tool.dateToWeek(Tool.getNextWeekMonday(date));
+			days = Tool.getDateType(dateList);
+			Map<String, Object> map2 = new HashMap<String, Object>();
+			map2.put("startDate", days.get(0));
+			map2.put("endDate", days.get(days.size() - 1));
+			map2.put("cid", cid);
+			map = tjzBackService.courseTable(map2);
+			if (!(map.size() > 0))
+			{
+				List<TjzTbCourse> courseList2 = new ArrayList<TjzTbCourse>();
+				for (int i = 0; i < 5; i++)
 				{
-					for (int j = 0; j <5 ; j++)
+					for (int j = 0; j < 5; j++)
 					{
-
-						TjzTbCourse course=new TjzTbCourse();
+						TjzTbCourse course = new TjzTbCourse();
 						course.setcDate(days.get(i));
 						course.setCid(intCid);
 						course.setSubId(1);
-						course.setcOrder(String.valueOf(j+1));
+						course.setcOrder(String.valueOf(j + 1));
 						courseList2.add(course);
 					}
-
 				}
 				tjzBackService.insertCodeBatch(courseList2);
-				 map= tjzBackService.courseTable(map2);
+				map = tjzBackService.courseTable(map2);
 			}
-
+		}
+		if (null != map)
+		{
 			request.setAttribute("cid", cid);
 			request.setAttribute("tableBody", map);
-				request.setAttribute("tableHead", days);
-				return "coursetable";
+			request.setAttribute("tableHead", days);
+			return "coursetable";
+		} else
+		{
+			System.out.println("fail");
+			return "coursetable";
 		}
 	}
 
+	/**
+	 * 园长查看本周课程表
+	 * by 汤建志
+	 */
 	@RequestMapping("/courseTable.action")
-	@Log(operationType = "查询操作", operationName = "课程表")
-	public String courseTable(HttpServletRequest request,String cid)
+//	@Log(operationType = "查询操作", operationName = "课程表")
+	public String courseTable(HttpServletRequest request, String cid)
 	{
 
 		Date date = new Date(System.currentTimeMillis());
 		List<Date> dateList = Tool.dateToWeek(date);
 		List<String> days = Tool.getDateType(dateList);
 		Map<String, Object> map2 = new HashMap<String, Object>();
-		map2.put("startDate",days.get(0));
-		map2.put("endDate",days.get(days.size() - 1));
+		map2.put("startDate", days.get(0));
+		map2.put("endDate", days.get(days.size() - 1));
 		map2.put("cid", cid);
-		Map<String, List<TjzTbCourse>> map= tjzBackService.courseTable(map2);
-		int intCid=Integer.valueOf(cid);
-		if (!(map.size()>0)){
-			List<TjzTbCourse > courseList2=new ArrayList<TjzTbCourse>();
-			for (int i = 0; i <5 ; i++)
+		Map<String, List<TjzTbCourse>> map = tjzBackService.courseTable(map2);
+		int intCid = Integer.valueOf(cid);
+		if (!(map.size() > 0))
+		{
+			List<TjzTbCourse> courseList2 = new ArrayList<TjzTbCourse>();
+			for (int i = 0; i < 5; i++)
 			{
-				for (int j = 0; j <5 ; j++)
+				for (int j = 0; j < 5; j++)
 				{
 
-					TjzTbCourse course=new TjzTbCourse();
+					TjzTbCourse course = new TjzTbCourse();
 					course.setcDate(days.get(i));
 					course.setCid(intCid);
 					course.setSubId(1);
-					course.setcOrder(String.valueOf(j+1));
+					course.setcOrder(String.valueOf(j + 1));
 					courseList2.add(course);
 				}
 
 			}
 			tjzBackService.insertCodeBatch(courseList2);
-			map= tjzBackService.courseTable(map2);
+			map = tjzBackService.courseTable(map2);
 		}
 
 
@@ -227,30 +458,19 @@ public class TjzAdminHandler
 	}
 
 
-
-
+	/**
+	 * 园长课程管理
+	 * by 汤建志
+	 */
 	@RequestMapping("/courseManagement.action")
 	@ResponseBody
-	@Log(operationType = "查询操作", operationName = "课程管理")
+//	@Log(operationType = "管理操作", operationName = "课程管理")
 	public TjzTbTable courseManagement(String page, String limit, String startDate, String endDate, String cName)
 	{
 
 		TjzTbTable tbBean = tjzBackService.courseManagement(page, limit, startDate, endDate, cName);
 		return tbBean;
 	}
-
-	@RequestMapping("/findLog.action")
-	@ResponseBody
-	public TjzTbTable FindLog(String page, String limit, String startDate, String endDate, String userName)
-	{
-		TjzTbTable tbBean = tjzBackService.showLogTable(page, limit, startDate, endDate, userName);
-		return tbBean;
-	}
-
-
-
-
-
 
 
 

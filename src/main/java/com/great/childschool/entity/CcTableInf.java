@@ -11,6 +11,8 @@ public class CcTableInf
 	private String wname;
 	private String bname;
 	private String rname;
+	private String pname;
+	private String cname;
 	private int page;
 
 	public CcTableInf()
@@ -76,4 +78,25 @@ public class CcTableInf
 	{
 		this.page = page;
 	}
+
+	public String getPname()
+	{
+		return pname;
+	}
+
+	public void setPname(String pname)
+	{
+		this.pname = pname;
+	}
+
+	public String getCname()
+	{
+		return cname;
+	}
+
+	public void setCname(String cname)
+	{
+		this.cname = cname;
+	}
 }
+

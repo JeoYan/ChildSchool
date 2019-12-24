@@ -128,7 +128,7 @@ public class YjjWorkerLoginController
 	@RequestMapping("login.action")
 	public ModelAndView login(HttpServletRequest request)
 	{
-		//登入成功后，将家长的名字和id存在Session中
+		//登入成功后，将工作人员的名字和id存在Session中
 		request.getSession().setAttribute("wName", workerSuccess.getWname());
 		request.getSession().setAttribute("wid", workerSuccess.getWid());
 		ModelAndView modelAndView = new ModelAndView();

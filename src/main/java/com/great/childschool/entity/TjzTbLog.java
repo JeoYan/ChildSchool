@@ -1,59 +1,75 @@
 package com.great.childschool.entity;
 
+/**
+ * 日志实体类
+ * by 汤建志
+ */
 public class TjzTbLog
 {
-	private int logId;;
-	private	String operator;
-	private String operationTime;
-	private	String	operationalMatters;
+	private int lid;
+	private int wid;
+	private	String lTime;
+	private	String wName;
+	private String lEvent;
+
 
 	public TjzTbLog()
 	{
 	}
 
-	public int getLogId()
+	public int getLid()
 	{
-		return logId;
+		return lid;
 	}
 
-	public void setLogId(int logId)
+	public void setLid(int lid)
 	{
-		this.logId = logId;
+		this.lid = lid;
 	}
 
-	public String getOperator()
+	public int getWid()
 	{
-		return operator;
+		return wid;
 	}
 
-	public void setOperator(String operator)
+	public void setWid(int wid)
 	{
-		this.operator = operator;
+		this.wid = wid;
 	}
 
-	public String getOperationTime()
+	public String getlTime()
 	{
-		return operationTime;
+		return lTime;
 	}
 
-	public void setOperationTime(String operationTime)
+	public void setlTime(String lTime)
 	{
-		this.operationTime = operationTime;
+		this.lTime = lTime;
 	}
 
-	public String getOperationalMatters()
+	public String getlEvent()
 	{
-		return operationalMatters;
+		return lEvent;
 	}
 
-	public void setOperationalMatters(String operationalMatters)
+	public void setlEvent(String lEvent)
 	{
-		this.operationalMatters = operationalMatters;
+		this.lEvent = lEvent;
+	}
+
+	public String getwName()
+	{
+		return wName;
+	}
+
+	public void setwName(String wName)
+	{
+		this.wName = wName;
 	}
 
 	@Override
 	public String toString()
 	{
-		return "TjzTbLog{" + "logId=" + logId + ", operator='" + operator + '\'' + ", operationTime='" + operationTime + '\'' + ", operationalMatters='" + operationalMatters + '\'' + '}';
+		return "TjzTbLog{" + "lid=" + lid + ", wid=" + wid + ", lTime='" + lTime + '\'' + ", wName='" + wName + '\'' + ", lEvent='" + lEvent + '\'' + '}';
 	}
 }

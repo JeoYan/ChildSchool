@@ -39,8 +39,17 @@ public interface YjjWorkerPowerControlMapper
 	List<TblMenu> findChildMenu(@Param("wid")int wid,@Param("mid")int mid);
 
 
-	//查询获得用户的拥有的菜单是否勾选 by严俊杰
+	//查询获得用户的拥有的菜单是否勾选 by严俊杰 12.19
 	@Select("select * from tbl_menu_role where wid=#{wid} and mid=#{mid}")
 	YjjTblMenuRole findMenuStatus(@Param("wid")int wid, @Param("mid")int mid);
+
+	//请空用户的菜单的勾选状态,4为不勾选 by严俊杰 12.20
+	@Update("update tbl_menu_role set sid=4 where wid=#{wid}")
+	int initSid(@Param("wid")String wid);
+
+	//修改sid为勾选3, by严俊杰 12.20
+	@Update("update tbl_menu_role set sid=3 where wid=#{wid} and mid=#{mid}")
+	int updateSid(@Param("wid")String wid,@Param("mid")int mid);
+
 
 }

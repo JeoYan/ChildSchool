@@ -2,17 +2,20 @@ package com.great.childschool.entity;
 
 
 /**
- * 汤建志
  * 班级实体类
+ * by 汤建志
  */
 public class TjzTbClassRoom
 {
+
 	private int cid;
 	private String cName;
 	private String classroom;
 	private int wid;
 	private String courseAddDate;
 	private String wName;
+	private int bid;
+	private String bName;
 
 	public TjzTbClassRoom()
 	{
@@ -78,9 +81,29 @@ public class TjzTbClassRoom
 		this.wName = wName;
 	}
 
+	public int getBid()
+	{
+		return bid;
+	}
+
+	public void setBid(int bid)
+	{
+		this.bid = bid;
+	}
+
+	public String getbName()
+	{
+		return bName;
+	}
+
+	public void setbName(String bName)
+	{
+		this.bName = bName;
+	}
+
 	@Override
 	public String toString()
 	{
-		return "TjzTbClassRoom{" + "cid=" + cid + ", cName='" + cName + '\'' + ", classroom='" + classroom + '\'' + ", wid=" + wid + ", courseAddDate='" + courseAddDate + '\'' + ", wName='" + wName + '\'' + '}';
+		return "TjzTbClassRoom{" + "cid=" + cid + ", cName='" + cName + '\'' + ", classroom='" + classroom + '\'' + ", wid=" + wid + ", courseAddDate='" + courseAddDate + '\'' + ", wName='" + wName + '\'' + ", bid=" + bid + ", bName='" + bName + '\'' + '}';
 	}
 }
