@@ -55,7 +55,7 @@
 						<label class="layadmin-user-login-icon layui-icon layui-icon-vercode"
 						       for="LAY-user-login-vercode"></label>
 						<input type="text" name="vercode" id="LAY-user-login-vercode" lay-verify="required"
-						       placeholder="图形验证码" class="layui-input">
+						       placeholder="图形验证码" class="layui-input" value="123">
 					</div>
 
 					<div class="layui-col-xs5">

@@ -95,15 +95,13 @@
 
 </div>
 
-
 <script type="text/html" id="barDemo">
 	<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看绘本</a>
-	<a class="layui-btn layui-btn-xs" lay-event="edit">重新上传</a>
+	<a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
 	<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 
 <script>
-
 	layui.use('form', function () {
 		var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
 
@@ -129,9 +127,10 @@
 				// ,
 				{type: 'numbers', title: '序号', align: 'center'}
 				, {field: 'bookName', title: '绘本名称', align: 'center'}
+				, {field: 'bookid', title: '书序号', align: 'center'}
 				, {field: 'url', title: '绘本地址', align: 'center', hide: true}
 				, {field: 'uploadDate', title: '上传时间', align: 'center'}
-				, {field: 'wName', title: '上传人'}
+				, {field: 'wName', title: '上传人',align: "center"}
 				// , {field: 'cid', title: 'cid', hide: true}
 				, {field: '', title: '操作', align: "center", toolbar: "#barDemo"}
 
@@ -165,7 +164,6 @@
 			var $ = layui.$
 				, form = layui.form
 				, table = layui.table;
-
 			//监听搜索
 			$('#serace').on('click', function () {
 
@@ -185,132 +183,83 @@
 
 			});
 
-			//修改
+			//表格操作框按钮监听
 			table.on('tool(demo)', function (obj) {//注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
 				var data = obj.data;//获得当前行数据
 				if (obj.event === 'edit') {
-					alert("重新上传绘本");
+					// alert("修改");
+					var bName=data.bookName;
+					var bookid=data.bookid;
+
+					// alert(bName+bookid);
 					layer.open({
 						type: 2
-						, title: '重新上传绘本'
-						, content: '/ChildSchool/updatefoodview.action'
+						, title: '修改'
+						, content: '${pageContext.request.contextPath}/readBook/updateReadBook.action'
 						, maxmin: true
 						, area: ['500px', '450px']
-						, btn: ['确定', '取消']
+						// , btn: ['确定', '取消']
 						, success: function (layero, index) {
 							//回显到窗口
 							var body = layer.getChildFrame('body', index);
-							body.find("#fdate").val(data.fdate);
-							body.find("#fitem").val(data.fitem);
-							body.find("#fname").val(data.fname);
-
+							body.find("#bName").val(bName);
+							body.find("#hideBookid").val(bookid);
 						}
-						, yes: function (index, layero) {
-							//窗口拿数据
-
-							//日期
-							var fdate = $(layero).find('iframe')[0].contentWindow.fdate.value;
-							//餐别
-							var fitem = $(layero).find('iframe')[0].contentWindow.fitem.value;
-							//菜品
-							var fname = $(layero).find('iframe')[0].contentWindow.fname.value;
-
-							alert(fname);
-
-							if (Number(fdate.length) === 0) {
-								layer.msg("请选择日期");
-							} else if (Number(fitem.length) === 0) {
-								layer.msg("请选择餐别");
-							} else if (Number(fname.length) === 0) {
-								layer.msg("请输入菜品");
-							} else {
-								var ob = {
-									fdate: fdate,
-									fitem: fitem,
-									fname: fname
-								};
-
-								$.ajax({
-									type: "POST",//提奥的方式
-									url: "/ChildSchool/updateFood.action",//提交的地址
-									data: ob,//提交的数据
-									dataType: "json",//希望返回的数据类型
-									async: true,//异步操作
-									success: function (num) {//成功的方法  msg为返回数据
-										// alert(num);
-										//msg字符串切割得到list和
-
-										//未查询到数据时执行
-										if (num >= 1) {
-											layer.msg("修改成功");
-
-											// //刷新表格
-											// table.reload();
-											layer.close(index);
-											table.reload('demo');
-
-										}
-									},
-									error: function () {//错误的方法
-										alert("服务器未找到")
-									}
-								});
-
-							}
-
-
-						},
-
-						// ,value: data.USERNAME
 					});
 				} else if (obj.event === 'del') {
 					layer.confirm('确定删除？', function (index) {
 						// layer.close(index);
 						//膳食id
-						var fid = data.fid;
-						var ob = {fid: fid};
-						// $.ajax({
-						// 	type: "POST",//提奥的方式
-						// 	url: "/ChildSchool/deleteFood.action",//提交的地址
-						// 	data: ob,//提交的数据
-						// 	dataType: "json",//希望返回的数据类型
-						// 	async: true,//异步操作
-						// 	success: function (num) {//成功的方法  msg为返回数据
-						// 		// alert(num);
-						// 		//msg字符串切割得到list和
-						//
-						// 		//未查询到数据时执行
-						// 		if (num >= 1) {
-						// 			layer.msg("删除成功");
-						//
-						// 			var index = table.cache.demo;
-						// 			alert(index.length === 1);
-						// 			if (index.length === 1) {
-						// 				table.reload('demo', {
-						// 					page: {
-						// 						curr: 1
-						// 					}
-						// 				});
-						// 			} else {
-						// 				table.reload('demo');
-						//
-						// 			}
-						//
-						// 			// //刷新表格
-						// 			// table.reload();
-						// 			layer.close(index);
-						//
-						// 		}
-						// 	},
-						// 	error: function () {//错误的方法
-						// 		alert("服务器未找到")
-						// 	}
-						// });
+						var bookid = data.bookid;
+						// alert("bookid"+bookid);
+						var ob = {'bookid': bookid};
+						$.ajax({
+						type: "POST",//提奥的方式
+							url: "${pageContext.request.contextPath}/readBook/delBook.action",//提交的地址--%>
+							data: ob,//提交的数据
+							dataType: "text",//希望返回的数据类型
+							async: true,//异步操作
+							success: function (num) {//成功的方法  msg为返回数据
+								// alert(num);
+								//msg字符串切割得到list和
+								//未查询到数据时执行
+								if (num >= 1) {
+									layer.msg("删除成功");
+									var index = table.cache.demo;
+									if (index.length === 1) {
+										table.reload('demo', {
+											page: {
+												curr: 1
+											}
+										});
+									} else {
+										table.reload('demo');
+									}
+									// //刷新表格
+									// table.reload();
+									layer.close(index);
+								}
+							},
+							error: function () {//错误的方法
+								alert("服务器未找到")
+							}
+						});
 
 					});
 				} else if (obj.event === 'detail') {
+					// alert("查看绘本");
+					var bookid=data.bookid;
+					// alert("bookid"+bookid);
+					$.getJSON('${pageContext.request.contextPath}/readBook/getBook.action?bookid='+bookid, function(json){
+						alert(json);
+						layer.photos({
+							photos: json
+							,shift: 5 //0-6的选择，指定弹出图片动画类型，默认随机
+						});
+					});
 
-					alert("查看绘本");
+
+
 				}
 
 			});
@@ -347,92 +296,15 @@
 					});
 				}
 				, add: function () {
-					layer.open({
+					var a=layer.open({
 						type: 2
 						, title: '上传绘本'
-						, content: '/ChildSchool/aadfoodview.action'
-						, maxmin: true
-						, area: ['500px', '450px']
-						, btn: ['确定', '取消']
-						, yes: function (index, layero) {
-							//alert("增加");
-							//日期
-							var fdate = $(layero).find('iframe')[0].contentWindow.fdate.value;
-
-							//餐别
-							var fitem = $(layero).find('iframe')[0].contentWindow.fitem.value;
-							//菜品
-							var fname = $(layero).find('iframe')[0].contentWindow.fname.value;
-
-
-							if (Number(fdate.length) === 0) {
-								layer.msg("请选择日期");
-							} else if (Number(fitem.length) === 0) {
-								layer.msg("请选择餐别");
-							} else if (Number(fname.length) === 0) {
-								layer.msg("请输入菜品");
-							} else {
-								var ob = {
-									fdate: fdate,
-									fitem: fitem,
-									fname: fname
-								};
-
-								$.ajax({
-									type: "POST",//提奥的方式
-									url: "/ChildSchool/addfood.action",//提交的地址
-									data: ob,//提交的数据
-									dataType: "json",//希望返回的数据类型
-									async: true,//异步操作
-									success: function (num) {//成功的方法  msg为返回数据
-
-										//msg字符串切割得到list和
-
-										//未查询到数据时执行
-										if (num >= 1) {
-											layer.msg("添加成功");
-
-											// //刷新表格
-											// table.reload();
-											table.reload('demo');
-											layer.close(index);
-										} else if (num === 0) {
-											layer.msg("该时段的膳食已添加过了，请重新选择时段");
-										}
-									},
-									error: function () {//错误的方法
-										alert("服务器未找到")
-									}
-								});
-
-							}
-
-
-							// if(!new RegExp("^1[345789]\d{9}$").test(vision)){
-							// 	layer.msg("手机号码格式错误");
-							// }
-
-
-							// var iframeWindow = window['layui-layer-iframe']
-							// 	,submitID = 'LAY-user-front-submit'
-							// 	,submit = layero.find('iframe').contents().find('#'+ submitID);
-							//
-							// //监听提交
-							// iframeWindow.layui.form.on('submit('+ submitID +')', function(data){
-							// 	var field = data.field; //获取提交的字段
-							//
-							// 	alert(field);
-							//
-							//
-							// 	//提交 Ajax 成功后，静态更新表格中的数据
-							// 	//$.ajax({});
-							// 	table.reload('LAY-user-front-submit'); //数据刷新
-							//关闭弹层
-							// });
-							//
-							// submit.trigger('click');
-						}
+						, content: '${pageContext.request.contextPath}/readBook/callAddPage.action'
+						, maxmin : true
+						, area: ['500px', '550px']
+						// , btn: ['确定', '取消']
 					});
+					layer.full(a);
 				}
 			};
 

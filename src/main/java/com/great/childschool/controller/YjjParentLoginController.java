@@ -1,6 +1,7 @@
 package com.great.childschool.controller;
 
 import com.great.childschool.entity.TblParent;
+import com.great.childschool.entity.YjjTblBookPage;
 import com.great.childschool.service.YjjParentLoginService;
 import com.great.childschool.tools.RandomValidateCodeUtil;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -87,7 +89,7 @@ public class YjjParentLoginController
 		//从session中获取随机数
 		String random = (String) session.getAttribute("RANDOMVALIDATECODEKEY");
 		System.out.println("-----------家长登入验证码------------"+random);
-		if(random.equalsIgnoreCase(verifyCode)){
+//		if(random.equalsIgnoreCase(verifyCode)){
 			TblParent parent= parentLoginService.parentLoginCheck(uPhone,passWord);
 
 			if(null!=parent){
@@ -101,9 +103,9 @@ public class YjjParentLoginController
 			}else{
 				result="NotExist";
 			}
-		}else{
-			result="vercodeError";
-		}
+//		}else{
+//			result="vercodeError";
+//		}
 		return result;
 	}
 	/**
@@ -121,6 +123,27 @@ public class YjjParentLoginController
 		modelAndView.setViewName("parentmenu");
 		return modelAndView;
 	}
+
+	/**-------------------------------------------------------
+	 *--------------------------------亲子阅读部分---------------
+	 */
+
+	@RequestMapping("readBookPage.action")
+	public ModelAndView readBookPage(){
+		ModelAndView modelAndView=new ModelAndView();
+		//获得所有书籍第一页信息
+		List<YjjTblBookPage> list= parentLoginService.getBookFirstPage();
+		modelAndView.addObject("dataList",list);
+		modelAndView.setViewName("readbook");
+		return modelAndView;
+	}
+
+
+
+
+
+
+
 
 
 

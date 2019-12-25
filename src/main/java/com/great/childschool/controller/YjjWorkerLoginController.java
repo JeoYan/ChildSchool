@@ -97,8 +97,8 @@ public class YjjWorkerLoginController
 		String random = (String) session.getAttribute("RANDOMVALIDATECODEKEY");
 		System.out.println("-----------工作人员登入验证码------------" + random);
 		//判断验证码是否一致
-		if (random.equalsIgnoreCase(verifyCode))
-		{
+//		if (random.equalsIgnoreCase(verifyCode))
+//		{
 			TblWorker worker = workerLoginService.workerLoginCheck(wid, passWord);
 			//判断用户是否存在
 			if(null!=worker){
@@ -114,10 +114,10 @@ public class YjjWorkerLoginController
 				result="NotExist";
 			}
 
-		} else
-		{
-			result = "vercodeError";
-		}
+//		} else
+//		{
+//			result = "vercodeError";
+//		}
 		return result;
 	}
 
