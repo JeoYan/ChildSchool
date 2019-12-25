@@ -2,10 +2,7 @@ package com.great.childschool.controller;
 
 
 import com.great.childschool.aoplog.Log;
-import com.great.childschool.entity.TjzTbCourse;
-import com.great.childschool.entity.TjzTbSubject;
-import com.great.childschool.entity.TjzTbTable;
-import com.great.childschool.entity.TjzTblParent;
+import com.great.childschool.entity.*;
 import com.great.childschool.service.TjzBackService;
 import com.great.childschool.tools.Tool;
 import org.springframework.stereotype.Controller;
@@ -30,6 +27,57 @@ public class TjzAdminHandler
 {
 	@Resource
 	private TjzBackService tjzBackService;
+
+
+	/**
+	 * 按月统计日志界面
+	 * by 汤建志
+	 */
+	@RequestMapping("/logCountByMonthView.action")
+	public ModelAndView logCountByMonthView()
+	{
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("logcountbymonth");
+		return modelAndView;
+	}
+
+	/**
+	 * 按人员统计日志界面
+	 * by 汤建志
+	 */
+	@RequestMapping("/logCountByWidView.action")
+	public ModelAndView logCountByWidView()
+	{
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("logcountbywid");
+		return modelAndView;
+	}
+
+	/**
+	 * 按月统计日志
+	 * by 汤建志
+	 */
+	@RequestMapping("/logCountByMonth.action")
+	@ResponseBody
+	public List<TjzLogCount> logCountByMonth(){
+		List<TjzLogCount> logCounts=tjzBackService.logCountByMonth();
+		System.out.println(logCounts.toString());
+		return logCounts;
+	}
+
+	/**
+	 * 按人员统计日志
+	 * by 汤建志
+	 */
+	@RequestMapping("/logCountByWid.action")
+	@ResponseBody
+	public List<TjzLogCount> logCountByWid(){
+		List<TjzLogCount> logCounts=tjzBackService.logCountByWid();
+		System.out.println(logCounts.toString());
+		return logCounts;
+	}
+
+
 
 	/**
 	 * 查询日志

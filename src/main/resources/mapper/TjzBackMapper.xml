@@ -6,6 +6,24 @@
 <mapper namespace="com.great.childschool.mapper.TjzBackMapper">
 
 
+    <!-- 按人员统计日志-->
+    <select id="logCountByWid" parameterType="com.great.childschool.entity.TjzTblParent" resultType="com.great.childschool.entity.TjzLogCount">
+     SELECT wo.wname,lc.*
+     FROM tbl_worker wo,(
+     SELECT lo.wid,COUNT(lo.wid) AS 'count'
+     FROM tbl_log lo
+     GROUP BY lo.wid) lc
+     WHERE wo.wid=lc.wid
+    </select>
+
+    <!-- 按月统计日志-->
+    <select id="logCountByMonth" parameterType="com.great.childschool.entity.TjzTblParent" resultType="com.great.childschool.entity.TjzLogCount">
+      SELECT YEAR(ldate) AS 'year' , MONTH(ldate) AS 'month' , COUNT(*) AS 'count'
+      FROM tbl_log
+      GROUP BY YEAR (ldate) DESC, MONTH(ldate)
+    </select>
+
+
     <!-- 家长修改密码-->
     <update id="parentChangePassword" parameterType="com.great.childschool.entity.TjzTblParent" >
        UPDATE tbl_parent SET ppsw=#{ppsw} WHERE pid=#{pid}
@@ -156,17 +174,18 @@
 
     <!-- 查询日志-->
     <select id="findLog" parameterType="map" resultType="com.great.childschool.entity.TjzTbLog">
-        SELECT l.lid,l.ltime,l.levent,wo.wname FROM tbl_log l,tbl_worker wo
+        SELECT l.lid,l.ltime,l.ldate,l.levent,wo.wname FROM tbl_log l,tbl_worker wo
         WHERE l.wid=wo.wid
             <if test="wName !=null and wName!=''">
                 AND wo.wname like '%' #{wName} '%'
             </if>
             <if test="startDate !=null and startDate!=''">
-                AND l.ltime &gt;= #{startDate}
+                AND l.ldate &gt;= #{startDate}
             </if>
             <if test="endDate !=null and endDate!=''">
-                AND l.ltime &lt;= #{endDate}
+                AND l.ldate &lt;= #{endDate}
             </if>
+        ORDER BY l.ldate DESC,l.ltime DESC
         LIMIT #{pstart},#{psize}
     </select>
 
@@ -187,8 +206,8 @@
 
     <!--    添加日志-->
     <insert id="addLog" parameterType="com.great.childschool.entity.TjzTbLog">
-        INSERT INTO tbl_log(wid,ltime,levent)
-        VALUES (#{wid},#{lTime},#{lEvent})
+        INSERT INTO tbl_log(wid,ltime,levent,ldate)
+        VALUES (#{wid},#{lTime},#{lEvent},#{lDate})
     </insert>
 
     <!-- 批量插入未排班课程 -->
