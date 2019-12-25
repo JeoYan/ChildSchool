@@ -16,7 +16,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page isELIgnored="false" %>
 <%
-	String path=request.getContextPath();
+	String path = request.getContextPath();
 %>
 
 <html>
@@ -25,9 +25,12 @@
 	<title>家长主页</title>
 	<meta name="renderer" content="webkit">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<meta name="viewport"
+	      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<link rel="stylesheet" href=<%=path+"/css/main.css"%>>
 	<link rel="stylesheet" href=<%=path+"/layuiadmin/layui/css/layui.css"%> media="all">
 	<link rel="stylesheet" href=<%=path+"/layuiadmin/style/admin.css"%> media="all">
+	<script src=<%=path + "/layuiadmin/layui/layui.js"%>></script>
 </head>
 <body class="layui-layout-body">
 <div id="LAY_app">
@@ -63,7 +66,8 @@
 				<div class="layui-logo" lay-href="home/console.html">
 					<span>智慧幼儿园</span>
 				</div>
-				<ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
+				<ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu"
+				    lay-filter="layadmin-system-side-menu">
 					<li data-name="home" class="layui-nav-item layui-nav-itemed">
 						<a href="javascript:;" lay-tips="幼儿中心" lay-direction="2">
 							<i class="layui-icon layui-icon-home"></i>
@@ -101,8 +105,9 @@
 						</a>
 						<dl class="layui-nav-child">
 							<dd><a lay-href="template/personalpage.html">宝宝作业</a></dd>
+							<dd><a lay-href="">宝宝往期作业</a></dd>
 							<dd><a lay-href="/ChildSchool/web/parentcoursequery.action">课程表</a></dd>
-							</dl>
+						</dl>
 					</li>
 
 					<li data-name="app" class="layui-nav-item">
@@ -125,7 +130,7 @@
 						</a>
 						<dl class="layui-nav-child">
 							<dd>
-							<dd><a lay-href="senior/echarts/line.html">在线阅读</a></dd>
+							<dd><a lay-href=<%=path + "/parentLogin/readBookPage.action"%>>在线阅读</a></dd>
 						</dl>
 					</li>
 
@@ -173,7 +178,8 @@
 			</div>
 			<div class="layui-tab" lay-unauto lay-allowClose="true" lay-filter="layadmin-layout-tabs">
 				<ul class="layui-tab-title" id="LAY_app_tabsheader">
-					<li lay-id="home/console.html" lay-attr="home/console.html" class="layui-this"><i class="layui-icon layui-icon-home"></i></li>
+					<li lay-id="home/console.html" lay-attr="home/console.html" class="layui-this"><i
+							class="layui-icon layui-icon-home"></i></li>
 				</ul>
 			</div>
 		</div>
@@ -191,7 +197,6 @@
 	</div>
 </div>
 
-<script src=<%=path + "/layuiadmin/layui/layui.js"%>></script>
 <script>
 	layui.config({
 		base: '${pageContext.request.contextPath}/layuiadmin/' //静态资源所在路径
@@ -200,8 +205,6 @@
 	}).use('index');
 </script>
 </body>
-
-
 
 
 </html>

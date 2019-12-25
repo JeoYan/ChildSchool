@@ -36,4 +36,27 @@
     </select>
 
 
+
+    <select id="findBookPage" parameterType="YjjSearchInfo" resultType="YjjTblBookPage">
+        select * from (select @rownum:=@rownum+1 as RN,A.* FROM (select @rownum:=0,tbl_book_page.*,tbl_worker.wname,tbl_readbook.bookname from tbl_worker,tbl_book_page,tbl_readbook
+        where tbl_book_page.wid=tbl_worker.wid and tbl_readbook.bookid=tbl_book_page.bookid and tbl_readbook.bookname=#{bName} ORDER BY pagenum ASC
+        )A )B where B.RN BETWEEN ((${page} - 1)* ${limit}+1) AND ${page}*${limit}
+    </select>
+    <!--    总条数-->
+    <select id="totalBookPage" parameterType="YjjSearchInfo" resultType="YjjTblBookPage">
+        select * from (select @rownum:=@rownum+1 as RN,A.* FROM (select @rownum:=0,tbl_book_page.*,tbl_worker.wname,tbl_readbook.bookname from tbl_worker,tbl_book_page,tbl_readbook
+        where tbl_book_page.wid=tbl_worker.wid and tbl_readbook.bookid=tbl_book_page.bookid and tbl_readbook.bookname=#{bName} ORDER BY pagenum ASC
+        )A )B
+    </select>
+
+
+
+
+
+
+
+
+
+
+
 </mapper>

@@ -25,6 +25,7 @@ public class Tool
 		return date;
 	}
 
+
 	public static List<String> getDateType(List<Date> typeDate)
 	{
 		List<String> dateList = new ArrayList<>();

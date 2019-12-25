@@ -104,6 +104,8 @@
 								// tree.reload('demoId1', {});
 							} else {
 								alert("修改成功！");
+								window.parent.location.reload();//刷新父页面
+								// location.reload();
 							}
 						},
 						error: function () {//错误的方法
