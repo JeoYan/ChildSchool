@@ -6,6 +6,48 @@
 <mapper namespace="com.great.childschool.mapper.TjzBackMapper">
 
 
+    <!--    文件上传-->
+    <insert id="upload" parameterType="com.great.childschool.entity.TjzTblSafeStudy">
+        INSERT INTO tbl_safestudy(safename,startdate,enddate)
+        VALUES (#{safeName},#{startDate},#{endDate})
+    </insert>
+
+
+    <!-- 教师安全教育试题表格-->
+    <select id="safeStudy" parameterType="map" resultType="com.great.childschool.entity.TjzTblSafeStudy">
+        SELECT *
+        FROM tbl_safestudy
+        <where>
+            <if test="safeName !=null and safeName!=''">
+                AND safename like '%' #{safeName} '%'
+            </if>
+            <if test="startDate !=null and startDate!=''">
+                AND safedate &gt;= #{startDate}
+            </if>
+            <if test="endDate !=null and endDate!=''">
+                AND safedate &lt;= #{endDate}
+            </if>
+        </where>
+        LIMIT #{pstart},#{psize}
+    </select>
+
+    <!--教师发布安全教育试题数量-->
+    <select id="safeStudyNum" parameterType="map" resultType="int">
+        SELECT COUNT(safeid)
+        FROM tbl_safestudy
+        <where>
+            <if test="safeName !=null and safeName!=''">
+                AND safename like '%' #{safeName} '%'
+            </if>
+            <if test="startDate !=null and startDate!=''">
+                AND safedate &gt;= #{startDate}
+            </if>
+            <if test="endDate !=null and endDate!=''">
+                AND safedate &lt;= #{endDate}
+            </if>
+        </where>
+    </select>
+
     <!-- 按人员统计日志-->
     <select id="logCountByWid" parameterType="com.great.childschool.entity.TjzTblParent" resultType="com.great.childschool.entity.TjzLogCount">
      SELECT wo.wname,lc.*

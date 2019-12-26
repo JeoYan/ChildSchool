@@ -16,6 +16,23 @@ import java.util.Map;
 public interface TjzBackMapper
 {
 
+	public int upload(TjzTblSafeStudy safeStudy);
+
+	/**
+	 * 教师发布安全教育试题
+	 * by 汤建志
+	 */
+	public List<TjzTblSafeStudy> safeStudy(Map<String, Object> map);
+
+	/**
+	 * 教师发布安全教育试题数目
+	 * by 汤建志
+	 */
+	public int safeStudyNum(Map<String, Object> map);
+
+
+
+
 	/**
 	 * 按月统计日志
 	 * by 汤建志
