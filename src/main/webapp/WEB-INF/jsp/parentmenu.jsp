@@ -118,7 +118,7 @@
 						<dl class="layui-nav-child">
 
 							<dd>
-								<a lay-href="app/message/index.html">试题学习和考试</a>
+								<a lay-href="/ChildSchool/web/safestudy.action">试题学习和考试</a>
 							</dd>
 
 						</dl>

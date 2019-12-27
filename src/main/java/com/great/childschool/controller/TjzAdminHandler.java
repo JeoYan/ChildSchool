@@ -7,12 +7,16 @@ import com.great.childschool.service.TjzBackService;
 import com.great.childschool.tools.Tool;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 
@@ -27,6 +31,58 @@ public class TjzAdminHandler
 {
 	@Resource
 	private TjzBackService tjzBackService;
+
+
+	@RequestMapping(value = "/upload.action")
+	@ResponseBody
+	@Log(operationType = "上传操作", operationName = "上传文件")
+	public Map<String,Object> backUpload(@RequestParam(value = "file") MultipartFile file, HttpServletRequest request)
+	{
+		String originalFilename =file.getOriginalFilename();
+		System.out.println(originalFilename+"----------文件名-----------");
+		String suffix = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
+		String safeName=request.getParameter("safeName");
+		String startDate=request.getParameter("startDate");
+		String endDate=request.getParameter("endDate");
+		TjzTblSafeStudy safeStudy=new TjzTblSafeStudy();
+		safeStudy.setSafeName(safeName);
+		safeStudy.setStartDate(startDate);
+		safeStudy.setEndDate(endDate);
+		String newFilename = safeName + "." + suffix;
+		String saveFilePath = "G:\\传一科技java培训\\" + newFilename;
+		Map<String,Object> map = new HashMap<String,Object>();
+		try
+		{
+			//保存到数据库
+			int flag = tjzBackService.upload(safeStudy);
+			if (flag>0){
+				//保存文件到服务器
+				file.transferTo(new File(saveFilePath));
+				map.put("msg","ok");
+			}else {
+				map.put("msg","error");
+			}
+		} catch (IOException e)
+		{
+			map.put("msg","error");
+			e.printStackTrace();
+		}
+		return map;
+	}
+
+
+	/**
+	 * 教师发布安全教育试题
+	 * by 汤建志
+	 */
+	@RequestMapping("/uploadSafeStudy.action")
+	@ResponseBody
+	public TjzTbTable uploadSafeStudy(HttpServletRequest request, String page, String limit, String startDate, String endDate, String safeName){
+		String wid = request.getSession().getAttribute("wid").toString();
+		TjzTbTable tbBean = tjzBackService.uploadsafestudy(page, limit, startDate, endDate, safeName, wid);
+		return tbBean;
+	};
+
 
 
 	/**
