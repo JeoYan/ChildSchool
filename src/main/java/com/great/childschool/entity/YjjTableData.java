@@ -1,4 +1,4 @@
-package com.great.childschool.controller;
+package com.great.childschool.entity;
 
 import java.math.BigDecimal;
 

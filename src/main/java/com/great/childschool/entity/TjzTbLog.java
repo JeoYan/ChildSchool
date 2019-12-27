@@ -11,6 +11,7 @@ public class TjzTbLog
 	private	String lTime;
 	private	String wName;
 	private String lEvent;
+	private	String lDate;
 
 
 	public TjzTbLog()
@@ -67,9 +68,13 @@ public class TjzTbLog
 		this.wName = wName;
 	}
 
-	@Override
-	public String toString()
+	public String getlDate()
 	{
-		return "TjzTbLog{" + "lid=" + lid + ", wid=" + wid + ", lTime='" + lTime + '\'' + ", wName='" + wName + '\'' + ", lEvent='" + lEvent + '\'' + '}';
+		return lDate;
+	}
+
+	public void setlDate(String lDate)
+	{
+		this.lDate = lDate;
 	}
 }

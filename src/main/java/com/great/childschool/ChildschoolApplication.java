@@ -12,4 +12,6 @@ public class ChildschoolApplication
 		SpringApplication.run(ChildschoolApplication.class, args);
 	}
 
+
 }
+

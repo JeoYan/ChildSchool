@@ -142,14 +142,10 @@ public class ZhFoodManageController
 		ModelAndView modelAndView = new ModelAndView();
 		TblChecklist tblChecklist = new TblChecklist();
 		tblChecklist.setPid(Long.valueOf(String.valueOf(request.getSession().getAttribute("pid"))).longValue());
-
 		List<TblChecklist> pageList = zhMedicalManageService.totalPageMedicalCase(tblChecklist);
 		modelAndView.addObject("bybyname", pageList.get(0).getBname());
 		modelAndView.addObject("bybysex", pageList.get(0).getBsex());
-
-
 		modelAndView.setViewName("foodcase");
-
 		return modelAndView;
 	}
 

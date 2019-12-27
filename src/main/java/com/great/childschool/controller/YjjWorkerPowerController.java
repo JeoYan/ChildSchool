@@ -8,7 +8,6 @@ import com.great.childschool.service.YjjWorkerPowerControlService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -42,11 +41,11 @@ public class YjjWorkerPowerController
 //	}
 
 	/**
-	 //	 * 调用工作人员登入页面
+	 //	 * 调用页面员登入页面
 	 //	 * by 严俊杰
 	 //	 */
 		@RequestMapping("powerPage.action")
-		public String callParentLoginPage(String wid)
+		public String callParentLoginPage()
 		{
 			return "powercontrol";
 		}

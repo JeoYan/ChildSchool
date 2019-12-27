@@ -32,7 +32,6 @@
 			dataType : "json",
 			success : function(studentCountList) {
 
-
 				for (var i = 0; i < studentCountList.length; i++) {
 					//alert(postCountList[i].name);
 					nameArr.push(studentCountList[i].classname);

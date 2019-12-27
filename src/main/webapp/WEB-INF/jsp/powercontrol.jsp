@@ -112,7 +112,6 @@
 
 	layui.use('table', function () {
 		var table = layui.table;
-
 		//第一个实例
 		table.render({
 			elem: '#demo'
@@ -134,7 +133,6 @@
 				// 		str +="</div>";
 				// 		 return str;
 				// 	}},
-
 				{fixed: 'right', width:178, align:'center', toolbar: '#barDemo'},
 				{field: 'sid', title: '用户状态',align: 'center',templet:function(d){
 						var status;
@@ -178,12 +176,10 @@
 		table.on('tool(demo)', function (obj) {//注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
 			var data = obj.data;//获得当前行数据
 			var wid=data.wid;
-
 			if (obj.event === 'edit') {
 				layer.open({
 					type: 2
 					, title: '权限修改'
-
 					, maxmin: true
 					, area: ['450px', '500px']
 					, success: function (layero, index) {

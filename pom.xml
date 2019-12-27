@@ -105,6 +105,14 @@
         </dependency>
 
 
+        <!--FreeMarker模板视图依赖-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-freemarker</artifactId>
+        </dependency>
+
+
+
     </dependencies>
 
     <build>

@@ -26,6 +26,63 @@ public class TjzBackService
 	private TjzBackMapper tjzBackMapper;
 
 
+	/**
+	 * 教师上传安全教育视频
+	 * by 汤建志
+	 */
+	@Transactional
+	public int upload(TjzTblSafeStudy safeStudy)
+	{
+		int flag = tjzBackMapper.upload(safeStudy);
+		return flag;
+	}
+
+
+
+	/**
+	 * 教师发布安全教育试题
+	 * by 汤建志
+	 */
+	public TjzTbTable uploadsafestudy(String page, String limit, String startDate, String endDate, String safeName,String wid){
+		TjzTbTable tbBean = new TjzTbTable();
+		Map<String, Object> map = new HashMap<String, Object>();
+		int psize = Integer.valueOf(limit);
+		int pstart = (Integer.valueOf(page) - 1) * psize;
+		map.put("pstart", pstart);
+		map.put("psize", psize);
+		map.put("startDate", startDate);
+		map.put("endDate", endDate);
+		map.put("safeName", safeName);
+		map.put("wid", wid);
+		List<TjzTblSafeStudy> list = tjzBackMapper.safeStudy(map);
+		tbBean.setData(list);
+		tbBean.setCount(String.valueOf(tjzBackMapper.safeStudyNum(map)));
+		tbBean.setCode("0");
+		tbBean.setMsg(null);
+		return tbBean;
+	};
+
+
+
+
+	/**
+	 * 按月统计日志
+	 * by 汤建志
+	 */
+	@Transactional
+	public List<TjzLogCount> logCountByMonth( ){
+		return tjzBackMapper.logCountByMonth( );
+	};
+
+	/**
+	 * 按人员统计日志
+	 * by 汤建志
+	 */
+	@Transactional
+	public List<TjzLogCount> logCountByWid( ){
+		return tjzBackMapper.logCountByWid( );
+	};
+
 
 	/**
 	 * 家长修改密码
