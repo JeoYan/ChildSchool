@@ -40,14 +40,14 @@
 
 		<label class="layui-form-label">姓名</label>
 		<div class="layui-input-inline">
-			<input type="text" name="wname" id="wname" lay-verify="required" lay-reqtext="宝宝名称是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input" value="${sessionScope.wname}" >
+			<input type="text" name="wname" id="wname" readonly style="background-color:transparent;border: 0px" lay-verify="required" lay-reqtext="宝宝名称是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input" value="${sessionScope.wname}" >
 		</div>
 
 
 
 		<label class="layui-form-label">性别</label>
 		<div class="layui-input-inline">
-			<input type="text" name="wsex" id="wsex" lay-verify="required" lay-reqtext="宝宝名称是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input" value="${sessionScope.wsex}" >
+			<input type="text" name="wsex" id="wsex" readonly style="background-color:transparent;border: 0px" lay-verify="required" lay-reqtext="宝宝名称是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input" value="${sessionScope.wsex}" >
 
 		</div>
 
@@ -57,13 +57,13 @@
 	<div class="layui-form-item" >
 		<label class="layui-form-label">角色</label>
 		<div class="layui-input-inline">
-			<input type="text" name="rname" id="rname" lay-verify="required" lay-reqtext="宝宝名称是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input" value="${sessionScope.rname}">
+			<input type="text" name="rname" id="rname" readonly style="background-color:transparent;border: 0px" lay-verify="required" lay-reqtext="宝宝名称是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input" value="${sessionScope.rname}">
 		</div>
 
 		<div class="layui-inline">
 		<label class="layui-form-label">出生年月</label>
 		<div class="layui-inline">
-			<input class="layui-input" type="date" name="wbirth" id="wbirth" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" value="${sessionScope.wbrith}">
+			<input class="layui-input" type="date" name="wbirth"  readonly style="background-color:transparent;border: 0px" id="wbirth" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" value="${sessionScope.wbrith}">
 		</div>
 		</div>
 
@@ -73,13 +73,13 @@
 		<div class="layui-inline">
 			<label class="layui-form-label">入园日期</label>
 			<div class="layui-inline">
-				<input class="layui-input" type="date" name="wdate" id="wdate" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" value="${sessionScope.wdate}">
+				<input class="layui-input" type="date" name="wdate" readonly style="background-color:transparent;border:0px" id="wdate" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" value="${sessionScope.wdate}">
 			</div>
 		</div>
 
 		<label class="layui-form-label">状态</label>
 		<div class="layui-input-inline">
-			<input type="text" width="500px" name="sname" id="sname" lay-verify="required" lay-reqtext="宝宝地址是必填项，岂能为空？" placeholder="请输入宝宝地址" autocomplete="off" class="layui-input" value="${sessionScope.sname}">
+			<input type="text" width="500px" name="sname" id="sname" readonly style="background-color:transparent;border: 0px" lay-verify="required" lay-reqtext="宝宝地址是必填项，岂能为空？" placeholder="请输入宝宝地址" autocomplete="off" class="layui-input" value="${sessionScope.sname}">
 		</div>
 	</div>
 	<div class="layui-form-item" style="text-align: center">
