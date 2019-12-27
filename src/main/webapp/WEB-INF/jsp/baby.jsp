@@ -43,6 +43,7 @@
 	</div>
 	<br>
 	<div style="text-align: center">
+		<form class="layui-form" action="" onsubmit="return false">
 	创建时间:
 	<div class="layui-inline">
 		<input class="layui-input" type="date" name="starttime" id="demo1" autocomplete="off">
@@ -74,6 +75,7 @@
 
 	<button class="layui-btn" data-type="reload">查询</button>
 	<button class="layui-btn layui-btn-normal" data-type="add" >新增</button>
+		</form>
 	</div>
 
 </div>

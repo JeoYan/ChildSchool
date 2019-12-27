@@ -34,8 +34,10 @@
 					${sessionScope.wName}
 				</a>
 				<dl class="layui-nav-child">
-					<dd><a href="">个人信息</a></dd>
-					<dd><a href="">修改密码</a></dd>
+<%--					<dd><a href="" onclick="info()">个人信息</a></dd>--%>
+<%--					<dd><a href="">修改密码</a></dd>--%>
+					<dd><a href="/ChildSchool/information.action" >个人信息</a></dd>
+					<dd><a href="/ChildSchool/psw.action">修改密码</a></dd>
 				</dl>
 			</li>
 			<li class="layui-nav-item"><a href="">注销</a></li>
@@ -85,11 +87,32 @@
 </div>
 <script src=<%=path + "/layuiadmin/layui/layui.js"%>></script>
 <script>
-	//JavaScript代码区域
 	layui.use('element', function () {
 		var element = layui.element;
-
 	});
+	// function info() {
+	// 	layer.open({
+	// 		type: 2,
+	// 		title: '个人信息',
+	// 		content: '/ChildSchool/information.action',
+	// 		maxmin: true,
+	// 		area: ['500px', '500px'],
+	// 		btn: ['确定', '取消'],
+	// 		yes: function (index, layero) {
+	// 			alert("diankai");
+	// 			//教室名称
+	// 			var wid = $("#wid").val();
+	// 			var oldpsw = $("#LAY-user-login-password").val();
+	// 			var newpsw = $("#LAY-user-login-password1").val();
+	// 			var newpsw1 = $("#LAY-user-login-password2").val();
+	// 			alert(wid);
+	// 			var ob = {wid: wid, oldpsw: oldpsw, newpsw: newpsw, newpsw1: newpsw1};
+	//
+	// 		}
+	// 	});
+	// }
+
+
 </script>
 
 </body>
