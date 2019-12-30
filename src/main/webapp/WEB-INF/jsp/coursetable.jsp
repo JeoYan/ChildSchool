@@ -14,7 +14,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>预约挂号</title>
+	<title></title>
 	<link rel="stylesheet" href=<%=layuiPath+"css/layui.css"%>>
 	<script src=<%=layuiPath + "layui.js"%>></script>
 	<script src=<%=jsPath + "jquery-3.4.1.js"%>></script>

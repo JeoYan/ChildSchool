@@ -18,7 +18,7 @@
 <%
 	String path=request.getContextPath();
 %>
-
+<!DOCTYPE html>
 <html>
 <head>
 	<meta charset="utf-8">
@@ -194,11 +194,26 @@
 
 <script src=<%=path + "/layuiadmin/layui/layui.js"%>></script>
 <script>
+	var layer = layui.layer;
 	layui.config({
 		base: '${pageContext.request.contextPath}/layuiadmin/' //静态资源所在路径
 	}).extend({
 		index: 'lib/index' //主入口模块
 	}).use('index');
+
+
+	// function playerid() {
+	// 	var loadstr = '<safestudy width="100%" height="100%"  controls="controls" autobuffer="autobuffer"  ><source src="/ChildSchool/safestudy/wqqqq.mp4" type="safestudy/mp4"></source></safestudy>';
+	//
+	// 	layer.open({
+	// 		type: 1
+	// 		,offset: 'auto'
+	// 		,maxmin:true
+	// 		,resize:true
+	// 		,title: '播放视频',
+	// 		content: loadstr
+	// 	});
+	// }
 </script>
 </body>
 

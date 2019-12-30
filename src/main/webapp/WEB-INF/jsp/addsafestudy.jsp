@@ -2,6 +2,7 @@
 <%
 	String layuiPath = request.getContextPath() + "/layuiadmin/layui/";
 %>
+<!DOCTYPE html>
 <html>
 <head>
 	<meta charset="utf-8">
@@ -20,34 +21,31 @@
 <h2 style="text-align: center ;">
 	新增安全教育视频
 </h2>
-<form class="layui-form" action="" lay-filter="example" style="margin-top: 30px;">
+<form class="layui-form" action="" lay-filter="example" style="margin-top: 30px;text-align: center">
+
 	<div class="layui-form-item">
-		<label class="layui-form-label">视频名称：</label>
+		<label class="layui-form-label" style="width: 130px">视频名称：</label>
 		<div class="layui-input-inline">
-			<input type="text" name="username" id="safeName" lay-verify="title" autocomplete="off"
+			<input type="text" name="username" id="safeName"  placeholder="请输入视频名称" lay-verify="title" autocomplete="off"
 			       class="layui-input">
 		</div>
 	</div>
-	<div class="layui-form-item">
-		<label class="layui-form-label">开始时间：</label>
+	<div class="layui-form-item" style="margin:0 auto;text-align: center">
+		<label class="layui-form-label" style="width: 130px">选择开始和结束时间</label>
 		<div class="layui-input-inline">
-			<input type="date" name="username" id="startDate" lay-verify="title" autocomplete="off"
-			       class="layui-input">
-		</div>
-	</div>
-	<div class="layui-form-item">
-		<label class="layui-form-label">结束时间：</label>
-		<div class="layui-input-inline">
-			<input type="date" name="username" id="endDate" lay-verify="title" autocomplete="off"
-			       class="layui-input">
+			<input type="text" class="layui-input" readonly id="rangeDate" placeholder="yyyy-MM-dd">
 		</div>
 	</div>
 	<div class="demoTable">
-		<div style="padding-bottom: 10px;">
-			<%--			<button class="layui-btn " data-type="add">增加用户</button>--%>
+		<div style="padding-bottom: 10px;margin-top: 10px">
 			<div class="layui-upload">
-				<button type="button" class="layui-btn layui-btn-normal" id="test8">选择文件</button>
-				<button type="button" class="layui-btn" id="test9">开始上传</button>
+				<div><button type="button" class="layui-btn layui-btn-normal" id="test8">选择文件</button>
+					<button type="button" class="layui-btn"  id="test9" >开始上传</button>
+
+				<%--					<button type="button" class="layui-btn layui-btn-disabled"  disabled="disabled" id="test9" >开始上传</button>--%>
+<%--					<span class="layui-inline layui-upload-choose" id="upload-choose"></span>--%>
+				</div>
+				<div class=" layui-word-aux" >请上传.mp4格式视频</div>
 			</div>
 		</div>
 	</div>
@@ -73,11 +71,10 @@
 		upload.render({
 			elem: '#test8'
 			, url: '/ChildSchool/BackAction/upload.action'
-			, accept: 'file' //普通文件
-			// ,exts: 'zip|rar|7z' //只允许上传压缩文件
-			// ,size: 60 //限制文件大小，单位 KB
+			, accept: 'video'
+			,exts: 'mp4' //只允许上传压缩文件
+			// ,size: 102400 //限制文件大小，单位 KB
 			, auto: false
-
 			//,multiple: true
 			, bindAction: '#test9'
 			,before: function(obj){
@@ -90,7 +87,7 @@
 						});
 					}
 				});
-				this.data={"safeName": $('#safeName').val(), "startDate": $('#startDate').val(), "endDate": $('#endDate').val()};
+				this.data={"safeName": $('#safeName').val(), "rangeDate":$('#rangeDate').val()};
 
 			}
 			,done: function(res){
@@ -103,17 +100,49 @@
 					}, function () {
 						location.reload()
 					});
-				}else if(res.msg=="err"){
+				}else if(res.msg=="error"){
 					layer.closeAll('loading'); //关闭loading
 					layer.msg('上传失败');
+				}else if(res.msg=="请输入文件名"){
+					layer.closeAll('loading'); //关闭loading
+					layer.msg('请输入文件名');
+				}else if(res.msg=="请输入时间范围"){
+					layer.closeAll('loading'); //关闭loading
+					layer.msg('请输入时间范围');
+				}else if(res.msg=="该文件名已存在"){
+					layer.closeAll('loading'); //关闭loading
+					layer.msg('该文件名已存在');
 				}
 			},error: function () {
 				layer.closeAll('loading'); //关闭loading
 				layer.msg('上传失败');
 			}
+			// ,choose: function(obj){
+			// 	alert($("#test2").val())
+			// // 	//将每次选择的文件追加到文件队列
+			// // 	obj.preview(function(index, file, result) {
+			// // 		if ($('#safeName').val() != ''&& $('#startDate').val() != ''&& $('#endDate').val() != '') {
+			// // 			$('#test9').removeClass("layui-btn-disabled");
+			// // 			$('#test9').removeAttr("disabled");
+			// // 			$('#upload-choose').text(file.name);
+			// // 		}
+			// // 	})
+			// }
 
 
 		});
+	});
+	layui.use('laydate', function(){
+		var laydate = layui.laydate;
+		laydate.render({
+			elem: '#rangeDate'
+			,position: 'fixed'
+			,min: 0
+			,range: true
+
+		});
+
+
 	});
 
 

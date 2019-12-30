@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
 	String layuiPath = request.getContextPath() + "/layuiadmin/layui/";
 %>
@@ -27,16 +28,11 @@
 		</h1>
 	</div>
 
-
-
-
 <table id="demo" lay-filter="test" ></table>
-<%--<script type="text/html" id="titleTpl">--%>
-<%--	{{d.LAY_TABLE_INDEX+1}}--%>
-<%--</script>--%>
 <script type="text/html" id="barDemo">
-	<a class="layui-btn layui-btn-xs" lay-event="addCourse">播放视频</a>
-	<a class="layui-btn layui-btn-xs" lay-event="addCourse">安全试题</a>
+	<a class="layui-btn layui-btn-xs" lay-event="playVideo">播放视频</a>
+	<a class="layui-btn layui-btn-xs" lay-event="download">安全试题</a>
+<%--	<a class="layui-btn layui-btn-xs" lay-event="upload">提交</a>--%>
 </script>
 <script>
 
@@ -49,15 +45,17 @@
 		//数据表格
 			reloadTable = table.render({
 			elem: '#demo'
-			, url: '/ChildSchool/BackAction/courseManagement.action' //数据接口
+			, url: '/ChildSchool/BackAction/parentSafeStudy.action' //数据接口
 			, page: true //开启分页
 			, cols: [[ //表头
-				{field: 'cid',title: '视频编号', sort: true, fixed: 'left',align: 'center'}
-				,{field: 'cName', title: '视频名称', sort: true, fixed: 'left', align: 'center'}
-				, {field: 'wName', title: '发布时间', align: 'center'}
-				, {field: 'classroom', title: '得分', sort: true, align: 'center'}
-				, {field: 'courseAddDate', title: '完成情况', align: 'center'}
-				, {fixed: 'right', title: '操作', toolbar: '#barDemo', align: 'center'}
+					{field: 'safeId',title: '视频编号', sort: true, fixed: 'left',align: 'center'}
+					,{field: 'safeName', title: '视频名称', sort: true, fixed: 'left', align: 'center'}
+					, {field: 'startDate', title: '开始时间', align: 'center'}
+					, {field: 'endDate', title: '结束时间', sort: true, align: 'center'}
+					, {field: 'safeDate', title: '发布时间', align: 'center'}
+					, {field: 'score', title: '得分', align: 'center'}
+					, {field: 'state', title: '完成情况', align: 'center'}
+					, {fixed: 'right', title: '操作', toolbar: '#barDemo', align: 'center'}
 			]]
 			, id: 'testReload'
 			, limit: 5
@@ -65,15 +63,12 @@
 
 		});
 
-
-
-
 		//查询
 		var $ = layui.$, active = {
 			reload: function () {
 				var startDate = $('#startDate');
 				var endDate = $('#endDate');
-				var cName = $('#cName');
+				var safeName = $('#safeName');
 
 				//执行重载
 				table.reload('testReload', {
@@ -83,49 +78,90 @@
 					, where: {
 						startDate: startDate.val(),
 						endDate: endDate.val(),
-						cName: cName.val()
+						safeName: safeName.val()
 					}
 				}, 'data');
 			}
 
 		};
 
-
 		$('.demoTable .layui-btn').on('click', function () {
 			var type = $(this).data('type');
 			active[type] ? active[type].call(this) : '';
 		});
 
-
 		//配置课程
 		table.on('tool(test)', function (obj) {
 			var data = obj.data;
-			 if (obj.event === 'addCourse') {
+			 if (obj.event === 'playVideo') {
 
-				layer.open({
-					type: 2
-					, title: '配置课程'
-					, offset: 'auto'
-					, content: '/ChildSchool/BackAction/courseTable.action?cid='+data.cid
-					, area: ['800px', '600px']
-					, btn: ['确定', '取消']
-					, shade: 0
-					, success: function (layero, index) {
-						var body = layer.getChildFrame('body', index);
-						body.find("#className").html(data.cName);
-					}
-				});
+				 var loadstr = '<video width="100%" height="100%"  controls="controls" autobuffer="autobuffer" ><source src="/ChildSchool/safestudy/';
+				 loadstr+=data.safeName+'.mp4"';
+				 loadstr+='type="video/mp4"></source></video>';
+					 layer.open({
+						 type: 1,
+						 title: '播放视频',
+						 content: loadstr
+						 ,maxmin:true
+						 ,resize:true
+					 });
+
+			}else  if (obj.event === 'download') {
+				 // layer.confirm('真的下载么', function (index) {
+					 // var ob = {"userId": data.documentId};
+					 //下载的文件名
+					 var fileName=data['safeName']+"试题."+"docx";
+					 // var type=data['documentName']+"&type=txt";
+//请求下载的路径
+// 					var fileName=data.documentName;
+					 var url="/ChildSchool/BackAction/download.action?fileName="+fileName;
+					 var xmlResquest = new XMLHttpRequest();
+					 xmlResquest.open("POST",url, true);
+					 xmlResquest.setRequestHeader("Content-type", "application/json");
+					 xmlResquest.setRequestHeader("Authorization", "Bearer 6cda86e3-ba1c-4737-972c-f815304932ee");
+					 xmlResquest.responseType = "blob";
+					 xmlResquest.onload = function (oEvent) {
+						 var content = xmlResquest.response;
+						 var elink = document.createElement('a');
+						 elink.download = fileName;
+						 elink.style.display = 'none';
+						 var blob = new Blob([content]);
+						 elink.href = URL.createObjectURL(blob);
+						 document.body.appendChild(elink);
+						 elink.click();
+						 document.body.removeChild(elink)
+					 };
+					 xmlResquest.send();
+
+					 // layer.close(index); //关闭弹窗
+
+				 // });
+
+				 // layer.close(index); //关闭弹窗
 
 
-			}
+			 }
+			 else  if (obj.event === 'upload') {
+				 layer.open({
+					 type: 2
+					 , title: '提交试题'
+					 , offset: 'auto'
+					 , content: '/ChildSchool/web/uploadAnswer.action'
+					 , area: ['500px', '450px']
+					 , btn: ['关闭']
+					 , shade: 0
+					 , success: function (layero, index) {
+						 var body = layer.getChildFrame('body', index);
+						 body.find("#safeName").val(data.safeName);
+						 body.find("#startDate").val(data.startDate);
+						 body.find("#endDate").val(data.endDate);
+						 body.find("#safeId").val(data.safeId);
+					 }
+				 });
+
+			 }
 		});
-
-
-
-
-
 	});
-
 
 </script>
 </div>

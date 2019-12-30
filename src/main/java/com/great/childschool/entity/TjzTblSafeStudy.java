@@ -15,9 +15,42 @@ public class TjzTblSafeStudy
 	private String startDate;
 	private String endDate;
 	private int wid;
+	private int pid;
+	private String score;
+	private String state;
 
 	public TjzTblSafeStudy()
 	{
+	}
+
+	public String getState()
+	{
+		return state;
+	}
+
+	public void setState(String state)
+	{
+		this.state = state;
+	}
+
+	public int getPid()
+	{
+		return pid;
+	}
+
+	public void setPid(int pid)
+	{
+		this.pid = pid;
+	}
+
+	public String getScore()
+	{
+		return score;
+	}
+
+	public void setScore(String score)
+	{
+		this.score = score;
 	}
 
 	public int getSafeId()
