@@ -6,10 +6,85 @@
 <mapper namespace="com.great.childschool.mapper.TjzBackMapper">
 
 
-    <!--    文件上传-->
+
+    <!--教师查看查看班级安全教育-->
+    <select id="classSafeStudy" parameterType="map" resultType="com.great.childschool.entity.TjzTblBaby">
+        SELECT cl.cname,ba.bid,ba.bname,pa.pname,pa.pid
+        FROM tbl_classroom cl,tbl_baby ba,tbl_parent pa,tbl_parent_baby pb
+        WHERE cl.cid=#{cid}
+        <if test="bName !=null and bName!=''">
+            AND ba.bname like '%' #{bName} '%'
+        </if>
+        AND cl.cid=ba.cid
+        AND ba.bid=pb.bid
+        AND pb.pid=pa.pid
+        LIMIT #{pstart},#{psize}
+    </select>
+
+    <!--教师查看班级安全教育数量-->
+    <select id="classSafeStudyNum" parameterType="map" resultType="int">
+        SELECT COUNT(ba.bid)
+        FROM tbl_classroom cl,tbl_baby ba,tbl_parent pa,tbl_parent_baby pb
+        WHERE cl.cid=#{cid}
+        <if test="bName !=null and bName!=''">
+            AND ba.bname like '%' #{bName} '%'
+        </if>
+        AND cl.cid=ba.cid
+        AND ba.bid=pb.bid
+        AND pb.pid=pa.pid
+    </select>
+
+
+
+    <!--教师发布安全教育试题数量-->
+    <select id="parentSafeStudyNum" parameterType="map" resultType="int">
+        SELECT COUNT(sa.safeid)
+        FROM tbl_safestudy sa
+        LEFT JOIN (SELECT * FROM tbl_parent_safestudy WHERE tbl_parent_safestudy.pid=#{pid}) psa
+        ON sa.safeid=psa.safeid
+        <where>
+            <if test="safeName !=null and safeName!=''">
+                AND safename like '%' #{safeName} '%'
+            </if>
+            <if test="startDate !=null and startDate!=''">
+                AND safedate &gt;= #{startDate}
+            </if>
+            <if test="endDate !=null and endDate!=''">
+                AND safedate &lt;= #{endDate}
+            </if>
+        </where>
+    </select>
+
+
+    <!-- 家长查看安全教育-->
+    <select id="parentSafeStudy" parameterType="map" resultType="com.great.childschool.entity.TjzTblSafeStudy">
+        SELECT sa.*,psa.score
+        FROM tbl_safestudy sa
+        LEFT JOIN (SELECT * FROM tbl_parent_safestudy WHERE tbl_parent_safestudy.pid=#{pid}) psa
+        ON sa.safeid=psa.safeid
+        <where>
+            <if test="safeName !=null and safeName!=''">
+                AND safename like '%' #{safeName} '%'
+            </if>
+            <if test="startDate !=null and startDate!=''">
+                AND safedate &gt;= #{startDate}
+            </if>
+            <if test="endDate !=null and endDate!=''">
+                AND safedate &lt;= #{endDate}
+            </if>
+        </where>
+        LIMIT #{pstart},#{psize}
+    </select>
+
+    <!-- 教师上传安全教育试题-->
+    <update id="uploadTest" parameterType="com.great.childschool.entity.TjzTblSafeStudy">
+       UPDATE tbl_safestudy SET testurl=#{testUrl} WHERE safeid=#{safeId}
+    </update>
+
+    <!--    教师上传安全教育视频-->
     <insert id="upload" parameterType="com.great.childschool.entity.TjzTblSafeStudy">
-        INSERT INTO tbl_safestudy(safename,startdate,enddate)
-        VALUES (#{safeName},#{startDate},#{endDate})
+        INSERT INTO tbl_safestudy(safename,startdate,enddate,safedate,vurl,wid)
+        VALUES (#{safeName},#{startDate},#{endDate},#{safeDate},#{vUrl},#{wid})
     </insert>
 
 

@@ -14,7 +14,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-	<title>发布安全教育试题</title>
+	<title>查看班级安全教育</title>
 	<link rel="stylesheet" href=<%=layuiPath+"css/layui.css"%>>
 	<script  src=<%=layuiPath + "layui.js"%>></script>
 </head>
@@ -23,7 +23,7 @@
 <div class="layui-card">
 	<div>
 		<h1 style="text-align: center">
-			安全教育配置
+			查看班级安全教育
 		</h1>
 	</div>
 	<div>
@@ -32,8 +32,7 @@
 		</h3>
 	</div>
 <div class="demoTable">
-<%--	<div style="padding-bottom: 10px;">--%>
-	发布时间：
+	创建时间：
 	<div class="layui-inline">
 		<input class="layui-input" type="date" name="id" id="startDate" autocomplete="off">
 	</div>
@@ -41,19 +40,21 @@
 	<div class="layui-inline">
 		<input class="layui-input" type="date" name="id" id="endDate" autocomplete="off">
 	</div>
-	视频名称
+	班级名称
 	<div class="layui-inline">
-		<input class="layui-input" name="id" id="safeName" autocomplete="off">
+		<input class="layui-input" name="id" id="cName" autocomplete="off">
 	</div>
 	<button class="layui-btn" data-type="reload">查询</button>
-
-	<button class="layui-btn " data-type="add">新增</button>
 </div>
 
 
+
 <table id="demo" lay-filter="test" ></table>
+<%--<script type="text/html" id="titleTpl">--%>
+<%--	{{d.LAY_TABLE_INDEX+1}}--%>
+<%--</script>--%>
 <script type="text/html" id="barDemo">
-	<a class="layui-btn layui-btn-xs" lay-event="addTest">配置试题</a>
+	<a class="layui-btn layui-btn-xs" lay-event="classSafeStudy">查看班级安全教育</a>
 </script>
 <script>
 
@@ -66,14 +67,14 @@
 		//数据表格
 			reloadTable = table.render({
 			elem: '#demo'
-			, url: '/ChildSchool/BackAction/uploadSafeStudy.action' //数据接口
+			, url: '/ChildSchool/BackAction/teacherCourseQuery.action' //数据接口
 			, page: true //开启分页
 			, cols: [[ //表头
-				{field: 'safeId',title: '视频编号', sort: true, fixed: 'left',align: 'center'}
-				,{field: 'safeName', title: '视频名称', sort: true, fixed: 'left', align: 'center'}
-				, {field: 'startDate', title: '开始时间', align: 'center'}
-				, {field: 'endDate', title: '结束时间', sort: true, align: 'center'}
-				, {field: 'safeDate', title: '发布时间', align: 'center'}
+				{field: 'cid',title: '班级编号', sort: true, fixed: 'left',align: 'center'}
+				,{field: 'cName', title: '班级名称', sort: true, fixed: 'left', align: 'center'}
+				, {field: 'wName', title: '班主任', align: 'center'}
+				, {field: 'classroom', title: '所在班级', sort: true, align: 'center'}
+				, {field: 'courseAddDate', title: '创建时间', align: 'center'}
 				, {fixed: 'right', title: '操作', toolbar: '#barDemo', align: 'center'}
 			]]
 			, id: 'testReload'
@@ -82,12 +83,13 @@
 
 		});
 
+
 		//查询
 		var $ = layui.$, active = {
 			reload: function () {
 				var startDate = $('#startDate');
 				var endDate = $('#endDate');
-				var safeName = $('#safeName');
+				var cName = $('#cName');
 
 				//执行重载
 				table.reload('testReload', {
@@ -97,56 +99,47 @@
 					, where: {
 						startDate: startDate.val(),
 						endDate: endDate.val(),
-						safeName: safeName.val()
+						cName: cName.val()
 					}
 				}, 'data');
-			},
-			//新增
-			add: function () {
-				layer.open({
-					type: 2
-					, title: '新增安全教育视频'
-					, offset: 'auto'
-					, content: '/ChildSchool/web/addsafestudy.action'
-					, area: ['600px', '450px']
-					, btn: ['关闭']
-					, shade: 0
-
-				});
 			}
 
 		};
+
 
 		$('.demoTable .layui-btn').on('click', function () {
 			var type = $(this).data('type');
 			active[type] ? active[type].call(this) : '';
 		});
 
-		//配置试题
+
+		//配置课程
 		table.on('tool(test)', function (obj) {
 			var data = obj.data;
-			 if (obj.event === 'addTest') {
+			 if (obj.event === 'classSafeStudy') {
 
 				layer.open({
 					type: 2
-					, title: '配置试题'
+					, title: '查看宝宝安全教育'
 					, offset: 'auto'
-					, content: '/ChildSchool/web/addsafestudytest.action'
-					, area: ['500px', '450px']
-					, btn: ['关闭']
+					, content: '/ChildSchool/BackAction/teacherbabysafe.action?cid='+data.cid
+					, area: ['1000px', '700px']
+					, btn: ['确定', '取消']
 					, shade: 0
 					, success: function (layero, index) {
 						var body = layer.getChildFrame('body', index);
-						body.find("#safeName").val(data.safeName);
-						body.find("#startDate").val(data.startDate);
-						body.find("#endDate").val(data.endDate);
-						body.find("#safeId").val(data.safeId);
+						body.find("#hiddenCid").val(data.cid);
+						body.find("#className").html(data.cName);
 					}
 				});
 
 
 			}
 		});
+
+
+
+
 
 	});
 

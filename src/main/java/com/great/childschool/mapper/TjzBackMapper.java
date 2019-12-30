@@ -16,6 +16,40 @@ import java.util.Map;
 public interface TjzBackMapper
 {
 
+	/**
+	 * 教师查看班级安全教育
+	 * by 汤建志
+	 */
+	public  List<TjzTblBaby> classSafeStudy(Map<String, Object> map);
+	/**
+	 * 教师查看班级安全教育数目
+	 * by 汤建志
+	 */
+	public int classSafeStudyNum(Map<String, Object> map);
+	/**
+	 * 家长查看安全教育数目
+	 * by 汤建志
+	 */
+	public int parentSafeStudyNum(Map<String, Object> map);
+
+
+	/**
+	 * 家长查看安全教育
+	 * by 汤建志
+	 */
+	public List<TjzTblSafeStudy> parentSafeStudy(Map<String, Object> map);
+
+	/**
+	 * 教师上传安全教育试题
+	 * by 汤建志
+	 */
+	public int uploadTest(TjzTblSafeStudy safeStudy);
+
+
+	/**
+	 * 教师上传安全教育视频
+	 * by 汤建志
+	 */
 	public int upload(TjzTblSafeStudy safeStudy);
 
 	/**

@@ -5,6 +5,11 @@ import com.great.childschool.aoplog.Log;
 import com.great.childschool.entity.*;
 import com.great.childschool.service.TjzBackService;
 import com.great.childschool.tools.Tool;
+import org.apache.commons.io.FileUtils;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -32,40 +38,261 @@ public class TjzAdminHandler
 	@Resource
 	private TjzBackService tjzBackService;
 
+	public final static String ISAFESTUDY_PATH = "\\src\\main\\resources\\static\\safestudy\\";
 
-	@RequestMapping(value = "/upload.action")
-	@ResponseBody
-	@Log(operationType = "上传操作", operationName = "上传文件")
-	public Map<String,Object> backUpload(@RequestParam(value = "file") MultipartFile file, HttpServletRequest request)
+
+
+	@RequestMapping("/babysafestudy.action")
+	//	@Log(operationType = "查询操作", operationName = "课程表")
+	public String babysafestudy(HttpServletRequest request,String pid)
 	{
-		String originalFilename =file.getOriginalFilename();
+
+		request.setAttribute("pid", pid);
+		return "babysafestudy";
+	}
+
+
+	/**
+	 * 教师查看家长提交
+	 * by 汤建志
+	 */
+	@RequestMapping("/quarySafeStudy.action")
+	@ResponseBody
+	public TjzTbTable quarySafeStudy(HttpServletRequest request, String page, String limit, String startDate, String endDate, String safeName){
+		String pid = request.getParameter("pid");
+		System.out.println("+++++pid"+pid);
+		TjzTbTable tbBean = tjzBackService.parentSafeStudy(page, limit, startDate, endDate, safeName, pid);
+		return tbBean;
+	};
+
+
+	/**
+	 * 家长提交答案
+	 * by 汤建志
+	 */
+	@RequestMapping(value = "/uploadAnswer.action")
+	@ResponseBody
+	@Log(operationType = "上传操作", operationName = "上传教育试题")
+	public Map<String,Object> uploadAnswer(@RequestParam(value = "file") MultipartFile file, HttpServletRequest request)
+	{
+		Map<String,Object> map = new HashMap<String,Object>();
+		String safeName=request.getParameter("safeName");
+		String safeId=request.getParameter("safeId");
+		String originalFilename =file.getOriginalFilename();//
 		System.out.println(originalFilename+"----------文件名-----------");
 		String suffix = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
-		String safeName=request.getParameter("safeName");
-		String startDate=request.getParameter("startDate");
-		String endDate=request.getParameter("endDate");
 		TjzTblSafeStudy safeStudy=new TjzTblSafeStudy();
-		safeStudy.setSafeName(safeName);
-		safeStudy.setStartDate(startDate);
-		safeStudy.setEndDate(endDate);
-		String newFilename = safeName + "." + suffix;
-		String saveFilePath = "G:\\传一科技java培训\\" + newFilename;
-		Map<String,Object> map = new HashMap<String,Object>();
+		String newFilename = safeName + "试题"+"." + suffix;
+		String saveFilePath = System.getProperty("user.dir") +ISAFESTUDY_PATH+newFilename;
+		safeStudy.setTestUrl(saveFilePath);
+		safeStudy.setSafeId(Integer.valueOf(safeId));
 		try
 		{
-			//保存到数据库
-			int flag = tjzBackService.upload(safeStudy);
-			if (flag>0){
-				//保存文件到服务器
-				file.transferTo(new File(saveFilePath));
-				map.put("msg","ok");
+			//保存文件到服务器
+			File newFile=new File(saveFilePath);
+			if (newFile.exists()){
+				map.put("msg","该文件名已存在");
 			}else {
-				map.put("msg","error");
+				file.transferTo(newFile);
+				//保存到数据库
+				int flag = tjzBackService.uploadTest(safeStudy);
+				if (flag>0){
+					map.put("msg","ok");
+				}else {
+					map.put("msg","error");
+					newFile.delete();
+				}
 			}
+
 		} catch (IOException e)
 		{
 			map.put("msg","error");
 			e.printStackTrace();
+		}
+		return map;
+
+
+	}
+
+
+	@RequestMapping("/download.action")
+	public ResponseEntity<byte[]> export(String fileName) throws IOException
+	{
+		System.out.println("文件下载："+fileName);
+		String downloadPath = System.getProperty("user.dir") +ISAFESTUDY_PATH;
+		File file = new File(downloadPath + fileName);
+		HttpHeaders headers = new HttpHeaders();
+		// MediaType:互联网媒介类型 contentType：具体请求中的媒体类型信息
+		headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+		headers.setContentDispositionFormData("attachment", fileName);
+		return new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(file), headers, HttpStatus.CREATED);
+	}
+
+
+	@RequestMapping("/teacherbabysafe.action")
+	//	@Log(operationType = "查询操作", operationName = "课程表")
+	public String teacherbabysafe(HttpServletRequest request,String cid)
+	{
+
+
+		request.setAttribute("cid", cid);
+		return "teacherbabysafe";
+	}
+
+	/**
+	 * 教师查看班级安全教育宝宝情况
+	 * by 汤建志
+	 */
+	@RequestMapping("/classSafeStudy.action")
+	@ResponseBody
+	//	@Log(operationType = "查询操作", operationName = "课程表")
+	public TjzTbTable classSafeStudy(HttpServletRequest request,String page, String limit,String bName,String cid)
+	{
+
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		int psize = Integer.valueOf(limit);
+		int pstart = (Integer.valueOf(page) - 1) * psize;
+		map.put("pstart", pstart);
+		map.put("psize", psize);
+		map.put("bName", bName);
+		map.put("cid", cid);
+		TjzTbTable  tbTable = tjzBackService.classSafeStudy(map);
+			return tbTable;
+	}
+
+
+
+	/**
+	 * 家长查看安全教育
+	 * by 汤建志
+	 */
+	@RequestMapping("/parentSafeStudy.action")
+	@ResponseBody
+	public TjzTbTable parentSafeStudy(HttpServletRequest request, String page, String limit, String startDate, String endDate, String safeName){
+		String pid = request.getSession().getAttribute("pid").toString();
+		System.out.println("+++++pid"+pid);
+		TjzTbTable tbBean = tjzBackService.parentSafeStudy(page, limit, startDate, endDate, safeName, pid);
+		return tbBean;
+	};
+
+
+
+	/**
+	 * 教师上传安全教育试题
+	 * by 汤建志
+	 */
+	@RequestMapping(value = "/uploadTest.action")
+	@ResponseBody
+	@Log(operationType = "上传操作", operationName = "上传教育试题")
+	public Map<String,Object> uploadTest(@RequestParam(value = "file") MultipartFile file, HttpServletRequest request)
+	{
+		Map<String,Object> map = new HashMap<String,Object>();
+		String safeName=request.getParameter("safeName");
+		String safeId=request.getParameter("safeId");
+			String originalFilename =file.getOriginalFilename();//
+			System.out.println(originalFilename+"----------文件名-----------");
+			String suffix = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
+			TjzTblSafeStudy safeStudy=new TjzTblSafeStudy();
+			String newFilename = safeName + "试题"+"." + suffix;
+			String saveFilePath = System.getProperty("user.dir") +ISAFESTUDY_PATH+newFilename;
+			safeStudy.setTestUrl(saveFilePath);
+			safeStudy.setSafeId(Integer.valueOf(safeId));
+			try
+			{
+				//保存文件到服务器
+				File newFile=new File(saveFilePath);
+				if (newFile.exists()){
+					map.put("msg","该文件名已存在");
+				}else {
+					file.transferTo(newFile);
+					//保存到数据库
+					int flag = tjzBackService.uploadTest(safeStudy);
+					if (flag>0){
+						map.put("msg","ok");
+					}else {
+						map.put("msg","error");
+						newFile.delete();
+					}
+				}
+
+			} catch (IOException e)
+			{
+				map.put("msg","error");
+				e.printStackTrace();
+			}
+			return map;
+
+
+	}
+
+
+	/**
+	 * 教师上传安全教育视频
+	 * by 汤建志
+	 */
+	@RequestMapping(value = "/upload.action")
+	@ResponseBody
+	@Log(operationType = "上传操作", operationName = "上传教育视频")
+	public Map<String,Object> backUpload(@RequestParam(value = "file") MultipartFile file, HttpServletRequest request)
+	{
+		Map<String,Object> map = new HashMap<String,Object>();
+		String safeName=request.getParameter("safeName");
+		String rangeDate=request.getParameter("rangeDate");
+		if (safeName.equals("")||safeName==null){
+			map.put("msg","请输入文件名");
+		}else if (rangeDate.equals("")||rangeDate==null){
+			map.put("msg","请输入时间范围");
+		}else{
+			String [] arr = rangeDate.split("\\s+");
+			String startDate=arr[0];
+			String endDate=arr[2];
+			String wid = request.getSession().getAttribute("wid").toString();
+			String originalFilename =file.getOriginalFilename();
+			System.out.println(originalFilename+"----------文件名-----------");
+			String suffix = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
+			Date day=new Date();
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			TjzTblSafeStudy safeStudy=new TjzTblSafeStudy();
+			safeStudy.setSafeName(safeName);
+			safeStudy.setStartDate(startDate);
+			safeStudy.setEndDate(endDate);
+			safeStudy.setSafeDate(dateFormat.format(day));
+			safeStudy.setWid(Integer.valueOf(wid));
+			String newFilename = safeName + "." + suffix;
+			System.out.println(System.getProperty("user.dir"));
+			String saveFilePath = System.getProperty("user.dir") +ISAFESTUDY_PATH;
+			safeStudy.setTestUrl(null);
+			File newFilePath=new File(saveFilePath);
+			if (newFilePath.exists()){
+				saveFilePath+=newFilename;
+				File newFile=new File(saveFilePath);
+				if (newFile.exists()){
+					map.put("msg","该文件名已存在");
+				}else {
+					try
+					{
+						//保存文件到服务器
+						file.transferTo(newFile);
+						safeStudy.setvUrl(saveFilePath);
+						//保存到数据库
+						int flag = tjzBackService.upload(safeStudy);
+						if (flag>0){
+							map.put("msg","ok");
+						}else {
+							map.put("msg","error");
+							newFile.delete();
+						}
+					} catch (IOException e)
+					{
+						map.put("msg","error");
+						e.printStackTrace();
+					}
+				}
+			}else {
+				map.put("msg","error");
+			}
+
 		}
 		return map;
 	}
