@@ -72,7 +72,7 @@ public class CcTAttendanceController
 
 	/**
 	 * @Author MJChen
-	 * @Description //查询宝宝考勤
+	 * @Description //查询教师考勤
 	 * @Date 14:59 2019/12/24
 	 **/
 	@RequestMapping("/teacherSign.action")

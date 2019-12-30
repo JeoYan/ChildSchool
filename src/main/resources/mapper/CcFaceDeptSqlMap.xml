@@ -2,31 +2,22 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.great.childschool.mapper.CcInformationDeptMapper">
+<mapper namespace="com.great.childschool.mapper.CcFaceDeptMapper">
+    <select id="selectAllWorkers" resultType="com.great.childschool.entity.TblWorker" >
+		select * from tbl_worker
+	</select>
 
-    <!--   修改密码sql-->
-    <!--    by 陈超-->
-    <select id="findpsw" parameterType="java.lang.Integer" resultType="com.great.childschool.entity.TblWorker">
-       select * from tbl_worker where wid=#{wid};
-    </select>
+    <update id="save" parameterType="com.great.childschool.entity.TblWorker" >
+		update  tbl_worker set wface=#{face,typeHandler=org.apache.ibatis.type.BlobTypeHandler} where wid=#{wid}
+	</update>
 
-    <!--   修改密码sql-->
-    <!--    by 陈超-->
-    <update id="updatepsw" parameterType="com.great.childschool.entity.TblWorker">
-       update  tbl_worker set wpsw=#{wpsw} where wid=#{wid};
-    </update>
+	<select id="selectface" resultType="com.great.childschool.entity.TblWorker" >
+		select * from tbl_worker where wface=#{wface}
+	</select>
 
-    <!--   个人信息sql-->
-    <!--    by 陈超-->
-    <select id="findinfo" parameterType="java.lang.Integer" resultType="com.great.childschool.entity.CcTblInfo">
-     select w.wname ,r.rname,w.wbrith,w.wsex,w.wdate,s.sname,w.wface
-        from tbl_worker w,tbl_status s ,tbl_worker_role twr ,tbl_role r
-            where w.wid=twr.wid
-            and w.sid=s.sid
-            and twr.rid =r.rid
-            and w.wid=#{wid}
-    </select>
-
+    <update id="update" parameterType="java.lang.Integer" >
+		update  tbl_worker set sid=5 where wid=#{wid}
+	</update>
 </mapper>
 
 

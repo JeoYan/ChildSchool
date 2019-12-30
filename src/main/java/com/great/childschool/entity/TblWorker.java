@@ -12,6 +12,8 @@ public class TblWorker {
   private int sid;
   private String rname;
   private int rid;
+  private  byte[] wface;
+
 
   public String getRname()
   {
@@ -101,5 +103,15 @@ public class TblWorker {
   public void setRid(int rid)
   {
     this.rid = rid;
+  }
+
+  public byte[] getWface()
+  {
+    return wface;
+  }
+
+  public void setWface(byte[] wface)
+  {
+    this.wface = wface;
   }
 }

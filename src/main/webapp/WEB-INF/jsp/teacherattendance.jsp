@@ -32,6 +32,8 @@
 	<script src=<%=uiPath+"layui/layui.js"%>></script>
 	<script src=<%=JsPath+"jquery-3.4.1.js"%>></script>
 	<!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+
+
 </head>
 <body>
 <div class="layui-row" id="lookTeacherSign" style="display:none;">
@@ -80,6 +82,7 @@
 		园所名称:英才幼儿园
 	</div>
 
+
 	<div style="text-align: center">
 		<form class="layui-form" action="" onsubmit="return false">
 		教师名称:
@@ -102,7 +105,7 @@
 		</div>
 
 		<button class="layui-btn" data-type="reload" id="search">查询</button>
-<%--		<button class="layui-btn layui-btn-normal" data-type="add" >新增</button>--%>
+			<button class="layui-btn layui-btn-normal" data-type="add" >考勤</button>
 		</form>
 	</div>
 	<div style="text-align: center">
@@ -117,6 +120,7 @@
 </body>
 <script type="text/html" id="barDemo">
 	<div class="layui-btn-container" >
+		<a class="layui-btn layui-btn-xs" lay-event="attend">考勤</a>
 		<button class="layui-btn layui-btn-sm" lay-event="teacherSign">考勤信息</button>
 	</div>
 </script>
@@ -126,129 +130,191 @@
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 
 <script>
-	layui.use(['layer','table'], function(){
+	layui.use(['layer','table'], function() {
 		var table = layui.table
-			,layer =layui.layer;
+			, layer = layui.layer;
 		var object;
+
 		table.render({
 			elem: '#LAY_table_user',
-			filter:'test',
-			height: 350 ,
-			url: '/ChildSchool/attendancexs.action' ,
+			filter: 'test',
+			height: 350,
+			url: '/ChildSchool/attendancexs.action',
 			page: 1,
-			limit:5,
+			limit: 5,
 			id: 'testReload',
 			cellMinWidth: 80,
-			limits:[5,10,20,40,100],
+			limits: [5, 10, 20, 40, 100],
 			cols: [[
-				{field: 'wid', title: '教师编号', sort: true, fixed: 'center'}      ,
-				{field: 'wname', title: '教师名称'} ,
-				{field: 'rname', title: '教师角色',  sort: true} ,
-				{field: 'rid', title: '角色id', sort: true,hide:true} ,
+				{field: 'wid', title: '教师编号', sort: true, fixed: 'center'},
+				{field: 'wname', title: '教师名称'},
+				{field: 'rname', title: '教师角色', sort: true},
+				{field: 'rid', title: '角色id', sort: true, hide: true},
 
-				{fixed: 'right', title:'操作', toolbar: '#barDemo'}
+				{fixed: 'right', title: '操作', toolbar: '#barDemo'}
 			]]
-
-		});
-
-		//监听行工具事件
-		table.on('tool(test)', function(obj){
-			object =obj;
-			var data = obj.data;
-			var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
-		 if(layEvent === 'teacherSign'){
-				alert(data.wname);
-				alert(data.wid);
-				var wid = data.wid;
-				$.ajax({
-							type: "POST",//提交方式
-							url: "/ChildSchool/teacherSign.action",//路径
-							data: {'wid':wid},//数据
-							dataType: "json",//希望返回的数据类型
-							async: true,//异步操作
-							success: function (teacherSignInfo) {//成功的方法 msg为返回数据
-								var dateString =teacherSignInfo["dateString"];
-								var teacherSignList = teacherSignInfo["teacherSignList"];
-								var $dateTds = $("#dateTr").find("td");
-								var $aTds = $("#aTr").find("td");
-								var $mTds = $("#mTr").find("td");
-								var $pTds = $("#pTr").find("td");
-								for (var i = 1; i < $dateTds.length; i++) {
-									$dateTds.eq(i).text(dateString[i-1]);
-								}
-								for (var j = 0; i < teacherSignList.length; j++) {
-									for (var k = 1; k < $dateTds.length; k++) {
-										if (teacherSignList[j].wsdate === $dateTds.eq(k).text()) {
-											if (teacherSignList[j].wsperiod === "上午") {
-												if (teacherSignList[j].wstime !== null) {
-													$aTds.eq(k).text(teacherSignList[j].wstime);
-												} else {
-													$aTds.eq(k).text(teacherSignList[j].sname);
-												}
-											} else if (teacherSignList[j].wsperiod === "中午") {
-												if (teacherSignList[j].wstime !== null) {
-													$mTds.eq(k).text(teacherSignList[j].wstime);
-												} else {
-													$mTds.eq(k).text(teacherSignList[j].sname);
-												}
-											}else  {
-												if (teacherSignList[j].wstime !== null) {
-													$pTds.eq(k).text(teacherSignList[j].wstime);
-												} else {
-													$pTds.eq(k).text(teacherSignList[j].sname);
-												}
-											}
-										}
-									}
-								}
-
-							},
-							error: function () { //错误的方法
-								alert("服务器正忙");
-								layer.msg("数据传输失败");
-							}
-						});
-			 layer.open({
-				 type:1,
-				 title:"教师考勤信息",
-				 area: ['100%','100%'],
-				 content: $("#lookTeacherSign")
-			 });
-					}
 
 		});
 
 		var $ = layui.$, active = {
 			//查询
-			reload: function(){
+			reload: function () {
 				var demoReload = $('#demoReload');
-				var demoReload1 =  $("#demoReload1").find("option:selected").text();
+				var demoReload1 = $("#demoReload1").find("option:selected").text();
 
 				//执行重载
 				table.reload('testReload', {
 					page: {
 						curr: 1 //重新从第 1 页开始
 					}
-					,where: {
+					, where: {
 
 						'wname': demoReload.val(),
 						'rname': demoReload1
 					}
 				}, 'data');
 
+			},
+//增加
+			add: function () {
+				layer.open({
+					type: 2,
+					title: '考勤',
+					content: '/ChildSchool/face.action',
+					maxmin: true,
+					area: ['800px', '500px'],
+					btn: ['确定', '取消'],
+
+				});
 			}
 
-
 		};
-
-
-		$('#search').on('click', function(){
+		$('.demoTable .layui-btn').on('click', function(){
 			var type = $(this).data('type');
 			active[type] ? active[type].call(this) : '';
 		});
 
+		//监听行工具事件
+		table.on('tool(test)', function (obj) {
+			object = obj;
+			var data = obj.data;
+			var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+			if (layEvent === 'teacherSign') {
+				alert(data.wname);
+				alert(data.wid);
+				var wid = data.wid;
+				$.ajax({
+					type: "POST",//提交方式
+					url: "/ChildSchool/teacherSign.action",//路径
+					data: {'wid': wid},//数据
+					dataType: "json",//希望返回的数据类型
+					async: true,//异步操作
+					success: function (teacherSignInfo) {//成功的方法 msg为返回数据
+						var dateString = teacherSignInfo["dateString"];
+						var teacherSignList = teacherSignInfo["teacherSignList"];
+						var $dateTds = $("#dateTr").find("td");
+						var $aTds = $("#aTr").find("td");
+						var $mTds = $("#mTr").find("td");
+						var $pTds = $("#pTr").find("td");
+						for (var i = 1; i < $dateTds.length; i++) {
+							$dateTds.eq(i).text(dateString[i - 1]);
+						}
+						for (var j = 0; i < teacherSignList.length; j++) {
+							for (var k = 1; k < $dateTds.length; k++) {
+								if (teacherSignList[j].wsdate === $dateTds.eq(k).text()) {
+									if (teacherSignList[j].wsperiod === "上午") {
+										if (teacherSignList[j].wstime !== null) {
+											$aTds.eq(k).text(teacherSignList[j].wstime);
+										} else {
+											$aTds.eq(k).text(teacherSignList[j].sname);
+										}
+									} else if (teacherSignList[j].wsperiod === "中午") {
+										if (teacherSignList[j].wstime !== null) {
+											$mTds.eq(k).text(teacherSignList[j].wstime);
+										} else {
+											$mTds.eq(k).text(teacherSignList[j].sname);
+										}
+									} else {
+										if (teacherSignList[j].wstime !== null) {
+											$pTds.eq(k).text(teacherSignList[j].wstime);
+										} else {
+											$pTds.eq(k).text(teacherSignList[j].sname);
+										}
+									}
+								}
+							}
+						}
+
+					},
+					error: function () { //错误的方法
+						alert("服务器正忙");
+						layer.msg("数据传输失败");
+					}
+				});
+				layer.open({
+					type: 1,
+					title: "教师考勤信息",
+					area: ['100%', '100%'],
+					content: $("#lookTeacherSign")
+				});
+			}
+			else if(obj.event === 'attend'){
+				alert(data.wname);
+				alert(data.wid);
+
+				layer.open({
+					type: 2,
+					title: '考勤',
+					content: '/ChildSchool/face.action',
+					maxmin: true,
+					area: ['500px', '500px'],
+					btn: ['确定', '取消'],
+					// success: function (layero,index) {
+					// 	var body = layer.getChildFrame('body', index);
+					// 	body.find("#wname").val(data.wname);
+					// 	body.find("#rname").val(data.rid);
+					//
+					//
+					// },
+					// yes:function (index,layero) {
+					// 	var wname = $(layero).find('iframe')[0].contentWindow.wname.value;
+					// 	var rid=$(layero).find('iframe')[0].contentWindow.rname.value;
+					//
+					//
+					// 	var wid = data.wid;
+					// 	var ob = {wid: wid, rid:rid,wname: wname};
+					// 	$.ajax({
+					// 		type: "POST",//提交方式
+					// 		url: "/ChildSchool/updateteacher.action",//路径
+					// 		data: ob,//数据
+					// 		dataType: "json",//希望返回的数据类型
+					// 		async: true,//异步操作
+					// 		success: function (msg) {//成功的方法 msg为返回数据
+					//
+					// 			if (msg.msg == "1") {
+					// 				alert("修改成功");
+					// 				table.reload('test');
+					// 				layer.close(index);
+					// 			} else if (msg.msg == "2") {
+					// 				alert("修改失败")
+					// 			}
+					//
+					// 		},
+					// 		error: function () { //错误的方法
+					// 			alert("服务器正忙")
+					// 		}
+					// 	});
+					// }
+				})
+
+			}
+		});
+
+
+
 
 	});
+
 </script>
 
 
