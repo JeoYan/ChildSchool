@@ -12,10 +12,18 @@ public class CcTblBaby
   private int cid;
   private String cname;
   private String baddress;
+  private byte[] bface;
 
 
+  public byte[] getBface()
+  {
+    return bface;
+  }
 
-
+  public void setBface(byte[] bface)
+  {
+    this.bface = bface;
+  }
 
   public String getBname() {
     return bname;

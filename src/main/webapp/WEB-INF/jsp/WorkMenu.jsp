@@ -36,8 +36,8 @@
 					${sessionScope.wName}
 				</a>
 				<dl class="layui-nav-child">
-					<dd><a href="">个人信息</a></dd>
-					<dd><a href="">修改密码</a></dd>
+					<dd><a href="/ChildSchool/information.action" >个人信息</a></dd>
+					<dd><a href="/ChildSchool/psw.action">修改密码</a></dd>
 				</dl>
 			</li>
 			<li class="layui-nav-item"><a href="">注销</a></li>

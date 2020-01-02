@@ -1,7 +1,8 @@
 package com.great.childschool.entity;
 
 
-public class TblWorker {
+public class CcTblInfo
+{
 
   private int wid;
   private String wname;
@@ -10,19 +11,10 @@ public class TblWorker {
   private String wsex;
   private String wdate;
   private int sid;
+  private String sname;
   private String rname;
+  private String wface;
   private int rid;
-  private  byte[] wface;
-
-  public byte[] getWface()
-  {
-    return wface;
-  }
-
-  public void setWface(byte[] wface)
-  {
-    this.wface = wface;
-  }
 
   public String getRname()
   {
@@ -112,5 +104,25 @@ public class TblWorker {
   public void setRid(int rid)
   {
     this.rid = rid;
+  }
+
+  public String getSname()
+  {
+    return sname;
+  }
+
+  public void setSname(String sname)
+  {
+    this.sname = sname;
+  }
+
+  public String getWface()
+  {
+    return wface;
+  }
+
+  public void setWface(String wface)
+  {
+    this.wface = wface;
   }
 }
