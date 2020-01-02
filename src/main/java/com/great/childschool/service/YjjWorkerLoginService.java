@@ -47,7 +47,15 @@ public class YjjWorkerLoginService
 	}
 
 
+	/**
+	 * 获得密码
+	 */
+	@Transactional
+	public TblWorker getPsw(String phone)
+	{
 
+		return workerLoginMapper.getPsw(phone);
+	}
 
 
 }

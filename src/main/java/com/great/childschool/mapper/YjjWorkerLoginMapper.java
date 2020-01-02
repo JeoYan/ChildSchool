@@ -31,6 +31,11 @@ public interface YjjWorkerLoginMapper
 	@Select("select A.mid,A.mname,B.mpid,B.url,B.mname as childName from" + "(select tbl_menu.* from tbl_menu,(select mid from tbl_menu_role where wid=#{wid} and sid=3)A where tbl_menu.mid=A.mid)A,(select tbl_menu.* from tbl_menu,(select mid from tbl_menu_role where wid=#{wid} and sid=3)A where tbl_menu.mid=A.mid)B where A.mid=B.mpid")
 	List<TblMenu> workerMenuFind(@Param("wid") String wid);
 
+	/**
+	 * 获得密码
+	 */
+	@Select("Select * from tbl_worker where wphone=#{wphone}")
+	TblWorker getPsw(@Param("wphone")String wphone);
 
 
 

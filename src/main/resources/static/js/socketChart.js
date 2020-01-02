@@ -34,7 +34,7 @@ websocket.onerror = function (e) {
 
 //连接成功建立的回调方法
 websocket.onopen = function () {
-	alert("开始链接onopen");
+	// alert("开始链接onopen");
 	//获取所有在线用户
 	$.ajax({
 		type: 'post',

@@ -46,7 +46,7 @@
 					<label class="layadmin-user-login-icon layui-icon layui-icon-username"
 					       for="LAY-user-login-username"></label>
 					<input type="text" name="username" id="LAY-user-login-username" lay-verify="required" placeholder="手机号"
-					       class="layui-input" value="123">
+					       class="layui-input" value="13860366486">
 				</div>
 				<div class="layui-form-item">
 					<label class="layadmin-user-login-icon layui-icon layui-icon-password"
@@ -60,7 +60,7 @@
 							<label class="layadmin-user-login-icon layui-icon layui-icon-vercode"
 							       for="LAY-user-login-vercode"></label>
 							<input type="text" name="vercode" id="LAY-user-login-vercode" lay-verify="required"
-							       placeholder="图形验证码" class="layui-input">
+							       placeholder="图形验证码" class="layui-input" value="1">
 						</div>
 
 						<div class="layui-col-xs5">
@@ -80,9 +80,9 @@
 				<div class="layui-form-item">
 					<button class="layui-btn layui-btn-fluid" lay-submit lay-filter="LAY-user-login-submit">登 入</button>
 				</div>
-				<div class="layui-trans layui-form-item layadmin-user-login-other">
-					<a href="reg.html" class="layadmin-user-jump-change layadmin-link">注册帐号</a>
-				</div>
+<%--				<div class="layui-trans layui-form-item layadmin-user-login-other">--%>
+				<%--					<a href=<%=path + "/parentLogin/parentRegister.action"%> class="layadmin-user-jump-change layadmin-link">注册帐号</a>--%>
+				<%--				</div>--%>
 			</div>
 		</div>
 <%--			<div class="layui-trans layadmin-user-login-footer">--%>

@@ -137,17 +137,17 @@
 							<dd><a lay-href=<%=path + "/parentLogin/readBookPage.action"%>>在线阅读</a></dd>
 						</dl>
 					</li>
-					<li data-name="user" class="layui-nav-item">
-						<a href="javascript:;" lay-tips="联系老师" lay-direction="2">
-							<i class="layui-icon layui-icon-user"></i>
-							<cite>联系老师</cite>
-						</a>
-						<dl class="layui-nav-child">
-							<dd>
-								<a lay-href="user/user/list.html">联系老师</a>
-							</dd>
-						</dl>
-					</li>
+<%--					<li data-name="user" class="layui-nav-item">--%>
+<%--						<a href="javascript:;" lay-tips="联系老师" lay-direction="2">--%>
+<%--							<i class="layui-icon layui-icon-user"></i>--%>
+<%--							<cite>联系老师</cite>--%>
+<%--						</a>--%>
+<%--						<dl class="layui-nav-child">--%>
+<%--							<dd>--%>
+<%--								<a lay-href="user/user/list.html">联系老师</a>--%>
+<%--							</dd>--%>
+<%--						</dl>--%>
+<%--					</li>--%>
 					<li data-name="set" class="layui-nav-item">
 						<a href="javascript:;" lay-tips="个人中心" lay-direction="2">
 							<i class="layui-icon layui-icon-set"></i>

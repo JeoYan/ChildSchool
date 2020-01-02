@@ -4,7 +4,9 @@ import com.great.childschool.entity.TblParent;
 import com.great.childschool.entity.YjjTblBookPage;
 import com.great.childschool.service.YjjParentLoginService;
 import com.great.childschool.tools.RandomValidateCodeUtil;
+import com.great.childschool.tools.YjjMessageSendTool;
 import com.great.childschool.websocketdemo.WebSocketServer;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,6 +50,16 @@ public class YjjParentLoginController
 	public String callParentLoginPage(){
 		return "index";
 	}
+
+	/**
+	 * 调用家长注册页面
+	 * by 严俊杰
+	 */
+	@RequestMapping("parentRegister.action")
+	public String parentRegister(){
+		return "parentregister";
+	}
+
 
 	/**
 	 * 调用家长登入忘记密码页面
@@ -148,9 +160,43 @@ public class YjjParentLoginController
 		return modelAndView;
 	}
 
-	/**
-	 * 获取在线用户
-	 */
+	//忘记密码页面---获得验证码
+	private String phoneVcode=null;
+	@RequestMapping("getPhoneVcode.action")
+	@ResponseBody
+	public String getPhoneVcode(@Param("phone") String phone){
+		System.out.println("-----phone--------------"+phone);
+		phoneVcode= YjjMessageSendTool.sendMsg(phone);
+		System.out.println("-----phoneVcode--------------"+phoneVcode);
+		return phoneVcode;
+	}
+
+
+
+	//忘记密码页面---密码找回
+	@RequestMapping("getPsw.action")
+	@ResponseBody
+	public String getPsw(String phone,String msgCode){
+		String result="NotOk";
+		System.out.println("-----phone--------------"+phone);
+		System.out.println("-----msgCode--------------"+msgCode);
+		if(phoneVcode!=null){
+			if(phoneVcode.equals(msgCode)){
+			TblParent parent=parentLoginService.getPsw(phone);
+			if(parent!=null)
+			{
+				result = parent.getPpsw();
+			}else{
+				result = "parentNotExist";
+			}
+
+			}else{
+				result="msgError";
+			}
+		}
+
+		return result;
+	}
 
 
 
@@ -177,6 +223,9 @@ public class YjjParentLoginController
 		modelAndView.setViewName("readbook");
 		return modelAndView;
 	}
+
+
+
 
 
 
