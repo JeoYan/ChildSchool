@@ -1,4 +1,6 @@
 package com.great.childschool.entity;
+
+
 public class TblBaby {
 
   private long bId;
@@ -8,6 +10,7 @@ public class TblBaby {
   private String bDate;
   private long cId;
   private String bAdress;
+
 
   public long getbId()
   {
@@ -79,4 +82,3 @@ public class TblBaby {
     this.bAdress = bAdress;
   }
 }
-

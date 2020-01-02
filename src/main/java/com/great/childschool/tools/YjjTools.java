@@ -68,8 +68,12 @@ public class YjjTools
 
 	public static String getDatea()
 	{
-		SimpleDateFormat dft = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		return dft.format(System.currentTimeMillis());
+		Date date = new Date();
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+		return formatter.format(date);
+
+//		SimpleDateFormat dft = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//		return dft.format(System.currentTimeMillis());
 	}
 
 

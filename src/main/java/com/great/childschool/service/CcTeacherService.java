@@ -134,6 +134,7 @@ public class CcTeacherService
 	}
 
 
+
     /**
      * 教师管理-工作人员关系表 增加
      * by 陈超
@@ -169,10 +170,15 @@ public class CcTeacherService
 	 * 教师管理-根据wid更新工作人员角色关系表修改方法
 	 * by 陈超
 	 */
-	@Transactional
 	public int updatername(TblWorkerRole tblWorkerRole){
 		return ccTeacherDeptMapper.updatername(tblWorkerRole);
 	}
 
-
+//	/**
+//	 * 教师管理-rid获取rname方法
+//	 * by 陈超
+//	 */
+//	public String findrname(int rid){
+//		return ccTeacherDeptMapper.findrname(rid);
+//	}
 }

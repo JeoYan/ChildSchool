@@ -7,7 +7,6 @@ public class CcTblClassroom
   private int cid;
   private String cname;
   private String bname;
-  private int bid;
   private String wname;
   private String classroom;
   private String courseadddate;
@@ -81,15 +80,5 @@ public class CcTblClassroom
   public void setBname(String bname)
   {
     this.bname = bname;
-  }
-
-  public int getBid()
-  {
-    return bid;
-  }
-
-  public void setBid(int bid)
-  {
-    this.bid = bid;
   }
 }

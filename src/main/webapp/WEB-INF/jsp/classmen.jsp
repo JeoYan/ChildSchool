@@ -23,7 +23,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>班级成员管理</title>
+	<title>班级管理</title>
 	<meta name="renderer" content="webkit">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -64,7 +64,7 @@
 		</div>
 
 	<button class="layui-btn" data-type="reload">查询</button>
-<%--	<button class="layui-btn layui-btn-normal" data-type="add" >新增</button>--%>
+	<button class="layui-btn layui-btn-normal" data-type="add" >新增</button>
 	</div>
 </div>
 
@@ -96,10 +96,8 @@
 				{type: 'numbers', title: '序号'} ,
 				{field: 'cid', title: '班级编号' , sort: true, fixed: 'center',hide:true} ,
 				{field: 'bname', title: '宝宝名称'} ,
-				{field: 'bid', title: '宝宝id',hide:true} ,
 				{field: 'cname', title: '班级名称'} ,
-				{field: 'wname', title: '教师', sort: true} ,
-				{field: 'wid', title: '教师id', sort: true,hide:true} ,
+				{field: 'wname', title: '班主任', sort: true} ,
 				{field: 'courseadddate', title: '创建时间'},
 
 				{fixed: 'right', title:'操作', toolbar: '#barDemo'}
@@ -128,7 +126,65 @@
 						endtime:demo2.val()
 					}
 				}, 'data');
+			},
+			//增加
+			add: function () {
+				layer.open({
+					type: 2,
+					title: '新增',
+					content: '/ChildSchool/xzclassmen.action',
+					maxmin: true,
+					area: ['500px', '500px'],
+					btn: ['确定', '取消'],
+					yes: function (index, layero) {
+						//教室名称
+						var cname=$(layero).find('iframe')[0].contentWindow.cname.value;
+						//教师名称
+						var wname=$(layero).find('iframe')[0].contentWindow.wname.value;
+						//宝宝名称
+						var bname=$(layero).find('iframe')[0].contentWindow.bname.value;
+
+
+
+						var ob={cname:cname,wname:wname,bname:bname};
+
+						alert(ob);
+						$.ajax({
+							type:"POST",//提交方式
+							url:"/ChildSchool/addclassmen.action",//提交地址
+							data:ob,//数据
+							dataType:"json",//希望返回的数据类型
+							async:true,//异步操作
+							success:function (msg) {
+								alert(msg);
+								if(msg.msg==1){
+									alert("增加入园信息成功");
+									table.reload('test');
+									layer.close(index);
+								}else if(msg.msg=="2"){
+									alert("增加入园信息失败");
+								}
+
+							},
+							error:function () {
+								alert("服务器正忙")
+							}
+						})
+					}
+				});
+			},
+
+			uploadFile:function () {
+				layer.open({
+					type:2,
+					title:"选择文件",
+					content:"/jsp/upload.jsp",
+					area:["500px","500px"],
+
+				})
 			}
+          
+
 		};
 
 		$('.demoTable .layui-btn').on('click', function(){
@@ -145,11 +201,9 @@
 
 				var v=confirm('删除时会连带家长一起删除，确定么');
 					alert(data.cid);
-					alert(data.bid);
-					var cid =data.cid;
-					var bid =data.bid;
+					var id =data.cid;
 					if (v==true){
-					var ob= {cid:cid,bid:bid};
+					var ob= {cid:id};
 					alert(ob);
 					//走AJAX
 					$.ajax({
@@ -177,6 +231,7 @@
 			}
 			//编辑
 			else if(obj.event === 'edit'){
+				alert(data.cname);
 
 				layer.open({
 					type: 2,
@@ -187,22 +242,19 @@
 					btn: ['确定', '取消'],
 					success: function (layero,index) {
 						var body = layer.getChildFrame('body', index);
-						body.find("#cname").val(data.cid);
-							body.find("#bname").val(data.bname);
-						body.find("#wname").val(data.wname)
+						body.find("#cname").val(data.cname)
 
 					},
 					yes:function (index,layero) {
 						//教室名称
-						var cid=$(layero).find('iframe')[0].contentWindow.cname.value;
+						var cname=$(layero).find('iframe')[0].contentWindow.cname.value;
 						//教师名称
 						var wname=$(layero).find('iframe')[0].contentWindow.wname.value;
 						//宝宝名称
 						var bname=$(layero).find('iframe')[0].contentWindow.bname.value;
 
-						var bid=data.bid;
-						var wid =data.wid;
-						var ob = {bid:bid,bname: bname,wid:wid,wname:wname, cid: cid};
+						var bid = data.bid;
+						var ob = {bid: bid, cname: cname,wname:wname,bname:bname};
 						$.ajax({
 							type: "POST",//提交方式
 							url: "/ChildSchool/updateclassmen.action",//路径

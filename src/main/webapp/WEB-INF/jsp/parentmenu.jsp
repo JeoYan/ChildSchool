@@ -15,19 +15,24 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page isELIgnored="false" %>
+
 <%
-	String path=request.getContextPath();
+	String path = request.getContextPath();
 %>
-<!DOCTYPE html>
+<!doctype html>
 <html>
 <head>
 	<meta charset="utf-8">
 	<title>家长主页</title>
 	<meta name="renderer" content="webkit">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<meta name="viewport"
+	      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
 	<link rel="stylesheet" href=<%=path+"/layuiadmin/layui/css/layui.css"%> media="all">
 	<link rel="stylesheet" href=<%=path+"/layuiadmin/style/admin.css"%> media="all">
+	<link rel="stylesheet" href=<%=path+"/css/socketChart.css"%> media="all">
+	<script src=<%=path + "/layuiadmin/layui/layui.js"%>></script>
+	<script src=<%=path + "/js/jquery-3.4.1.js"%>></script>
 </head>
 <body class="layui-layout-body">
 <div id="LAY_app">
@@ -51,7 +56,8 @@
 
 				<li class="layui-nav-item" lay-unselect>
 					<a href="javascript:;">
-						<cite>${sessionScope.pName}</cite>
+<%--						<cite>${sessionScope.pName}</cite>--%>
+						<cite>${requestScope.pName}</cite>
 					</a>
 				</li>
 			</ul>
@@ -60,17 +66,21 @@
 		<!-- 侧边菜单 -->
 		<div class="layui-side layui-side-menu">
 			<div class="layui-side-scroll">
-				<div class="layui-logo" lay-href="home/console.html">
+				<div class="layui-logo" lay-href=<%=path+"/home.action"%>>
 					<span>智慧幼儿园</span>
 				</div>
-				<ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
+				<ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu"
+				    lay-filter="layadmin-system-side-menu">
 					<li data-name="home" class="layui-nav-item layui-nav-itemed">
 						<a href="javascript:;" lay-tips="幼儿中心" lay-direction="2">
 							<i class="layui-icon layui-icon-home"></i>
 							<cite>幼儿中心</cite>
 						</a>
 						<dl class="layui-nav-child">
-							<dd data-name="console" class="layui-this">
+<%--							<dd data-name="console" class="layui-this">--%>
+<%--								<a lay-href="/ChildSchool/home.action">主页</a>--%>
+<%--							</dd>--%>
+							<dd data-name="console" >
 								<a lay-href="/ChildSchool/medicalcase.action">体检情况</a>
 							</dd>
 							<dd data-name="console">
@@ -100,10 +110,10 @@
 							<cite>作业中心</cite>
 						</a>
 						<dl class="layui-nav-child">
-							<dd><a lay-href="/ChildSchool/HomeworkController/turnBabyHomework">宝宝作业</a></dd>
-							<dd><a lay-href="/ChildSchool/HomeworkController/query/pasthomework">往期作业</a></dd>
+							<dd><a lay-href="template/personalpage.html">宝宝作业</a></dd>
+							<dd><a lay-href="">宝宝往期作业</a></dd>
 							<dd><a lay-href="/ChildSchool/web/parentcoursequery.action">课程表</a></dd>
-							</dl>
+						</dl>
 					</li>
 
 					<li data-name="app" class="layui-nav-item">
@@ -112,11 +122,9 @@
 							<cite>安全教育</cite>
 						</a>
 						<dl class="layui-nav-child">
-
 							<dd>
-								<a lay-href="/ChildSchool/web/safestudy.action">试题学习和考试</a>
+								<a lay-href="app/message/index.html">试题学习和考试</a>
 							</dd>
-
 						</dl>
 					</li>
 					<li data-name="senior" class="layui-nav-item">
@@ -126,10 +134,9 @@
 						</a>
 						<dl class="layui-nav-child">
 							<dd>
-							<dd><a lay-href="senior/echarts/line.html">在线阅读</a></dd>
+							<dd><a lay-href=<%=path + "/parentLogin/readBookPage.action"%>>在线阅读</a></dd>
 						</dl>
 					</li>
-
 					<li data-name="user" class="layui-nav-item">
 						<a href="javascript:;" lay-tips="联系老师" lay-direction="2">
 							<i class="layui-icon layui-icon-user"></i>
@@ -174,7 +181,8 @@
 			</div>
 			<div class="layui-tab" lay-unauto lay-allowClose="true" lay-filter="layadmin-layout-tabs">
 				<ul class="layui-tab-title" id="LAY_app_tabsheader">
-					<li lay-id="home/console.html" lay-attr="home/console.html" class="layui-this"><i class="layui-icon layui-icon-home"></i></li>
+					<li lay-id="home/console.html" lay-attr="home/console.html" class="layui-this"><i
+							class="layui-icon layui-icon-home"></i></li>
 				</ul>
 			</div>
 		</div>
@@ -183,41 +191,93 @@
 		<!-- 主体内容 -->
 		<div class="layui-body" id="LAY_app_body">
 			<div class="layadmin-tabsbody-item layui-show">
-				<iframe src="home/console.html" frameborder="0" class="layadmin-iframe"></iframe>
+				<iframe src=<%=path+"/home.action"%> frameborder="0" class="layadmin-iframe"></iframe>
 			</div>
 		</div>
-
 		<!-- 辅助元素，一般用于移动设备下遮罩 -->
 		<div class="layadmin-body-shade" layadmin-event="shade"></div>
 	</div>
 </div>
 
-<script src=<%=path + "/layuiadmin/layui/layui.js"%>></script>
+
+<%-- -----------------------------------------------------------%>
+<%-- ---------------------在线人数显示弹窗--------------------------------------%>
+<div id="mytalk" style="display: none">
+	<div id="hz-group">
+<%--		<input type="hidden" id="talks" value="${sessionScope.pName}">--%>
+		<input type="hidden" id="talks" value="${requestScope.pName}">
+		<input type="hidden" id="uid" value="${requestScope.pid}">
+		<input type="hidden" id="rid" value="0">
+<%--		<div style="color: #0C0C0C; font-size:20px">登录用户：--%>
+<%--			<span id="talks">${sessionScope.pName}</span></div>--%>
+<%--		<br/>--%>
+		<div style="color: #0C0C0C; font-size:15px">当前在线人数:<span id="onlineCount">0</span></div>
+		<!-- 主体 -->
+		<div id="hz-group-body">
+
+		</div>
+	</div>
+</div>
+<%-- -----------------------------------------------------------%>
+<%-- -----------------------------------------------------------%>
+
+<%-- -----------------------------------------------------------%>
+<%-- ----------------------聊天窗口-------------------------------------%>
+<div id="hz-message" style="display: none">
+	<!-- 头部 -->
+	<div style="display: none;">正在与<span id="toUserName" ></span>聊天</div>
+	<hr style="margin: 0px;"/>
+	<!-- 主体 -->
+	<div id="hz-message-body">
+	</div>
+	<!-- 功能条 -->
+	<div id="">
+		<button>表情</button>
+		<button>图片</button>
+		<button id="videoBut">视频</button>
+		<button onclick="send()" style="float: right;">发送</button>
+	</div>
+	<!-- 输入框 -->
+	<div contenteditable="true" id="hz-message-input">
+	</div>
+</div>
+<%-- -----------------------------------------------------------%>
+<%-- -----------------------------------------------------------%>
 <script>
-	var layer = layui.layer;
 	layui.config({
 		base: '${pageContext.request.contextPath}/layuiadmin/' //静态资源所在路径
 	}).extend({
 		index: 'lib/index' //主入口模块
 	}).use('index');
 
-
-	// function playerid() {
-	// 	var loadstr = '<safestudy width="100%" height="100%"  controls="controls" autobuffer="autobuffer"  ><source src="/ChildSchool/safestudy/wqqqq.mp4" type="safestudy/mp4"></source></safestudy>';
-	//
-	// 	layer.open({
-	// 		type: 1
-	// 		,offset: 'auto'
-	// 		,maxmin:true
-	// 		,resize:true
-	// 		,title: '播放视频',
-	// 		content: loadstr
-	// 	});
-	// }
+		layui.use('layer',function(){
+		var layer = layui.layer;
+		var loginName=$("#talks").val();
+		//当前人员在线显示弹窗
+		layer.open({
+			title:loginName
+			,type: 1
+			,content: $('#mytalk')
+			,shade: 0
+			,maxmin:true
+			, closeBtn :0
+			,offset: 'r'
+			,min: function(layero){
+				setTimeout(function(){
+					layero.css({
+						left:'auto'
+						,right: 0
+						,bottom: 0
+					})},0);
+			}
+			,max:function (layerro) {
+				$(window).resize(function () {
+					$(".layui-layer-maxmin").parents(".layui-layer").width($(window).width()).height($(window).height());
+				});
+			}
+		});
+	});
 </script>
+<script src=<%=path + "/js/socketChart.js"%>></script>
 </body>
-
-
-
-
 </html>

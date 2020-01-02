@@ -1,7 +1,8 @@
 package com.great.childschool.service;
 
 
-import com.great.childschool.entity.*;
+import com.great.childschool.entity.CcTableInf;
+import com.great.childschool.entity.CcTblClassroom;
 import com.great.childschool.mapper.CcClassmenDeptMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +19,7 @@ public class CcClassmenService
 
 
     /**
-     * 班级成员管理-数据显示
+     * 幼儿管理-数据显示
      * by 陈超
      */
     @Transactional
@@ -27,7 +28,7 @@ public class CcClassmenService
         return ccClassmenDeptMapper.find(ccTableInf);
     }
     /**
-     * 班级成员管理-分页
+     * 幼儿管理-分页
      * by 陈超
      */
     @Transactional
@@ -36,88 +37,99 @@ public class CcClassmenService
         return ccClassmenDeptMapper.totalPage(ccTableInf);
     }
 
-    /**
-     * 班级成员管理-删除宝宝方法
-     * by 陈超
-     */
-    @Transactional
-    public int deletebaby(CcTblBaby ccTblBaby){
-        return ccClassmenDeptMapper.deletebaby(ccTblBaby);
-    }
-
-//    //	根据bname查到bid
-//    public CcTblBaby findbaby(String bname){
-//        return ccClassmenDeptMapper.findbaby(bname);
+//    /**
+//     * 幼儿管理-删除方法
+//     * by 陈超
+//     */
+//    @Transactional
+//    public int deletebaby(int bid)
+//    {
+//        return ccBabyDeptMapper.deletebaby(bid);
+//    }
+//
+//    //	根据bid查到pid
+//    public CcTblParentBaby findp (int bid){
+//        return ccBabyDeptMapper.findp(bid);
+//    }
+//
+//    /**
+//     * 幼儿管理-删除家长方法
+//     * by 陈超
+//     */
+//    public int deleteparent(int pid){
+//        return ccBabyDeptMapper.deleteparent(pid);
+//    }
+//    /**
+//     * 幼儿管理-删除亲子关系
+//     * by 陈超
+//     */
+//    public int deletepb(CcTblParentBaby ccTblParentBaby){
+//        return ccBabyDeptMapper.deletepb(ccTblParentBaby);
+//    }
+//
+//    /**
+//     * 幼儿管理-修改方法
+//     * by 陈超
+//     */
+//    @Transactional
+//    public int updatebaby(CcTblBaby ccTblBaby)
+//    {
+//
+//        return ccBabyDeptMapper.updatebaby(ccTblBaby);
+//    }
+//
+//    /**
+//     * 幼儿管理-增加
+//     * by 陈超
+//     */
+//    @Transactional
+//    public int  addbaby(CcTblBaby ccTblBaby){
+//
+//        return ccBabyDeptMapper.addbaby(ccTblBaby);
+//    }
+//
+//    /**
+//     * 幼儿管理-入园信息增加宝宝
+//     * by 陈超
+//     */
+//    @Transactional
+//    public int  addAdmissionb(CcTblBaby ccTblBaby){
+//        return ccBabyDeptMapper.addAdmissionb(ccTblBaby);
+//    }
+//
+//
+//    /**
+//     * 幼儿管理-入园信息增加家长
+//     * by 陈超
+//     */
+//    @Transactional
+//    public int  addAdmissionp(CcTblParent ccTblParent){
+//        return ccBabyDeptMapper.addAdmissionp(ccTblParent);
+//    }
+//
+//
+//    /**
+//     * 幼儿管理-入园信息增加亲子关系
+//     * by 陈超
+//     */
+//    public int  addAdmissionpb(CcTblParentBaby ccTblParentBaby){
+//        return ccBabyDeptMapper.addAdmissionpb(ccTblParentBaby)
+//;    }
+//
+//    public CcTblBaby findbid (String bname){
+//        return ccBabyDeptMapper.findbid(bname);
+//    }
+//
+//    public CcTblParent findpid (String pname){
+//
+//        return ccBabyDeptMapper.findpid(pname);
 //    }
 
-    //	根据bid查到pid
-    @Transactional
-    public CcTblParentBaby findp (int bid){
-        return ccClassmenDeptMapper.findp(bid);
-    }
-
-    /**
-     * 班级成员管理-删除家长方法
-     * by 陈超
-     */
-    @Transactional
-    public int deleteparent(int pid){
-        return ccClassmenDeptMapper.deleteparent(pid);
-    }
-
-
-    /**
-     * 班级成员管理-下拉框获取班级教室名称
-     * by 陈超
-     */
-    @Transactional
-    public List<CcTblClassroom> findclassroom(){
-        return ccClassmenDeptMapper.findclassroom();
-    }
-
-    /**
-     * 班级成员管理-删除亲子方法
-     * by 陈超
-     */
-    @Transactional
-    public int deletepb(CcTblParentBaby ccTblParentBaby){
-        return ccClassmenDeptMapper.deletepb(ccTblParentBaby);
-    }
-
-    /**
-     * 班级成员管理-下拉框获取班级教师名称
-     * by 陈超
-     */
-    @Transactional
-    public List<TblWorker> findtea(){
-        return ccClassmenDeptMapper.findtea();
-    }
-
-    /**
-     * 班级成员管理-根据cid查询对应的教室名称Sql
-     * by 陈超
-     */
-    public CcTblClassroom findcname(int cid){
-
-        return ccClassmenDeptMapper.findcname(cid);
-    }
-
-
-    /**
-     * 班级成员管理-修改宝宝名称方法
-     * by 陈超
-     */
-    @Transactional
-    public int updateb(CcTblBaby ccTblBaby){
-        return ccClassmenDeptMapper.updateb(ccTblBaby);
-    }
-
-    /**
-     * 班级成员管理-修改教室名称方法
-     * by 陈超
-     */
-    @Transactional
-    public int updatec(CcTblClassroom ccTblClassroom){
-        return ccClassmenDeptMapper.updatec(ccTblClassroom);
-    }
+//    /**
+//     * 家长管理-下拉框获取宝宝名称
+//     * by 陈超
+//     */
+//    public List<CcTblClassroom> findclassroom(){
+//        return ccClassmenDeptMapper.
+//    }
 }

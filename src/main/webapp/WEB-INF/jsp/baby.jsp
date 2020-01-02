@@ -43,7 +43,6 @@
 	</div>
 	<br>
 	<div style="text-align: center">
-		<form class="layui-form" action="" onsubmit="return false">
 	创建时间:
 	<div class="layui-inline">
 		<input class="layui-input" type="date" name="starttime" id="demo1" autocomplete="off">
@@ -58,26 +57,9 @@
 	<div class="layui-inline">
 		<input class="layui-input" name="bname" id="demoReload" autocomplete="off">
 	</div>
-
-		<div class="layui-inline">
-			<label class="layui-form-label">所在班级</label>
-			<div class="layui-input-inline" >
-				<select name="cname" id="demoReload1">
-					<option value=""></option>
-
-					<c:forEach items="${requestScope.cname}" begin="0" step="1" var="y">
-						<option value="${y.cid}">${y.cname}</option>
-					</c:forEach>
-
-				</select>
-			</div>
-		</div>
-
 	<button class="layui-btn" data-type="reload">查询</button>
 	<button class="layui-btn layui-btn-normal" data-type="add" >新增</button>
-		</form>
 	</div>
-
 </div>
 
 <table class="layui-hide" id="test" lay-filter="test"></table>
@@ -125,7 +107,6 @@
 				var demoReload = $('#demoReload');
 				var demo1= $('#demo1');
 				var demo2= $('#demo2');
-				var demoReload1 =  $("#demoReload1").find("option:selected").text();
 				//执行重载
 				table.reload('test', {
 					page: {
@@ -135,8 +116,7 @@
 
 						bname: demoReload.val(),
 						starttime:demo1.val(),
-						endtime:demo2.val(),
-						cname: demoReload1
+						endtime:demo2.val()
 					}
 				}, 'data');
 			},

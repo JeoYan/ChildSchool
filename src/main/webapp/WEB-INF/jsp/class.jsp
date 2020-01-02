@@ -90,8 +90,8 @@
 			cols: [[
 				{field: 'cid', title: '班级编号' , sort: true, fixed: 'center'} ,
 				{field: 'cname', title: '班级名称'} ,
-				{field: 'wname', title: '教师', sort: true} ,
-				{field: 'wid', title: '教师id', sort: true,hide:true} ,
+				{field: 'wname', title: '班主任', sort: true} ,
+				{field: 'wid', title: '班主任id', sort: true,hide:true} ,
 				{field: 'classroom', title: '所在教室'},
 				{field: 'courseadddate', title: '创建时间'},
 
@@ -136,11 +136,11 @@
 						//教师
 						var wid=$(layero).find('iframe')[0].contentWindow.wname.value;
 						//教室
-						var classroom=$(layero).find('iframe')[0].contentWindow.classroom.value;
+						var cid=$(layero).find('iframe')[0].contentWindow.classroom.value;
 						alert(cname);
 						alert(wid);
-						alert(classroom);
-						var ob={cname:cname,wid:wid,classroom:classroom};
+						alert(cid);
+						var ob={cname:cname,wid:wid,cid:cid};
 
 						alert(ob);
 						$.ajax({
@@ -244,7 +244,7 @@
 					yes:function (index,layero) {
 						//教室名称
 						var cname=$(layero).find('iframe')[0].contentWindow.cname.value;
-
+						//
 						// //教师
 						// var wname=$(layero).find('iframe')[0].contentWindow.wname.value;
 						//教室

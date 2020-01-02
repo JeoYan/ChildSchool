@@ -4,7 +4,9 @@ import com.great.childschool.entity.TblParent;
 import com.great.childschool.entity.YjjTblBookPage;
 import com.great.childschool.service.YjjParentLoginService;
 import com.great.childschool.tools.RandomValidateCodeUtil;
+import com.great.childschool.websocketdemo.WebSocketServer;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -14,10 +16,14 @@ import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.websocket.Session;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 前端家长登入入口类
@@ -30,6 +36,10 @@ public class YjjParentLoginController
 
 	@Resource
 	private YjjParentLoginService parentLoginService;
+
+
+	private static Map<String, Session> tempSessionMapParent;
+
 	/**
 	 * 调用家长登入页面
 	 * by 严俊杰
@@ -112,17 +122,47 @@ public class YjjParentLoginController
 	 * 登入跳转到家长菜单主页
 	 * by 严俊杰
 	 */
+	@RequestMapping("/myIframe.action")
+	public ModelAndView myIframe(HttpServletRequest request)
+	{
+
+		ModelAndView modelAndView=new ModelAndView();
+		//		modelAndView.addObject("aname", tbladmin.getAname());
+		modelAndView.setViewName("myiframe");
+		return modelAndView;
+	}
+
+
+
 	@RequestMapping("login.action")
 	public ModelAndView login(HttpServletRequest request)
 	{
 		//登入成功后，将家长的名字和id存在Session中
 		request.getSession().setAttribute("pName",parentSuccess.getPname());
 		request.getSession().setAttribute("pid",parentSuccess.getPid());
+
 		ModelAndView modelAndView=new ModelAndView();
-		//		modelAndView.addObject("aname", tbladmin.getAname());
+		modelAndView.addObject("pName",parentSuccess.getPname());
+		modelAndView.addObject("pid",parentSuccess.getPid());
 		modelAndView.setViewName("parentmenu");
 		return modelAndView;
 	}
+
+	/**
+	 * 获取在线用户
+	 */
+
+
+
+
+
+
+
+
+
+
+
+
 
 	/**-------------------------------------------------------
 	 *--------------------------------亲子阅读部分---------------
@@ -137,7 +177,6 @@ public class YjjParentLoginController
 		modelAndView.setViewName("readbook");
 		return modelAndView;
 	}
-
 
 
 

@@ -252,10 +252,15 @@ public class YjjReadBookController
 		String newName = uuid + filename.substring(filename.lastIndexOf("."));
 		System.out.println("----------newName-------------"+newName);
 
+
 		//file1.getAbsolutePath()获得绝对路径.file1.getpath()相对路径
-		String url=file1.getAbsolutePath() + File.separator +prefixName+File.separator+ newName;
+		String url=file1.getAbsolutePath() + File.separator +prefixName+"_"+ newName;
 		File newFile = new File(url);
 		System.out.println(newFile);
+
+
+
+
 		//判断书籍是否已存在
 		//1.根据书名查询数据库
 		YjjTblReadbook readbook= bookReadService.checkBook(bookName);
@@ -265,7 +270,10 @@ public class YjjReadBookController
 			{
 				//保存文件到服务器
 //				file.transferTo(new File(savepath));
+
 				file.transferTo(newFile);
+
+
 
 				if(readbook==null)
 				{
@@ -334,7 +342,6 @@ public class YjjReadBookController
 	@ResponseBody
 	public Map<String,Object> doUpdate(@RequestParam("file") MultipartFile file, HttpServletRequest request)
 	{
-
 		System.out.println("------------------9999---------------------");
 		Map map = new HashMap<String,Object>();
 		//书id
@@ -373,8 +380,6 @@ public class YjjReadBookController
 		String url=file1.getAbsolutePath() + File.separator +prefixName+"_"+ newName;
 		File newFile = new File(url);
 		System.out.println(newFile);
-
-
 
 		try
 		{

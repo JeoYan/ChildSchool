@@ -118,6 +118,7 @@ public class CcTeacherController
 		String wsex =request.getParameter("wsex");
 		String wbrith =request.getParameter("wbrith");
 
+
 		Date date =new Date();
 		SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd");
 		String time =sdf.format(date);
@@ -154,11 +155,11 @@ public class CcTeacherController
 		if (flag1>0)
 		{
 			msg.setMsg("1");
-			System.out.println("增加教师成功");
+			System.out.println("增加成功");
 		} else
 		{
 			msg.setMsg("2");
-			System.out.println("增加教师失败");
+			System.out.println("增加失败");
 		}
 		return msg;
 	}
@@ -189,11 +190,11 @@ public class CcTeacherController
 		if (flag >0&&flag1 >0)
 		{
 			msg.setMsg("1");
-			System.out.println("修改教师成功");
+			System.out.println("修改成功");
 		} else
 		{
 			msg.setMsg("2");
-			System.out.println("修改教师失败");
+			System.out.println("修改失败");
 		}
 		return msg;
 	}
@@ -215,11 +216,11 @@ public class CcTeacherController
 		if (msg >0&&msg2 >0&&msg3 >0)
 		{
 			msg1.setMsg("1");
-			System.out.println("删除教师成功");
+			System.out.println("删除成功");
 		} else
 		{
 			msg1.setMsg("2");
-			System.out.println("删除教师失败");
+			System.out.println("删除失败");
 		}
 		return msg1;
 	}

@@ -21,6 +21,7 @@ public interface CcClassDeptMapper
 	public List<CcTblClassroom> totalPage(CcTableInf ccTableInf);
 
 
+
 	/**
 	 * 班级管理-删除方法
 	 * by 陈超
@@ -40,6 +41,8 @@ public interface CcClassDeptMapper
 	public int  addclass(CcTblClassroom ccTblClassroom);
 
 
+
+
 	/**
 	 * 班级管理-下拉框获取班级教室名称
 	 * by 陈超
@@ -57,5 +60,4 @@ public interface CcClassDeptMapper
 	 * by 陈超
 	 */
 	public List<TblWorker> findtea();
-
 }

@@ -27,82 +27,83 @@
 	<link rel="stylesheet" href=<%=path+"/layuiadmin/style/admin.css"%> media="all">
 	<link rel="stylesheet" href=<%=path+"/layuiadmin/style/login.css"%> media="all">
 	<script src=<%=path + "/js/jquery-3.4.1.js"%>></script>
+	<link rel="stylesheet" media="screen" href=<%=path+"/css/loginparent.css"%>>
 </head>
 <body>
 
-<div class="layadmin-user-login layadmin-user-display-show" id="LAY-user-login" style="display: none;">
-	<div class="layadmin-user-login-main">
-		<div class="layadmin-user-login-box layadmin-user-login-header">
-			<h2>智慧幼儿园</h2>
-			<p>家长登入</p>
-		</div>
-		<div class="layadmin-user-login-box layadmin-user-login-body layui-form">
-			<div class="layui-form-item">
-				<label class="layadmin-user-login-icon layui-icon layui-icon-username"
-				       for="LAY-user-login-username"></label>
-				<input type="text" name="username" id="LAY-user-login-username" lay-verify="required" placeholder="手机号"
-				       class="layui-input" value="123">
+<!-- particles.js container -->
+<div id="particles-js" style="display: flex;align-items: center;justify-content: center">
+</div>
+<div class="login-page">
+	<div class="layadmin-user-login layadmin-user-display-show" id="LAY-user-login" style="display: none;">
+		<div class="layadmin-user-login-main">
+			<div class="layadmin-user-login-box layadmin-user-login-header">
+				<h2 style="color: white;">智慧幼儿园</h2>
+				<p style="color: white;">家长登入</p>
 			</div>
-			<div class="layui-form-item">
-				<label class="layadmin-user-login-icon layui-icon layui-icon-password"
-				       for="LAY-user-login-password"></label>
-				<input type="password" name="password" id="LAY-user-login-password" lay-verify="required"
-				       placeholder="密码" class="layui-input" value="123">
-			</div>
-			<div class="layui-form-item">
-				<div class="layui-row">
-					<div class="layui-col-xs7">
-						<label class="layadmin-user-login-icon layui-icon layui-icon-vercode"
-						       for="LAY-user-login-vercode"></label>
-						<input type="text" name="vercode" id="LAY-user-login-vercode" lay-verify="required"
-						       placeholder="图形验证码" class="layui-input">
-					</div>
+			<div class="layadmin-user-login-box layadmin-user-login-body layui-form">
+				<div class="layui-form-item">
+					<label class="layadmin-user-login-icon layui-icon layui-icon-username"
+					       for="LAY-user-login-username"></label>
+					<input type="text" name="username" id="LAY-user-login-username" lay-verify="required" placeholder="手机号"
+					       class="layui-input" value="123">
+				</div>
+				<div class="layui-form-item">
+					<label class="layadmin-user-login-icon layui-icon layui-icon-password"
+					       for="LAY-user-login-password"></label>
+					<input type="password" name="password" id="LAY-user-login-password" lay-verify="required"
+					       placeholder="密码" class="layui-input" value="123">
+				</div>
+				<div class="layui-form-item">
+					<div class="layui-row">
+						<div class="layui-col-xs7">
+							<label class="layadmin-user-login-icon layui-icon layui-icon-vercode"
+							       for="LAY-user-login-vercode"></label>
+							<input type="text" name="vercode" id="LAY-user-login-vercode" lay-verify="required"
+							       placeholder="图形验证码" class="layui-input">
+						</div>
 
-					<div class="layui-col-xs5">
-						<div style="margin-left: 10px;">
-							<%--							<a href="javascript:void(0);">--%>
-							<%--								<img src=<%=path+"/parentLogin/getVerCode.action"%> class="layadmin-user-login-codeimg"--%>
-							<%--								     id="LAY-user-get-vercode">--%>
-							<%--							</a>--%>
-							<img id="imgVerify" src="<%=path+"/parentLogin/getVerCode.action"%>" alt="更换验证码" height="36"
-							     width="100%">
+						<div class="layui-col-xs5">
+							<div style="margin-left: 10px;">
+								<img id="imgVerify" src="<%=path+"/parentLogin/getVerCode.action"%>" alt="更换验证码" height="36"
+								     width="100%">
 
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-			<div class="layui-form-item" style="margin-bottom: 20px;">
-				<%--				<input type="checkbox" name="remember" lay-skin="primary" title="记住密码">--%>
-				<a class="layadmin-user-jump-change layadmin-link" style="margin-top: 7px;"
-				   href=<%=path + "/parentLogin/parentForgetPage.action"%>>忘记密码？</a>
-			</div>
-			<div class="layui-form-item">
-				<button class="layui-btn layui-btn-fluid" lay-submit lay-filter="LAY-user-login-submit">登 入</button>
-			</div>
-			<div class="layui-trans layui-form-item layadmin-user-login-other">
-				<%--				<label>社交账号登入</label>--%>
-				<%--				<a href="javascript:;"><i class="layui-icon layui-icon-login-qq"></i></a>--%>
-				<%--				<a href="javascript:;"><i class="layui-icon layui-icon-login-wechat"></i></a>--%>
-				<%--				<a href="javascript:;"><i class="layui-icon layui-icon-login-weibo"></i></a>--%>
-				<a href="reg.html" class="layadmin-user-jump-change layadmin-link">注册帐号</a>
+				<div class="layui-form-item" style="margin-bottom: 20px;">
+					<%--				<input type="checkbox" name="remember" lay-skin="primary" title="记住密码">--%>
+					<a class="layadmin-user-jump-change layadmin-link" style="margin-top: 7px;"
+					   href=<%=path + "/parentLogin/parentForgetPage.action"%>>忘记密码？</a>
+				</div>
+				<div class="layui-form-item">
+					<button class="layui-btn layui-btn-fluid" lay-submit lay-filter="LAY-user-login-submit">登 入</button>
+				</div>
+				<div class="layui-trans layui-form-item layadmin-user-login-other">
+					<a href="reg.html" class="layadmin-user-jump-change layadmin-link">注册帐号</a>
+				</div>
 			</div>
 		</div>
+<%--			<div class="layui-trans layadmin-user-login-footer">--%>
+
+<%--				<p style="color: white;">© 2019 Design by Jeo</p>--%>
+<%--			</div>--%>
 	</div>
-	<div class="layui-trans layadmin-user-login-footer">
-
-		<p>© 2019 Design by Jeo</p>
-		<%--		<p>© 2018 <a href="http://www.layui.com/" target="_blank">layui.com</a></p>--%>
-		<%--		<p>--%>
-		<%--			<span><a href="http://www.layui.com/admin/#get" target="_blank">获取授权</a></span>--%>
-		<%--			<span><a href="http://www.layui.com/admin/pro/" target="_blank">在线演示</a></span>--%>
-		<%--			<span><a href="http://www.layui.com/admin/" target="_blank">前往官网</a></span>--%>
-		<%--		</p>--%>
-	</div>
-
-
 </div>
 
+
+
+
+
+
+
+
+
 <script src=<%=path + "/layuiadmin/layui/layui.js"%>></script>
+<!-- scripts -->
+<script src=<%=path + "/js/particles.js"%>></script>
+<script src=<%=path + "/js/app.js"%>></script>
 <script>
 
 	//点击验证码图片获得获得验证码
@@ -124,7 +125,7 @@
 		form.render();
 		//提交
 		form.on('submit(LAY-user-login-submit)', function (obj) {
-			var flag=false;
+			var flag = false;
 			var uPhone = $("#LAY-user-login-username").val();
 			var passWord = $("#LAY-user-login-password").val();
 			var verifyCode = $("#LAY-user-login-vercode").val();
@@ -133,13 +134,13 @@
 				async: false,//异步操作
 				type: "POST",
 				url: "${pageContext.request.contextPath}/parentLogin/loginCheck.action",//注意路径
-				data: {uPhone: uPhone, passWord: passWord,verifyCode: verifyCode},
+				data: {uPhone: uPhone, passWord: passWord, verifyCode: verifyCode},
 				dataType: "text",
 				success: function (data) {
 					// alert(data);
-					if (data ==="NotOk") {
+					if (data === "NotOk") {
 						layer.msg("账号或密码不存在！！！");
-					}else if(data==="vercodeError"){
+					} else if (data === "vercodeError") {
 						layer.msg("验证码错误！！！");
 					} else {
 						//登入成功的提示与跳转
@@ -164,5 +165,7 @@
 
 	});
 </script>
+
+
 </body>
 </html>

@@ -21,7 +21,7 @@ public interface YjjWorkerLoginMapper
 	 * 幼儿园工作人员登入，查询账号和密码是否存在
 	 *     by 严俊杰
 	 */
-	@Select("Select * from tbl_worker where wid=#{wid} and wpsw=#{passWord}")
+	@Select("Select tbl_worker.*,tbl_worker_role.rid from tbl_worker,tbl_worker_role where tbl_worker.wid=#{wid} and tbl_worker.wpsw=#{passWord} and tbl_worker_role.wid=#{wid}")
 	TblWorker workerLoginCheck(@Param("wid") String wid, @Param("passWord") String passWord);
 
 	/**

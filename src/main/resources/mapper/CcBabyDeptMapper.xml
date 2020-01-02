@@ -15,9 +15,6 @@
             <if test="bname != null and bname !='' " >
                 and b.bname like '%${bname}%'
             </if>
-            <if test="cname != null and cname !='' " >
-                and c.cname like '%${cname}%'
-            </if>
             <if test="starttime != null and starttime != '' " >
 
                     and b.bdate = #{starttime}
@@ -42,9 +39,6 @@
             b.cid=c.cid
             <if test="bname != null and bname !='' " >
                 and b.bname like '%${bname}%'
-            </if>
-            <if test="cname != null and cname !='' " >
-                and c.cname like '%${cname}%'
             </if>
             <if test="starttime != null and starttime != '' " >
 

@@ -16,6 +16,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.websocket.Session;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,6 +33,8 @@ public class YjjWorkerLoginController
 
 	@Resource
 	private YjjWorkerLoginService workerLoginService;
+
+
 
 	/**
 	 * 调用工作人员登入页面
@@ -131,6 +134,7 @@ public class YjjWorkerLoginController
 		//登入成功后，将工作人员的名字和id存在Session中
 		request.getSession().setAttribute("wName", workerSuccess.getWname());
 		request.getSession().setAttribute("wid", workerSuccess.getWid());
+		request.getSession().setAttribute("rid", workerSuccess.getRid());
 		ModelAndView modelAndView = new ModelAndView();
 		//获得账号对应的菜单
 		List<TblMenu> list= workerLoginService.workerMenuFind(String.valueOf(workerSuccess.getWid()));

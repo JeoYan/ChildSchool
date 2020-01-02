@@ -2,7 +2,9 @@ package com.great.childschool.controller;
 
 
 import com.great.childschool.aoplog.Log;
-import com.great.childschool.entity.*;
+import com.great.childschool.entity.CcTableInf;
+import com.great.childschool.entity.CcTblClassroom;
+import com.great.childschool.entity.MSG;
 import com.great.childschool.service.CcClassService;
 import com.great.childschool.service.CcClassmenService;
 import org.springframework.stereotype.Controller;
@@ -24,7 +26,7 @@ public class CcClassmenController
 	private CcClassmenService ccClassmenService;
 
 	/**
-	 * 班级成员管理-新增弹窗
+	 * 幼儿管理-新增弹窗
 	 * by 陈超
 	 */
 	@RequestMapping("/xzclassmen.action")
@@ -37,7 +39,7 @@ public class CcClassmenController
 	}
 
 	/**
-	 * 调用班级成员管理页面
+	 * 调用幼儿管理页面
 	 * by 陈超
 	 */
 	@RequestMapping("/classmen.action")
@@ -50,7 +52,7 @@ public class CcClassmenController
 	}
 
 	/**
-	 * 班级成员管理-修改弹窗
+	 * 幼儿管理-修改弹窗
 	 * by 陈超
 	 */
 	@RequestMapping("/xgclassmen.action")
@@ -58,25 +60,16 @@ public class CcClassmenController
 	public ModelAndView xgteacher(){
 		ModelAndView modelAndView =new ModelAndView();
 		modelAndView.setViewName("updateclassmen");
-
-		List<CcTblClassroom> list = ccClassmenService.findclassroom();
-		System.out.println("list"+list);
-		modelAndView.addObject("cname",list);
-
-		List<TblWorker> list1 = ccClassmenService.findtea();
-		System.out.println("list1"+list1);
-		modelAndView.addObject("teacher",list1);
-
 		return modelAndView;
 	}
 
 	/**
-	 * 调用班级成员管理数据显示
+	 * 调用幼儿管理数据显示
 	 * by 陈超
 	 */
 	@RequestMapping("/classmenxs.action")
 	@ResponseBody
-	@Log(operationType = "查询操作", operationName = "查询班级成员")
+	@Log(operationType = "查询操作", operationName = "查询宝宝")
 	public MSG table(String cname,String bname,String starttime, String endtime, int page){
 
 		CcTableInf ccTableInf =new CcTableInf();
@@ -84,13 +77,20 @@ public class CcClassmenController
 		ccTableInf.setBname(bname);
 		ccTableInf.setStarttime(starttime);
 		ccTableInf.setEndtime(endtime);
-
+		System.out.println("starttime"+starttime);
+		System.out.println("endtime"+endtime);
 		ccTableInf.setPage((page-1)*5);
 
 		//调用查询数据方法
 		List<CcTblClassroom> list= ccClassmenService.find(ccTableInf);
-
+		System.out.println("list"+list.toString());
+		for (int i = 0; i <list.size() ; i++)
+		{
+			System.out.println(list.get(i).getWname());
+		}
 		List<CcTblClassroom> totalPagelist= ccClassmenService.totalPage(ccTableInf);
+		System.out.println("totalPagelist"+totalPagelist.toString());
+
 
 		int page1=totalPagelist.size();
 		System.out.println("page1"+page1);
@@ -100,84 +100,138 @@ public class CcClassmenController
 		return msg;
 	}
 
-
-
 	/**
-	 * 班级成员管理--修改逻辑
+	 * 幼儿管理--入园信息增加
 	 * by 陈超
 	 */
-	@RequestMapping("/updateclassmen.action")
+	@RequestMapping("/addclassmen.action")
 	@ResponseBody
-	@Log(operationType = "更新操作", operationName = "修改班级成员信息")
-	public MSG update(int bid,int cid,int wid,String bname,String cname)
+	@Log(operationType = "增加操作", operationName = "添加宝宝")
+	public MSG add(CcTblClassroom ccTblClassroom,HttpServletRequest request)
 	{
+		//宝宝
+		String bname=request.getParameter("bname");
+		String bsex=request.getParameter("bsex");
+		String bbirth=request.getParameter("bbirth");
+		String baddress=request.getParameter("baddress");
 
-		CcTblBaby ccTblBaby =new CcTblBaby();
 
-		ccTblBaby.setBid(bid);
-		ccTblBaby.setCid(cid);
-		ccTblBaby.setBname(bname);
-		int flag1= ccClassmenService.updateb(ccTblBaby);
+		String prelation=request.getParameter("prelation");
 
-		CcTblClassroom ccTblClassroom= ccClassmenService.findcname(cid);
-		ccTblClassroom.setCname(ccTblClassroom.getCname());
-		ccTblClassroom.setCid(cid);
+		Date date =new Date();
+		SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd");
+		String time =sdf.format(date);
 
-		ccTblClassroom.setWid(wid);
-		int flag2 = ccClassmenService.updatec(ccTblClassroom);
-
-		MSG msg =new MSG();
-
-		if (flag1 >0 && flag2 >0)
-		{
-			msg.setMsg("1");
-			System.out.println("修改班级成员成功");
-		} else
-		{
-			msg.setMsg("2");
-			System.out.println("修改班级成员失败");
-		}
-		return msg;
+//		ccTblBaby.setBdate(time);
+//		ccTblBaby.setBname(bname);
+//		ccTblBaby.setBsex(bsex);
+//		ccTblBaby.setBbirth(bbirth);
+//		ccTblBaby.setBaddress(baddress);
+//
+//		ccTblParent.setPname(pname);
+//		ccTblParent.setPjob(pjob);
+//		ccTblParent.setPphone(pphone);
+//		ccTblParent.setPdate(time);
+//		ccTblParent.setIdentitycard(identitycard);
+//
+//		int flag1 =ccBabyService.addAdmissionb(ccTblBaby);
+//		int flag2 =ccBabyService.addAdmissionp(ccTblParent);
+//
+//		ccTblBaby=ccBabyService.findbid(bname);
+//		ccTblParent=ccBabyService.findpid(pname);
+//
+//		ccTblParentBaby.setBid(ccTblBaby.getBid());
+//		ccTblParentBaby.setPid(ccTblParent.getPid());
+//		ccTblParentBaby.setPrelation(prelation);
+//
+//		int flag3 =ccBabyService.addAdmissionpb(ccTblParentBaby);
+//		System.out.println(flag1);
+//
+//		MSG msg =new MSG();
+//
+//		if (flag1 >0 &&flag2 >0&&flag3 >0)
+//		{
+//			msg.setMsg("1");
+//			System.out.println("增加入园信息成功");
+//
+//		}
+//		else
+//		{
+//			msg.setMsg("2");
+//			System.out.println("增加入园信息失败");
+//		}
+//		return msg;
+		return null;
 
 	}
 
 	/**
-	 * 班级成员管理--删除逻辑
+	 * 幼儿管理--修改逻辑
+	 * by 陈超
+	 */
+	@RequestMapping("/updateclassmen.action")
+	@ResponseBody
+	@Log(operationType = "更新操作", operationName = "修改宝宝信息")
+	public MSG update(int bid,String bname,String bbirth,String bsex)
+	{
+
+//		CcTblBaby ccTblBaby =new CcTblBaby();
+//		ccTblBaby.setBid(bid);
+//		ccTblBaby.setBbirth(bbirth);
+//		ccTblBaby.setBsex(bsex);
+//		ccTblBaby.setBname(bname);
+//		int flag = ccBabyService.updatebaby(ccTblBaby);
+//
+//		MSG msg =new MSG();
+//		System.out.println();
+//		if (flag >0)
+//		{
+//			msg.setMsg("1");
+//			System.out.println("修改成功");
+//		} else
+//		{
+//			msg.setMsg("2");
+//			System.out.println("修改失败");
+//		}
+//		return msg;
+		return null
+				;
+	}
+
+	/**
+	 * 幼儿管理--删除逻辑
 	 * by 陈超
 	 */
 	@RequestMapping("/deleteclassmen.action")
 	@ResponseBody
-	@Log(operationType = "删除操作", operationName = "删除班级成员")
-	public MSG delete(String  cid,String  bid)
+	@Log(operationType = "删除操作", operationName = "删除宝宝")
+	public MSG deletebaby(String bid)
 	{
-		System.out.println("bid"+bid);
-		CcTblBaby ccTblBaby =new CcTblBaby();
-		CcTblParentBaby ccTblParentBaby =ccClassmenService.findp(Integer.valueOf(bid));
-
-		ccTblBaby.setCid(Integer.valueOf(cid));
-		ccTblBaby.setBid(Integer.valueOf(bid));
-
-		int msg1=ccClassmenService.deletebaby(ccTblBaby);
-		int pid=ccTblParentBaby.getPid();
-		int msg2=ccClassmenService.deleteparent(pid);
-
-		ccTblParentBaby.setPid(pid);
-		ccTblParentBaby.setBid(Integer.valueOf(bid));
-		int msg3=ccClassmenService.deletepb(ccTblParentBaby);
-
-		MSG msg =new MSG();
-
-		if (msg1 >0 && msg2 >0 && msg3 >0)
-		{
-			msg.setMsg("1");
-			System.out.println("删除班级成员成功");
-		} else
-		{
-			msg.setMsg("2");
-			System.out.println("删除班级成员失败");
-		}
-		return msg;
-
+//		System.out.println("bid"+bid);
+//		CcTblParentBaby ccTblParentBaby =new CcTblParentBaby();
+//		ccTblParentBaby=ccBabyService.findp(Integer.valueOf(bid));
+//		int pid=ccTblParentBaby.getPid();
+//		int msg1= ccBabyService.deletebaby(Integer .valueOf(bid));
+//		int msg2=ccBabyService.deleteparent(pid);
+//
+//		ccTblParentBaby.setBid(Integer.valueOf(bid));
+//		ccTblParentBaby.setPid(pid);
+//		int msg3 =ccBabyService.deletepb(ccTblParentBaby);
+//
+//		MSG msg =new MSG();
+//		System.out.println();
+//		if (msg1 >0&&msg2 >0&&msg3 >0)
+//		{
+//			msg.setMsg("1");
+//			System.out.println("删除成功");
+//		} else
+//		{
+//			msg.setMsg("2");
+//			System.out.println("删除失败");
+//		}
+//		return msg;
+		return null
+				;
 	}
 
 

@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%--/**--%>
-<%--* 班级管理-修改界面--%>
+<%--* 班级成员管理-修改界面--%>
 <%--* by 陈超--%>
 <%--*/--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -47,10 +47,10 @@
 
 		<div class="layui-form-item" >
 			<div class="layui-inline">
-				<label class="layui-form-label">教师</label>
+				<label class="layui-form-label">班主任</label>
 				<div class="layui-input-inline">
 					<select name="wname" id="wname">
-						<option value="">请选择教师</option>
+						<option value="">请选择班主任</option>
 
 						<c:forEach items="${requestScope.teacher}" begin="0" step="1" var="y">
 							<option value="${y.wname}">${y.wname}</option>
