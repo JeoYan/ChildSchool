@@ -34,6 +34,22 @@ public class YjjParentLoginService
 		return parentLoginMapper.parentLoginCheck(uPhone, passWord);
 	}
 
+
+	/**
+	 * 获得密码
+	 */
+	@Transactional
+	public TblParent getPsw(String phone)
+	{
+
+		return parentLoginMapper.getPsw(phone);
+	}
+
+
+
+
+
+
 	/**
 	 * 获得亲子阅读的首页信息
 	 * by 严俊杰
@@ -54,6 +70,7 @@ public class YjjParentLoginService
 
 		return mylist;
 	}
+
 
 
 }

@@ -7,6 +7,8 @@ import com.great.childschool.mapper.YjjWorkerLoginMapper;
 import com.great.childschool.service.YjjParentLoginService;
 import com.great.childschool.service.YjjWorkerLoginService;
 import com.great.childschool.tools.RandomValidateCodeUtil;
+import com.great.childschool.tools.YjjMessageSendTool;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -46,15 +48,60 @@ public class YjjWorkerLoginController
 		return "workerlogin";
 	}
 
+
+
+
+
 	/**
 	 * 调用登入忘记密码页面
 	 * by 严俊杰
 	 */
-	@RequestMapping("parentForgetPage.action")
+	@RequestMapping("/workerForgetPage.action")
 	public String parentForgetPage()
 	{
-		return "forget";
+		return "workerforget";
 	}
+
+	//忘记密码页面---获得验证码
+	private String phoneVcode=null;
+	@RequestMapping("getPhoneVcode.action")
+	@ResponseBody
+	public String getPhoneVcode(@Param("phone") String phone){
+		System.out.println("-----phone--------------"+phone);
+		phoneVcode= YjjMessageSendTool.sendMsg(phone);
+		System.out.println("-----phoneVcode--------------"+phoneVcode);
+		return phoneVcode;
+	}
+
+
+
+	//忘记密码页面---密码找回
+	@RequestMapping("getPsw.action")
+	@ResponseBody
+	public String getPsw(String phone,String msgCode){
+		String result="NotOk";
+		System.out.println("-----phone--------------"+phone);
+		System.out.println("-----msgCode--------------"+msgCode);
+		if(phoneVcode!=null){
+			if(phoneVcode.equals(msgCode)){
+				TblWorker worker=workerLoginService.getPsw(phone);
+				if(worker!=null)
+				{
+					result = worker.getWpsw();
+				}else{
+					result = "workerNotExist";
+				}
+
+			}else{
+				result="msgError";
+			}
+		}
+
+		return result;
+	}
+
+
+
 
 	/**
 	 * 登入界面获得验证码

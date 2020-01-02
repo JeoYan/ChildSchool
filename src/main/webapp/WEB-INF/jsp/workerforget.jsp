@@ -81,7 +81,7 @@
 				<button class="layui-btn layui-btn-fluid" lay-submit lay-filter="LAY-user-forget-submit">找回密码</button>
 			</div>
 			<div class="layui-trans layui-form-item layadmin-user-login-other">
-				<a class="layadmin-user-jump-change layadmin-link" href=<%=path + "/parentLogin/parentLoginPage.action"%>>登入</a>
+				<a class="layadmin-user-jump-change layadmin-link" href=<%=path + "/workerLogin/workerLoginPage.action"%>>登入</a>
 			</div>
 
 		</div>
@@ -126,7 +126,7 @@
 			$.ajax({
 				async: false,//异步操作
 				type: "POST",
-				url: "${pageContext.request.contextPath}/parentLogin/getPsw.action",//注意路径
+				url: "${pageContext.request.contextPath}/workerLogin/getPsw.action",//注意路径
 				data: msg,
 				dataType: "text",
 				success: function (data) {
@@ -135,7 +135,7 @@
 						alert("请先获取验证码");
 					}else if(data==="msgError"){
 						alert("验证码错误");
-					}else if(data==="parentNotExist"){
+					}else if(data==="workerNotExist"){
 						alert("账户不存在");
 					}else{
 						alert("你的密码为"+data+",请保管好密码！");

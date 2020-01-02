@@ -23,6 +23,14 @@ public interface YjjParentLoginMapper
 	@Select("Select * from tbl_parent where pphone=#{uPhone} and ppsw=#{passWord}")
 	TblParent parentLoginCheck(@Param("uPhone")String uPhone,@Param("passWord")String passWord);
 
+	/**
+	 * 获得密码
+	 */
+	@Select("Select * from tbl_parent where pphone=#{pphone}")
+	 TblParent getPsw(@Param("pphone")String pphone);
+
+
+
 
 	/**
 	 * --------------------亲子阅读---------------------------

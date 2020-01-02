@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--家长登入Mybatis数据库配置文件
+    by 严俊杰
+-->
+<mapper namespace="com.great.childschool.mapper.YjjNewsMapper">
+    <select id="findNews" parameterType="YjjSearchInfo" resultType="YjjTblNews">
+        select * from (select @rownum:=@rownum+1 as RN,A.* FROM (select @rownum:=0,tbl_news.*,tbl_worker.wname from
+        tbl_news, tbl_worker
+        where tbl_news.wid=tbl_worker.wid
+        <if test="wName!=null and wName!=''">
+            AND tbl_worker.wname like "%" #{wName}"%"
+        </if>
+        <if test="ntitle!=null and ntitle!=''">
+            AND tbl_news.ntitle like "%" #{ntitle}"%"
+        </if>
+        <if test="startDate!=null and startDate!=''">
+            <if test="endDate!=null and endDate!=''">
+                AND tbl_news.ndate BETWEEN #{startDate} and #{endDate}
+            </if>
+        </if>
+        )A )B where B.RN BETWEEN ((${page} - 1)* ${limit}+1) AND ${page}*${limit}
+    </select>
+    <!--    总条数-->
+    <select id="totalPage" parameterType="YjjSearchInfo" resultType="YjjTblNews">
+        select * from (select @rownum:=@rownum+1 as RN,A.* FROM (select @rownum:=0,tbl_news.*,tbl_worker.wname from
+        tbl_news, tbl_worker
+        where tbl_news.wid=tbl_worker.wid
+        <if test="wName!=null and wName!=''">
+            AND tbl_worker.wname like "%" #{wName}"%"
+        </if>
+        <if test="ntitle!=null and ntitle!=''">
+            AND tbl_news.ntitle like "%" #{ntitle}"%"
+        </if>
+        <if test="startDate!=null and startDate!=''">
+            <if test="endDate!=null and endDate!=''">
+                AND tbl_news.ndate BETWEEN #{startDate} and #{endDate}
+            </if>
+        </if>
+        )A )B
+    </select>
+
+
+</mapper>

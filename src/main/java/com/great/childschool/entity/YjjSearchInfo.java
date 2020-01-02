@@ -21,6 +21,17 @@ public class YjjSearchInfo
 	private String bName;
 	private String startDate;
 	private String endDate;
+	private String ntitle;
+
+	public String getNtitle()
+	{
+		return ntitle;
+	}
+
+	public void setNtitle(String ntitle)
+	{
+		this.ntitle = ntitle;
+	}
 
 	public int getLimit()
 	{
