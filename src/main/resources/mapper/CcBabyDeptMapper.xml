@@ -86,11 +86,11 @@
             values(#{bname},#{bsex},#{bbirth},#{bdate},#{cid})
     </insert>
 
-<!--    入园信息增加宝宝-->
+<!--    入园信息增加宝宝（增加一个人脸数据）-->
     <!--    by 陈超-->
     <insert id="addAdmissionb" useGeneratedKeys="true" keyProperty="bid" parameterType="com.great.childschool.entity.CcTblBaby" >
-        insert into tbl_baby    (bname ,bsex,bbirth,bdate,baddress,cid)
-            values(#{bname},#{bsex},#{bbirth},#{bdate},#{baddress},#{cid})
+        insert into tbl_baby    (bname ,bsex,bbirth,bdate,baddress,cid,bface)
+            values(#{bname},#{bsex},#{bbirth},#{bdate},#{baddress},#{cid},#{bface})
     </insert>
 
 <!--    入园信息增加家长-->

@@ -1,10 +1,8 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Administrator
-  Date: 2019/12/20
-  Time: 11:40
-  To change this template use File | Settings | File Templates.
---%>
+
+<%--/**--%>
+<%--* 宝宝管理-入园信息--%>
+<%--* by 陈超--%>
+<%--*/--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
@@ -37,7 +35,7 @@
 <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
 	<legend>宝宝入园信息</legend>
 </fieldset>
-<form class="layui-form" action="">
+<form class="layui-form" action="" onsubmit="return false">
 <%--	<div class="layui-form-item">--%>
 <%--		<label class="layui-form-label">单行输入框</label>--%>
 <%--		<div class="layui-input-inline">--%>
@@ -49,7 +47,7 @@
 
 		<label class="layui-form-label">宝宝名称</label>
 		<div class="layui-input-inline">
-			<input type="text" name="bname" id="bname" lay-verify="required" lay-reqtext="用户名是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input">
+			<input type="text" name="bname" id="bname" lay-verify="required" lay-reqtext="宝宝名称是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input">
 		</div>
 
 		<label class="layui-form-label">宝宝性别</label>
@@ -101,7 +99,7 @@
 
 		<label class="layui-form-label">宝宝地址</label>
 		<div class="layui-input-inline">
-			<input type="text" width="500px" name="baddress" id="baddress" lay-verify="required" lay-reqtext="用户名是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input">
+			<input type="text" width="500px" name="baddress" id="baddress" lay-verify="required" lay-reqtext="宝宝地址是必填项，岂能为空？" placeholder="请输入宝宝地址" autocomplete="off" class="layui-input">
 		</div>
 	</div>
 
@@ -120,7 +118,7 @@
 
 		<label class="layui-form-label">家长名称</label>
 		<div class="layui-input-inline">
-			<input type="text" name="pname" id="pname" lay-verify="required" lay-reqtext="用户名是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input">
+			<input type="text" name="pname" id="pname" lay-verify="required" lay-reqtext="家长名称是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input">
 		</div>
 
 		<label class="layui-form-label">亲子关系</label>
@@ -141,7 +139,7 @@
 		<div class="layui-inline">
 		<label class="layui-form-label">家长职业</label>
 		<div class="layui-input-inline">
-			<input type="text" width="500px" name="pjob" id="pjob" lay-verify="required" lay-reqtext="用户名是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input">
+			<input type="text" width="500px" name="pjob" id="pjob" lay-verify="required" lay-reqtext="家长职业是必填项，岂能为空？" placeholder="请输入家长职业" autocomplete="off" class="layui-input">
 		</div>
 		</div>
 
@@ -166,6 +164,11 @@
 		</div>
 
 	</div>
+	<div class="layui-inline">
+		<button class="layui-btn" data-type="add" id="add">宝宝人脸录入</button>
+
+
+	</div>
 
 <%--	<div class="layui-form-item">--%>
 <%--		<div class="layui-input-block">--%>
@@ -186,6 +189,27 @@
 
 <script src="<%=uiPath+"layui/layui.js"%>"></script>
 <script>
+	layui.use(['layer'], function() {
+		var  layer = layui.layer;
+		var object;
+		var $ = layui.$, active = {
+
+		};
+		$('#add').on('click', function () {
+			alert("录入");
+			layer.open({
+				type: 2,
+				title: '宝宝人脸录入',
+				content: '/ChildSchool/babyfaceentry.action',
+				maxmin: true,
+				area: ['500px', '400px'],
+				btn: ['关闭']
+
+			});
+		});
+
+	});
+
 	layui.use('form', function(){
 		var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
 

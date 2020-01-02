@@ -110,8 +110,8 @@
 							<cite>作业中心</cite>
 						</a>
 						<dl class="layui-nav-child">
-							<dd><a lay-href="template/personalpage.html">宝宝作业</a></dd>
-							<dd><a lay-href="">宝宝往期作业</a></dd>
+							<dd><a lay-href="/ChildSchool/HomeworkController/turnBabyHomework">宝宝作业</a></dd>
+							<dd><a lay-href="/ChildSchool/HomeworkController/query/pasthomework">往期作业</a></dd>
 							<dd><a lay-href="/ChildSchool/web/parentcoursequery.action">课程表</a></dd>
 						</dl>
 					</li>

@@ -86,14 +86,13 @@
 			,filter:'test'
 			,url: '/ChildSchool/ClassInfoController/queryClassInfo'
 			,cols: [[
-				{field: 'bid', title: '宝宝编号', width:100}
-				,{field: 'bName', title: '宝宝名称', width:140}
-				,{field: 'pName', title: '家长名称', width:140, sort: true}
-				,{field: 'bDate', title: '入学时间', width: 140, sort: true}
-				,{field: 'bSex', title: '性别', width: 80}
-				,{title:'操作', toolbar: '#toolbarDemo', width:150}
+				{field: 'bid', title: '宝宝编号'}
+				,{field: 'bName', title: '宝宝名称'}
+				,{field: 'pName', title: '家长名称', sort: true}
+				,{field: 'bDate', title: '入学时间', sort: true}
+				,{field: 'bSex', title: '性别'}
+				,{title:'操作', toolbar: '#toolbarDemo'}
 			]]
-			,cellMinWidth: 80
 			,limits:[5,10,20,40,100]
 			,limit:5
 			,id: 'testReload'
