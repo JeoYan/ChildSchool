@@ -12,7 +12,20 @@ public class TblWorker {
   private int sid;
   private String rname;
   private int rid;
-  private  byte[] wface;
+  private byte[] wface;
+  private String wphone;
+
+
+
+  public String getWphone()
+  {
+    return wphone;
+  }
+
+  public void setWphone(String wphone)
+  {
+    this.wphone = wphone;
+  }
 
   public byte[] getWface()
   {

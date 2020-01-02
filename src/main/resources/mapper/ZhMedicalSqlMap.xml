@@ -13,7 +13,7 @@
 
             <if test="cname != null and cname != '' ">
 
-                AND r.cname like  #{cname}
+                AND r.cname like   "%"#{cname}"%"
 
             </if>
            ORDER BY c.checkdate desc
@@ -35,7 +35,7 @@
 
             <if test="cname != null and cname != '' ">
 
-                AND r.cname like  #{cname}
+                AND r.cname like  "%"#{cname}"%"
 
             </if>
 

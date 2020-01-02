@@ -122,7 +122,7 @@
 					<div class="layui-form-item" style="margin-bottom: 20px;">
 						<%--				<input type="checkbox" name="remember" lay-skin="primary" title="记住密码">--%>
 						<a class="layadmin-user-jump-change layadmin-link" style="margin-top: 7px;"
-						   href=<%=path + "/workerLogin/workerForgetPage.action"%>>忘记密码？</a>
+						   href=<%=path + "/parentLogin/parentForgetPage.action"%>>忘记密码？</a>
 					</div>
 					<div class="layui-form-item">
 						<button class="layui-btn layui-btn-fluid" lay-submit lay-filter="LAY-user-login-submit">登 入</button>

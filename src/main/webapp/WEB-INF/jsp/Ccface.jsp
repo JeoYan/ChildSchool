@@ -1,6 +1,6 @@
 
 <%--/**--%>
-<%--* 职工人脸识别-考勤--%>
+<%--* 幼儿管理-增加界面--%>
 <%--* by 陈超--%>
 <%--*/--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -32,19 +32,12 @@
 
 <form class="layui-form" action="">
 <div class="layui-form" lay-filter="layui-btn-normal" id="layui-btn-normal" style="padding: 20px 0 0 0;">
-	<h2 style="text-align: center">人脸识别</h2>
+	<h1 style="text-align: center">人脸识别</h1>
 
-<%--	<div style="text-align: center">--%>
+	<div style="text-align: center">
 
-<%--		<div class="layui-inline">--%>
-<%--			<input  type="dhiden" name="wid" id="wid" value="${sessionScope.wid}">--%>
-<%--		</div>--%>
-	<div class="layui-form-item" style="text-align: center">
-		<label class="layui-form-label">职工id</label>
-		<div class="layui-input-inline">
-			<input type="hidden"  name="wid" id="wid" lay-verify="required" placeholder="请输入宝宝名称" autocomplete="off" class="layui-input">
-		</div>
-	</div>
+		教师名称:
+
 		<div id="media">
 			<video id="video" width="530" height="300" autoplay></video>
 			<canvas id="canvas" width="400" height="300"></canvas>
@@ -55,7 +48,7 @@
 		</dd>
 
 
-<%--	</div>--%>
+	</div>
 
 	<div class="layui-form-item layui-hide" style="text-align: center">
 		<input type="button" lay-submit lay-filter="LAY-user-front-submit" id="LAY-user-front-submit" value="确认">
@@ -89,18 +82,15 @@
 		//把流媒体数据画到convas画布上去
 		context.drawImage(video,0,0,400,400);
 		var base = getBase64();
-		var wid=$('#wid').val();
-
 		$.ajax({
 			type:"post",
-			url:"${pageContext.request.contextPath}/faceattendence.action",
-			data:{"base":base,"wid":wid},
+			url:"${pageContext.request.contextPath}/facelogin11111.action",
+			data:{"base":base},
 			success:function(data){
 				alert(data);
 
 				if(data===1){
 					alert("考勤成功");
-					parent.location.reload();
 				} else {
 					alert("考勤失败");
 				}

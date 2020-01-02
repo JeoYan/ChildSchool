@@ -43,18 +43,16 @@ public class ZhCountController
 	public List<ZhPostCount> postcount(){
 
 		List<ZhPostCount>  postCountList = new ArrayList<ZhPostCount>();
+
 		List<ZhTblRole>  allRoleList = zhCountService.findAllRole();
 
 		for (ZhTblRole zhTblRole : allRoleList)
 		{
 			ZhPostCount postCount = new ZhPostCount();
-
 			postCount.setName(zhTblRole.getRname());
-
 			int a=zhCountService.findRoleNumber(zhTblRole.getRid());
 			System.out.println(a+"---------------a a a a a ----------------");
 			postCount.setRolenum(a);
-
 			postCountList.add(postCount);
 
 		}
