@@ -21,9 +21,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<title> 智慧幼儿园教职工管理</title>
 	<link rel="stylesheet" href=<%=path+"/layuiadmin/layui/css/layui.css"%> media="all">
-	<link rel="stylesheet" href=<%=path+"/css/socketChart.css"%> media="all">
 	<script src=<%=path + "/js/jquery-3.4.1.js"%>></script>
-	<script src=<%=path + "/layuiadmin/layui/layui.js"%>></script>
 </head>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
@@ -36,19 +34,21 @@
 					${sessionScope.wName}
 				</a>
 				<dl class="layui-nav-child">
-					<dd><a href="">个人信息</a></dd>
-					<dd><a href="">修改密码</a></dd>
+					<%--					<dd><a href="" onclick="info()">个人信息</a></dd>--%>
+<%--					<dd><a href="">修改密码</a></dd>--%>
+					<dd><a href="/ChildSchool/information.action" >个人信息</a></dd>
+					<dd><a href="/ChildSchool/psw.action">修改密码</a></dd>
 				</dl>
 			</li>
 			<li class="layui-nav-item"><a href="">注销</a></li>
 		</ul>
 		<ul>
-			<li>
-				<dl class="layui-nav-child">
-					<dd><a href="javascript:void(0)" title="修改密码" onclick="dofix(this)">修改密码</a></dd>
-				</dl>
-			</li>
-			<li class="layui-nav-item"><a href="">退出</a></li>
+		<li>
+		<dl class="layui-nav-child">
+			<dd><a href="javascript:void(0)" title="修改密码" onclick="dofix(this)">修改密码</a></dd>
+		</dl>
+		</li>
+		<li class="layui-nav-item"><a href="">退出</a></li>
 		</ul>
 	</div>
 	<div class="layui-side layui-bg-black">
@@ -60,7 +60,7 @@
 						<li class="layui-nav-item">
 							<a href="javascript:;">
 								<i class="layui-icon layui-icon-component"></i>
-								<cite>${i.key}</cite></a>
+									<cite>${i.key}</cite></a>
 							<dl class="layui-nav-child">
 								<c:forEach items="${i.value}" begin="0" step="1" var="j">
 									<dd>
@@ -81,93 +81,40 @@
 			</iframe>
 		</div>
 	</div>
-	<%-- -----------------------------------------------------------%>
-	<%-- ---------------------在线人数显示弹窗--------------------------------------%>
-	<div id="mytalk" style="display: none">
-		<div id="hz-group">
-			<%--		<input type="hidden" id="talks" value="${sessionScope.pName}">--%>
-			<input type="hidden" id="talks" value="${sessionScope.wName}">
-			<input type="hidden" id="uid" value="${sessionScope.wid}">
-			<input type="hidden" id="rid" value="${sessionScope.rid}">
-			<%--		<div style="color: #0C0C0C; font-size:20px">登录用户：--%>
-			<%--			<span id="talks">${sessionScope.pName}</span></div>--%>
-			<%--		<br/>--%>
-			<div style="color: #0C0C0C; font-size:15px">当前在线人数:<span id="onlineCount">0</span></div>
-			<!-- 主体 -->
-			<div id="hz-group-body">
-
-			</div>
-		</div>
-	</div>
-	<%-- -----------------------------------------------------------%>
-	<%-- -----------------------------------------------------------%>
-
-	<%-- -----------------------------------------------------------%>
-	<%-- ----------------------聊天窗口-------------------------------------%>
-	<div id="hz-message" style="display: none">
-		<!-- 头部 -->
-		<div style="display: none;">正在与<span id="toUserName"></span>聊天</div>
-		<hr style="margin: 0px;"/>
-		<!-- 主体 -->
-		<div id="hz-message-body">
-		</div>
-		<!-- 功能条 -->
-		<div id="">
-			<button>表情</button>
-			<button>图片</button>
-			<button id="videoBut">视频</button>
-			<button onclick="send()" style="float: right;">发送</button>
-		</div>
-		<!-- 输入框 -->
-		<div contenteditable="true" id="hz-message-input">
-		</div>
-	</div>
-	<%-- -----------------------------------------------------------%>
-	<%-- -----------------------------------------------------------%>
-
-
 	<div class="layui-footer">
 		<!-- 底部固定区域 -->
 	</div>
 </div>
-
+<script src=<%=path + "/layuiadmin/layui/layui.js"%>></script>
 <script>
-	//JavaScript代码区域
 	layui.use('element', function () {
 		var element = layui.element;
+	});
+	// function info() {
+	// 	layer.open({
+	// 		type: 2,
+	// 		title: '个人信息',
+	// 		content: '/ChildSchool/information.action',
+	// 		maxmin: true,
+	// 		area: ['500px', '500px'],
+	// 		btn: ['确定', '取消'],
+	// 		yes: function (index, layero) {
+	// 			alert("diankai");
+	// 			//教室名称
+	// 			var wid = $("#wid").val();
+	// 			var oldpsw = $("#LAY-user-login-password").val();
+	// 			var newpsw = $("#LAY-user-login-password1").val();
+	// 			var newpsw1 = $("#LAY-user-login-password2").val();
+	// 			alert(wid);
+	// 			var ob = {wid: wid, oldpsw: oldpsw, newpsw: newpsw, newpsw1: newpsw1};
+	//
+	// 		}
+	// 	});
+	// }
 
-	});
-	layui.use('layer', function () {
-		var layer = layui.layer;
-		var loginName = $("#talks").val();
-		//当前人员在线显示弹窗
-		layer.open({
-			title: loginName
-			, type: 1
-			, content: $('#mytalk')
-			, shade: 0
-			, maxmin: true
-			, closeBtn: 0
-			, offset: 'r'
-			, min: function (layero) {
-				setTimeout(function () {
-					layero.css({
-						left: 'auto'
-						, right: 0
-						, bottom: 0
-					})
-				}, 0);
-			}
-			, max: function (layerro) {
-				$(window).resize(function () {
-					$(".layui-layer-maxmin").parents(".layui-layer").width($(window).width()).height($(window).height());
-				});
-			}
-		});
-	});
 
 </script>
-<script src=<%=path + "/js/socketChart.js"%>></script>
+
 </body>
 </html>
 
