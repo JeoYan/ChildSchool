@@ -16,7 +16,7 @@ public class CmjTblBaby
 	private long cid;
 	private String bAddress;
 	private String pName;
-
+	
 	public long getBid()
 	{
 		return bid;

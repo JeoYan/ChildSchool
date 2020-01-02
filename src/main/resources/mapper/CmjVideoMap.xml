@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.great.childschool.mapper.VideoMapper">
+    <select id="findAllVideo" resultType="CmjTblVideo">
+        select * from tbl_video
+    </select>
+    <select id="findAllVideoRole" resultType="TblRole">
+        select rid,rname from tbl_role where rid &gt; 4
+        limit #{page},#{size}
+    </select>
+
+    <select id="findVidByRid" resultType="java.lang.Integer">
+        select vid from tbl_video_role where rid = #{_parameter}
+    </select>
+
+    <insert id="distributeMenu" >
+        <if test="null != list and list.size()>0">
+            insert into tbl_video_role (rid, vid) values
+            <foreach item="item" index="index" collection="list"  separator="," >
+                (
+                    #{rid},#{item}
+                )
+            </foreach>
+        </if>
+    </insert>
+</mapper>

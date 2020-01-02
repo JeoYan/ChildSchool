@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.great.childschool.mapper.HomeworkMapper">
+    <insert id="postHomework">
+        insert into tbl_homework(hname, hdate, url, wid,cid)
+        values (#{filename},#{curDate},#{fileUrl},44,1);
+    </insert>
+    <insert id="submitHomework">
+        insert into tbl_baby_homework(bid, hid,submittime, bwurl)
+        values (#{bid},#{hid},#{curDate},#{fileUrl})
+    </insert>
+
+    <update id="markHomework">
+        update tbl_baby_homework set score = #{score}
+        where bwid = #{bWid}
+    </update>
+
+    <select id="findPastHomework" resultType="CmjHomework">
+        select A.hid,A.hname,A.hdate,B.score from tbl_homework A,tbl_baby_homework B
+        where A.hid = B.hid and B.bid = #{bid} and A.hdate &lt;= #{curDate}
+        limit #{page},#{size}
+    </select>
+
+    <select id="countPastHomework" resultType="java.lang.Integer">
+        select count(B.bwid) from tbl_homework A,tbl_baby_homework B
+        where A.hid = B.hid and B.bid = #{bid} and A.hdate &lt;= #{curDate}
+    </select>
+
+    <select id="findClassHomework" resultType="CmjHomework">
+        select hid,hname,hdate,url from tbl_homework
+        <where>
+            wid = 44
+            and hdate &gt;= #{curDate}
+        </where>
+    </select>
+
+    <select id="findHomeworkById" resultType="CmjHomework">
+        select  * from tbl_homework where hid = #{hid}
+    </select>
+
+    <select id="findBabyHomeworkById" resultType="java.lang.String">
+        select bwurl from tbl_baby_homework where bwid = #{bWid}
+    </select>
+
+    <select id="classHomework" resultType="java.util.HashMap">
+        select A.bid,A.bname bName,B.pname pName,D.hdate hDate,D.hname hName,F.submittime submitTime,F.bwurl url,F.bwid bWid
+        from tbl_baby A,tbl_parent B,tbl_parent_baby C,tbl_homework D,tbl_baby_homework F
+        <where>
+            A.bid = C.bid
+            and A.cid = D.cid
+            and B.pid = C.pid
+            and A.bid = F.bid
+            and D.hid = F.hid
+            and D.hdate &gt;= #{curDate}
+            and F.submittime &gt;= #{curDate}
+        </where>
+        limit #{page},#{size}
+    </select>
+
+    <select id="countClassHomework" resultType="java.lang.Integer">
+        select count(F.bwid)
+        from tbl_baby A,tbl_parent B,tbl_parent_baby C,tbl_homework D,tbl_baby_homework F
+        <where>
+            A.bid = C.bid
+            and A.cid = D.cid
+            and B.pid = C.pid
+            and A.bid = F.bid
+            and D.hid = F.hid
+            and D.hdate &gt;= #{curDate}
+            and F.submittime &gt;= #{curDate}
+        </where>
+    </select>
+</mapper>

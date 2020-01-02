@@ -76,7 +76,6 @@
 </body>
 <script type="text/html" id="toolbarDemo">
 	<div class="layui-btn-container">
-		<a class="layui-btn layui-btn-xs" lay-event="attend">考勤</a>
 		<button class="layui-btn layui-btn-sm" lay-event="babySign">考勤信息</button>
 	</div>
 </script>
@@ -170,54 +169,6 @@
 					area: ['50%','70%'],
 					content: $("#lookBabySign")
 				});
-			}
-			else if(obj.event === 'attend'){
-				alert(data.bname);
-				alert(data.bid);
-
-				layer.open({
-					type: 2,
-					title: '考勤',
-					content: '/ChildSchool/babyface.action',
-					maxmin: true,
-					area: ['500px', '500px'],
-					btn: ['关闭'],
-					success: function (layero,index) {
-						var body = layer.getChildFrame('body', index);
-						body.find("#bid").val(data.bid);
-
-
-
-					},
-					yes:function (index,layero) {
-						layer.close(index);
-						// var wid = data.wid;
-						// var ob = {wid: wid};
-						// layer.close(index);
-						// $.ajax({
-						// 	type: "POST",//提交方式
-						// 	url: "/ChildSchool/facelogin.action0",//路径
-						// 	data: ob,//数据
-						// 	dataType: "json",//希望返回的数据类型
-						// 	async: true,//异步操作
-						// 	success: function (msg) {//成功的方法 msg为返回数据
-						//
-						// 		if (msg.msg == "1") {
-						// 			alert("修改成功");
-						// 			table.reload('test');
-						// 			layer.close(index);
-						// 		} else if (msg.msg == "2") {
-						// 			alert("修改失败")
-						// 		}
-						//
-						// 	},
-						// 	error: function () { //错误的方法
-						// 		alert("服务器正忙")
-						// 	}
-						// });
-					}
-				})
-
 			}
 		});
 
