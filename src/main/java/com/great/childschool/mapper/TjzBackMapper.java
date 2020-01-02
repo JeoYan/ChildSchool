@@ -20,7 +20,7 @@ public interface TjzBackMapper
 	 * 电子围栏查询孩子
 	 * by 汤建志
 	 */
-	public List<TjzTblBaby> fenceBaby( );
+	public TjzTblBaby fenceBaby(int bid);
 
 
 	/**
@@ -85,13 +85,13 @@ public interface TjzBackMapper
 	 * 按月统计日志
 	 * by 汤建志
 	 */
-	public List<TjzLogCount> logCountByMonth( );
+	public List<TjzLogCount> logCountByMonth();
 
 	/**
 	 * 按人员统计日志
 	 * by 汤建志
 	 */
-	public List<TjzLogCount> logCountByWid( );
+	public List<TjzLogCount> logCountByWid();
 
 
 	/**
@@ -203,7 +203,7 @@ public interface TjzBackMapper
 	 * 批量插入未排班课程
 	 * by 汤建志
 	 */
-	public int insertCodeBatch(List<TjzTbCourse > courseList);
+	public int insertCodeBatch(List<TjzTbCourse> courseList);
 
 
 

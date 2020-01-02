@@ -8,7 +8,11 @@
 
     <!-- 电子围栏查询孩子-->
     <select id="fenceBaby" resultType="com.great.childschool.entity.TjzTblBaby">
-     SELECT * FROM tbl_baby
+    SELECT  pa.pphone,ba.bname,pa.pname
+    FROM tbl_parent_baby pb,tbl_parent pa,tbl_baby ba
+    WHERE   pa.pid=pb.pid
+    AND ba.bid=pb.bid
+    AND ba.bid=#{bid}
     </select>
 
 

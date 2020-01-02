@@ -16,10 +16,32 @@ public class TjzTblBaby
 	private String sPoiLat;
 	private String ePoiLng;
 	private String ePoiLat;
+	private Boolean flag;
+	private String pPhone;
 
 
 	public TjzTblBaby()
 	{
+	}
+
+	public String getpPhone()
+	{
+		return pPhone;
+	}
+
+	public void setpPhone(String pPhone)
+	{
+		this.pPhone = pPhone;
+	}
+
+	public Boolean getFlag()
+	{
+		return flag;
+	}
+
+	public void setFlag(Boolean flag)
+	{
+		this.flag = flag;
 	}
 
 	public String getsPoiLng()

@@ -4,7 +4,6 @@ package com.great.childschool.service;
 
 import com.great.childschool.entity.*;
 import com.great.childschool.mapper.TjzBackMapper;
-import com.great.childschool.tools.Tool;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,8 +30,8 @@ public class TjzBackService
 	 * 电子围栏查询孩子
 	 * by 汤建志
 	 */
-	public List<TjzTblBaby> fenceBaby( ){
-		return tjzBackMapper.fenceBaby();
+	public TjzTblBaby fenceBaby( int bid){
+		return tjzBackMapper.fenceBaby(bid);
 	};
 
 

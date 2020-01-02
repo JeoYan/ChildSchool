@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -42,16 +41,16 @@ public class TjzAdminHandler
 	public final static String ISAFESTUDY_PATH = "\\src\\main\\resources\\static\\safestudy\\";
 
 
-	/**
-	 * 电子围栏查询孩子
-	 * by 汤建志
-	 */
-	@RequestMapping("/fenceBaby.action")
-	@ResponseBody
-	public List<TjzTblBaby> fenceBaby( ){
-		return tjzBackService.fenceBaby();
-	};
-
+//	/**
+//	 * 电子围栏查询孩子
+//	 * by 汤建志
+//	 */
+//	@RequestMapping("/fenceBaby.action")
+//	@ResponseBody
+//	public TjzTblBaby fenceBaby( ){
+//		return tjzBackService.fenceBaby();
+//	};
+//
 
 
 	/**
@@ -60,20 +59,28 @@ public class TjzAdminHandler
 	 */
 	@RequestMapping("/addWarning.action")
 	@ResponseBody
-	public  Map<String,Object> addWarning(String bid,HttpServletRequest request){
-//		String bid = request.getParameter("ob");
+	public  Map<String,Object> addWarning(String bid,String area,HttpServletRequest request){
 		System.out.println("+++++bid"+bid);
-
+		System.out.println("+++++area"+area);
 		Map<String,Object> map = new HashMap<String,Object>();
 		TjzTblWarning warning=new TjzTblWarning();
 		warning.setBid(Integer.valueOf(bid));
-		warning.setArea("北门");
+		warning.setArea(area);
 		Date day=new Date();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		warning.setWarnTime(dateFormat.format(day));
+		String datTime=dateFormat.format(day);
+		warning.setWarnTime(datTime);
 		int flag  = tjzBackService.addWarning(warning);
 		if (flag>0){
 			map.put("msg","1");
+			TjzTblBaby baby=tjzBackService.fenceBaby(Integer.valueOf(bid));
+			System.out.println(baby.getpPhone()+"+++"+baby.getbName());
+			String pPhone=baby.getpPhone();
+			String bName=baby.getbName();
+			String content="【智慧幼儿园】亲爱的家长："+baby.getpName()+"，"+datTime+"，您的宝宝【"+bName+"】越过电子围栏【"+area+"】触发报警。请及时与班主任联系。";
+			System.out.println(content);
+			String response = MessageSendDemo.send("44962", "b3cb27bee6dbb9f1d717950da9fbd627", pPhone, content);
+			System.out.println(response);
 		}else {
 			map.put("msg","0");
 		}
