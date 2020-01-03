@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.great.childschool.mapper.ZhWeChatMapper">
+
+
+    <select id="findFoodManage"  parameterType="com.great.childschool.entity.TblFood" resultType="com.great.childschool.entity.TblFood">
+
+        SELECT  * from  tbl_food
+        <where>
+            1=1
+            <if test="fdate != null and fdate != '' ">
+
+                AND fdate like   "%"#{fdate}"%"
+
+            </if>
+            ORDER BY fdate desc
+
+        </where>
+
+
+
+    </select>
+
+
+    <select id="findMedicalCase"  parameterType="com.great.childschool.entity.TblChecklist" resultType="com.great.childschool.entity.TblChecklist">
+
+        SELECT *  from  (select bid FROM tbl_parent_baby where pid=#{pid}) a, tbl_checklist c, tbl_baby b
+
+        <where>
+            b.bid=a.bid  and  c.bid=b.bid
+            <if test="checkDate != null and checkDate != '' ">
+
+                AND checkdate like   "%"#{checkDate}"%"
+
+            </if>
+            ORDER BY c.checkdate desc
+        </where>
+
+
+
+    </select>
+
+
+
+    <select id="findScore"  parameterType="com.great.childschool.entity.ZhTblHomework" resultType="com.great.childschool.entity.ZhTblHomework">
+
+
+
+
+
+        select A.hid,A.hname,A.hdate,B.score from tbl_homework A,tbl_baby_homework B,(select * from  tbl_parent_baby where pid=#{pid}) c
+        <where>
+             A.hid = B.hid and B.bid =c.bid
+        <if test="hdate != null and hdate != '' ">
+
+            AND hdate like   "%"#{hdate}"%"
+
+            </if>
+            ORDER BY  A.hdate desc
+        </where>
+
+
+
+    </select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

@@ -167,7 +167,7 @@
 				}else if(i===2) {
 					alert("添加失败");
 				}else if(i===3) {
-					alert("该人脸录入");
+					alert("该人脸已录入");
 				}
 
 			}

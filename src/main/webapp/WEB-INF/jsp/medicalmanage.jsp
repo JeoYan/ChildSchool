@@ -55,9 +55,9 @@
 
 					<select name="" id="cname" lay-filter="myselect">
 						<option value="">请选择</option>
-						<option value="小二班">小二班</option>
+<%--						<option value="小二班">小二班</option>--%>
 						<c:forEach items="${requestScope.allClass}" begin="0" step="1" var="t">
-							<option value="${t.cId}">${t.cName}</option>
+							<option value="${t.cName}">${t.cName}</option>
 						</c:forEach>
 					</select>
 				</div>

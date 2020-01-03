@@ -45,10 +45,43 @@
 
 
 
+    <select id="totalPageMedicalCourse"  parameterType="com.great.childschool.entity.ZhTblCourse" resultType="com.great.childschool.entity.ZhTblCourse">
 
 
+        select * from tbl_course c,tbl_subject s,tbl_classroom a
+        <where>
+           s.subname="体检"
+            and s.subid=c.subid and c.cid=a.cid
+            <if test="cdate != null and cdate != '' ">
+
+                AND c.cdate like   "%"#{cdate}"%"
+
+            </if>
+            ORDER BY c.cdate desc
+        </where>
 
 
+    </select>
+
+
+    <select id="findMedicalCourse"  parameterType="com.great.childschool.entity.ZhTblCourse" resultType="com.great.childschool.entity.ZhTblCourse">
+
+
+        select * from tbl_course c,tbl_subject s,tbl_classroom a
+        <where>
+           s.subname="体检"
+            and s.subid=c.subid and c.cid=a.cid
+            <if test="cdate != null and cdate != '' ">
+
+                AND c.cdate like   "%"#{cdate}"%"
+
+            </if>
+            ORDER BY c.cdate desc
+        </where>
+
+        limit #{page},5
+
+    </select>
 
 
 

@@ -4,6 +4,7 @@ package com.great.childschool.mapper;
 import com.great.childschool.entity.TblBaby;
 import com.great.childschool.entity.TblChecklist;
 import com.great.childschool.entity.TblClassroom;
+import com.great.childschool.entity.ZhTblCourse;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -69,5 +70,11 @@ public interface ZhMedicalManageDao
 	//家长的体检情况总条数
 	@Select("SELECT *  from  (select bid FROM tbl_parent_baby where pid=#{pid}) a, tbl_checklist c, tbl_baby b where  b.bid=a.bid  and  c.bid=b.bid  ORDER BY c.checkdate desc ")
 	public List<TblChecklist>  totalPageMedicalCase (TblChecklist tblChecklist);
+
+
+	//查看体检课程
+	public List<ZhTblCourse>  findMedicalCourse (ZhTblCourse zhTblCourse);
+
+	public List<ZhTblCourse>  totalPageMedicalCourse (ZhTblCourse zhTblCourse);
 
 }
