@@ -50,6 +50,7 @@
 							<span class="nub">
 							<button type="button" class="layui-btn layui-btn-sm" onclick="download(this)">下载</button>
 							<input type="hidden" value="${i.bookid}">
+								<input type="hidden" value="${i.bookName}">
 							</span>
 						</div>
 					</c:forEach>
@@ -63,7 +64,7 @@
 <script type="text/javascript">
 
 	function seeBook(node) {
-		alert("预览");
+
 		var bookid = $(node).parent().find("input").eq(0).val();
 		// alert(bookid);
 		layui.use('layer', function () {
@@ -80,7 +81,45 @@
 	function download(node) {
 		alert("下载");
 		var bookid = $(node).parent().find("input").eq(0).val();
-		alert(bookid);
+		var bookName = $(node).parent().find("input").eq(1).val();
+		// alert(bookid);
+		// alert(bookName);
+		//
+		// var msg={
+		// 	'bookid':bookid,
+		// 	'bookName':bookName
+		// };
+
+		var url = "${pageContext.request.contextPath}/readBook/downloadBook.action?bookid="+bookid+"&bookName="+bookName;
+		var xmlResquest = new XMLHttpRequest();
+		xmlResquest.open("POST", url, true);
+		xmlResquest.setRequestHeader("Content-type", "application/json");
+		xmlResquest.setRequestHeader("Authorization", "Bearer 6cda86e3-ba1c-4737-972c-f815304932ee");
+		xmlResquest.responseType = "blob";
+		xmlResquest.onload = function (oEvent) {
+			var content = xmlResquest.response;
+			var elink = document.createElement('a');
+			elink.download = bookName+".zip";
+			elink.style.display = 'none';
+			var blob = new Blob([content]);
+			elink.href = URL.createObjectURL(blob);
+			document.body.appendChild(elink);
+			elink.click();
+			document.body.removeChild(elink);
+
+		};
+		xmlResquest.send();
+
+		layer.msg("开始下载！");
+
+
+
+
+
+
+
+
+
 	}
 
 

@@ -23,4 +23,12 @@ public interface YjjNewsMapper
 	@Insert("insert into tbl_news (ntitle,nconntext,ndate,wid) values(#{ntitle},#{nconntext},#{ndate},#{wid})")
 	int addNews(YjjTblNews news);
 
+	@Delete("delete from tbl_news where nid=#{nid}")
+	int delNews(@Param("nid")String nid);
+
+	@Update("update tbl_news set ntitle=#{ntitle},nconntext=#{nconntext},ndate=#{ndate},wid=#{wid} where nid=#{nid}")
+	int updateNews(YjjTblNews news);
+
+
+
 }
