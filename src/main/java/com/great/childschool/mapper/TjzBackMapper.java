@@ -17,81 +17,16 @@ public interface TjzBackMapper
 {
 
 	/**
-	 * 电子围栏查询孩子
-	 * by 汤建志
-	 */
-	public TjzTblBaby fenceBaby(int bid);
-
-
-	/**
-	 * 添加报警信息
-	 * by 汤建志
-	 */
-	public int addWarning(TjzTblWarning warning);
-
-
-	/**
-	 * 教师查看班级安全教育
-	 * by 汤建志
-	 */
-	public  List<TjzTblBaby> classSafeStudy(Map<String, Object> map);
-	/**
-	 * 教师查看班级安全教育数目
-	 * by 汤建志
-	 */
-	public int classSafeStudyNum(Map<String, Object> map);
-	/**
-	 * 家长查看安全教育数目
-	 * by 汤建志
-	 */
-	public int parentSafeStudyNum(Map<String, Object> map);
-
-
-	/**
-	 * 家长查看安全教育
-	 * by 汤建志
-	 */
-	public List<TjzTblSafeStudy> parentSafeStudy(Map<String, Object> map);
-
-	/**
-	 * 教师上传安全教育试题
-	 * by 汤建志
-	 */
-	public int uploadTest(TjzTblSafeStudy safeStudy);
-
-
-	/**
-	 * 教师上传安全教育视频
-	 * by 汤建志
-	 */
-	public int upload(TjzTblSafeStudy safeStudy);
-
-	/**
-	 * 教师发布安全教育试题
-	 * by 汤建志
-	 */
-	public List<TjzTblSafeStudy> safeStudy(Map<String, Object> map);
-
-	/**
-	 * 教师发布安全教育试题数目
-	 * by 汤建志
-	 */
-	public int safeStudyNum(Map<String, Object> map);
-
-
-
-
-	/**
 	 * 按月统计日志
 	 * by 汤建志
 	 */
-	public List<TjzLogCount> logCountByMonth();
+	public List<TjzLogCount> logCountByMonth( );
 
 	/**
 	 * 按人员统计日志
 	 * by 汤建志
 	 */
-	public List<TjzLogCount> logCountByWid();
+	public List<TjzLogCount> logCountByWid( );
 
 
 	/**
@@ -203,7 +138,7 @@ public interface TjzBackMapper
 	 * 批量插入未排班课程
 	 * by 汤建志
 	 */
-	public int insertCodeBatch(List<TjzTbCourse> courseList);
+	public int insertCodeBatch(List<TjzTbCourse > courseList);
 
 
 

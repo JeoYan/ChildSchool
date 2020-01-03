@@ -3,10 +3,8 @@ package com.great.childschool.controller;
 import com.great.childschool.aoplog.Log;
 import com.great.childschool.entity.*;
 import com.great.childschool.service.YjjBookReadService;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+import com.great.childschool.tools.ZipUtil;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,14 +15,15 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.awt.image.BufferedImage;
+
 import java.io.*;
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
+
 import java.util.*;
+
+
 
 import static com.great.childschool.tools.YjjTools.getDatea;
 
@@ -503,6 +502,43 @@ public class YjjReadBookController
 		//获得绘本的最后一页
 		return watchPicInfo;
 	}
+
+
+	/**
+	 * 下载绘本
+	 */
+	//获取数本信息数据
+	@RequestMapping("/downloadBook.action")
+	public ResponseEntity<byte[]>  batchDownLoadDatumList(String bookid,String bookName, HttpServletResponse response) {
+		ResponseEntity<byte[]> responseEntity=null;
+		System.out.println("---------------bookid------"+bookid);
+		System.out.println("---------------bookName------"+bookName);
+			//查询文件列表
+			List<YjjTblBookPage> bookList = bookReadService.findPage(bookid);
+			//查询获得书名
+
+			//压缩文件
+			List<File> files = new ArrayList<>();
+			for (YjjTblBookPage bookPage : bookList)
+			{
+				File file = new File(bookPage.getUrl());
+				files.add(file);
+			}
+		try
+		{
+			responseEntity=ZipUtil.downLoadFiles(files,bookName,response);
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+	return responseEntity;
+	}
+
+
+
+
+
 
 
 }

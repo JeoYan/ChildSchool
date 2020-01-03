@@ -41,6 +41,16 @@ public class YjjNewsController
 		return "addnews";
 	}
 
+	/**
+	 * 获得新增新闻页面
+	 * @return
+	 */
+	@RequestMapping("/updateNewsView.action")
+	public String updateNewsView(){
+		return "updatenews";
+	}
+
+
 
 	/**
 	 * 调用新闻中心管理数据显示
@@ -82,8 +92,10 @@ public class YjjNewsController
 	}
 
 
+
+
 	/**
-	 * 获得新增新闻
+	 * 新增新闻
 	 * @return
 	 */
 	@RequestMapping("/addNews.action")
@@ -116,14 +128,8 @@ public class YjjNewsController
 	public String deleteNews(HttpServletRequest request){
 		String result="NotOk";
 		String wid=request.getParameter("wid");
-		String ntitle=request.getParameter("ntitle");
-		String nconntext=request.getParameter("nconntext");
-		YjjTblNews news=new YjjTblNews();
-		news.setWid(Integer.valueOf(wid));
-		news.setNtitle(ntitle);
-		news.setNconntext(nconntext);
-		news.setNdate(getDatea());
-		int x=newsService.addNews(news);
+		String nid=request.getParameter("nid");
+		int x=newsService.delNews(nid);
 		if(x>0){
 			result="Ok";
 		}
@@ -132,6 +138,32 @@ public class YjjNewsController
 	}
 
 
+	/**
+	 * 更新新闻
+	 * @return
+	 */
+	@RequestMapping("/updateNews.action")
+	@ResponseBody
+	public String updateNews(HttpServletRequest request){
+		String result="NotOk";
+		String wid=request.getParameter("wid");
+		String ntitle=request.getParameter("ntitle");
+		String nconntext=request.getParameter("nconntext");
+		String nid=request.getParameter("nid");
+		YjjTblNews news=new YjjTblNews();
+		news.setNid(Integer.valueOf(nid));
+		news.setWid(Integer.valueOf(wid));
+		news.setNtitle(ntitle);
+		news.setNconntext(nconntext);
+		news.setNdate(getDatea());
+		int x=newsService.updateNews(news);
+
+		if(x>0){
+			result="Ok";
+		}
+
+		return result;
+	}
 
 
 

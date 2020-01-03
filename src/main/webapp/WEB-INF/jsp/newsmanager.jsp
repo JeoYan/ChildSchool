@@ -93,7 +93,7 @@
 
 
 <script type="text/html" id="barDemo">
-	<a class="layui-btn layui-btn-xs" lay-event="see">查看</a>
+<%--	<a class="layui-btn layui-btn-xs" lay-event="see">查看</a>--%>
 	<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="update">修改</a>
 	<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
 </script>
@@ -189,61 +189,52 @@
 					layer.open({
 						type: 2
 						, title: '修改'
-						, content: '/ChildSchool/updateNoticeView.action'
+						, content: '/ChildSchool/news/updateNewsView.action'
 						, maxmin: true
 						, area: ['500px', '450px']
 						, btn: ['确定', '取消']
 						, success: function (layero, index) {
 							//回显到窗口
 							var body = layer.getChildFrame('body', index);
-							body.find("#notitle").val(data.notitle);
+							body.find("#ntitle").val(data.ntitle);
 							body.find("#nconntext").val(data.nconntext);
-							body.find("#wName").val(data.wname);
-
-
-
-
+							body.find("#wName").val(data.wName);
 						}
 						, yes: function (index, layero) {
 							//窗口拿数据
 
 							//发布人
-							var wid = data.wid;
-							//时间
-							var ndate = data.ndate;
-
+							var wid = ${sessionScope.wid};
+							//新闻id
+							var nid=data.nid;
 
 							//标题
-							var notitle = $(layero).find('iframe')[0].contentWindow.notitle.value;
+							var ntitle = $(layero).find('iframe')[0].contentWindow.ntitle.value;
 
 
 							//内容
 							var nconntext = $(layero).find('iframe')[0].contentWindow.nconntext.value;
-
-
-
-
-							if (notitle.length===0){
+							if (ntitle.length===0){
 								layer.msg("请输入标题！");
 							}else if (nconntext.length===0){
-								layer.msg("请输入公告内容！");
+								layer.msg("请输入新闻内容！");
 							} else {
 								var ob = {
 									wid: wid,
-									notitle: notitle,
-									nconntext: nconntext,
-									ndate:ndate
+									nid:nid,
+									ntitle: ntitle,
+									nconntext: nconntext
 								};
 
 								$.ajax({
 									type: "POST",//提奥的方式
-									url: "/ChildSchool/updateNotice.action",//提交的地址
+									url: "/ChildSchool/news/updateNews.action",//提交的地址
 									data: ob,//提交的数据
-									dataType: "json",//希望返回的数据类型
+									dataType: "text",//希望返回的数据类型
 									async: true,//异步操作
-									success: function (num) {//成功的方法  msg为返回数据
+									success: function (data) {//成功的方法  msg为返回数据
 
-										if (num>0) {
+										if (data==="Ok") {
 											layer.msg("修改成功！");
 											table.reload('demo');
 											layer.close(index);
@@ -267,10 +258,12 @@
 						// layer.close(index);
 						//发布人
 						var wid = data.wid;
+						//发布人
+						var nid = data.nid;
 						//时间
-						var ndate = data.ndate;
+						// var ndate = data.ndate;
 
-						var ob = {wid: wid, ndate: ndate};
+						var ob = {'wid': wid, 'nid': nid};
 
 
 						$.ajax({
@@ -279,16 +272,14 @@
 							data: ob,//提交的数据
 							dataType: "text",//希望返回的数据类型
 							async: true,//异步操作
-							success: function (num) {//成功的方法  msg为返回数据
+							success: function (data) {//成功的方法  msg为返回数据
 								// alert(num);
 								//msg字符串切割得到list和
 
 								//未查询到数据时执行
-								if (num >= 1) {
+								if (data==="Ok") {
 									layer.msg("删除成功");
-
 									var index=table.cache.demo;
-								//	alert(index.length===1);
 									if(index.length===1){
 										table.reload('demo', {
 											page: {
@@ -298,11 +289,8 @@
 
 									}else {
 										table.reload('demo');
-
 									}
 
-									// //刷新表格
-									// table.reload();
 									layer.close(index);
 
 								}
