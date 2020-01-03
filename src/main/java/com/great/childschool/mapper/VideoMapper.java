@@ -31,6 +31,24 @@ public interface VideoMapper
 	 */
 	public List<TblRole> findAllVideoRole(int page, int size);
 	/**
+	 * //查询当前家长的班级角色所拥有的的视频
+	 * @author : MJChen
+	 * @date : 15:17 2020/1/2
+	 * @param page
+	 * @param size
+	 * @return : java.util.List<com.great.childschool.entity.TblRole>
+	 */
+	public List<CmjTblVideo> findVideoByRoleId(int page, int size);
+	/**
+	 * //查询当前截止的班级角色所拥有的视频数量
+	 * @author : MJChen
+	 * @date : 15:18 2020/1/2
+	 * @param
+	 * @return : java.lang.Integer
+	 */
+	public Integer countVideoByRoleId();
+
+	/**
 	 * //根据角色id查询他所拥有的视频权限
 	 * @author : MJChen
 	 * @date : 11:16 2019/12/31

@@ -84,7 +84,7 @@
 								<a lay-href="/ChildSchool/medicalcase.action">体检情况</a>
 							</dd>
 							<dd data-name="console">
-								<a lay-href="">宝宝考勤</a>
+								<a lay-href="/ChildSchool/ClassSignController/query/babysign">宝宝考勤</a>
 							</dd>
 							<dd data-name="console">
 								<a lay-href="/ChildSchool/foodCaseView.action">宝宝膳食</a>
@@ -99,7 +99,7 @@
 						</a>
 						<dl class="layui-nav-child">
 							<dd data-name="button">
-								<a lay-href="component/button/index.html">校园直播</a>
+								<a lay-href="/ChildSchool/VideoController/query/schoollive">校园直播</a>
 							</dd>
 						</dl>
 					</li>

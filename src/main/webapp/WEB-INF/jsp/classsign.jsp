@@ -18,14 +18,18 @@
 <body>
 <div class="layui-row" id="lookBabySign" style="display:none;">
 	<div>
-		<h1>宝宝考勤</h1>
-		<div class="layui-form-item">
-			<label class="layui-form-label">宝宝姓名：</label>
-			<label class="layui-form-label" id="showBabyName"></label>
-			<label class="layui-form-label">宝宝性别：</label>
-			<label class="layui-form-label" id="showBabySex"></label>
+		<div style="width: 96%; margin: 0 auto">
+			<h1 style="width: 50%; margin: 0 auto">宝宝考勤</h1>
+			<div class="layui-form-item">
+				<label class="layui-form-label">宝宝姓名：</label>
+				<label class="layui-form-label" id="showBabyName"></label>
+				<label class="layui-form-label">宝宝性别：</label>
+				<label class="layui-form-label" id="showBabySex"></label>
+			</div>
 		</div>
-		<table id="babySignInfo" border="1px">
+
+
+		<table class="layui-table" id="babySignInfo">
 			<tr id="dateTr">
 				<td>日期</td>
 				<td>1</td>
@@ -51,8 +55,10 @@
 				<td>1</td>
 			</tr>
 		</table>
-		<button class="layui-btn" id="pre">上一周</button>
-		<button class="layui-btn" id="next">下一周</button>
+		<div style="width: 50%; margin: 0 auto">
+			<button class="layui-btn" id="pre">上一周</button>
+			<button class="layui-btn" id="next">下一周</button>
+		</div>
 	</div>
 </div>
 
