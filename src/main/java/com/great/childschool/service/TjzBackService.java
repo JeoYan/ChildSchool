@@ -8,10 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * 业务层
@@ -24,6 +23,143 @@ public class TjzBackService
 {
 	@Resource
 	private TjzBackMapper tjzBackMapper;
+
+
+
+	/**
+	 * 电子围栏查询孩子
+	 * by 汤建志
+	 */
+	public TjzTblBaby fenceBaby( int bid){
+		return tjzBackMapper.fenceBaby(bid);
+	};
+
+
+
+
+	/**
+	 * 添加报警信息
+	 * by 汤建志
+	 */
+	@Transactional
+	public int addWarning(TjzTblWarning warning)
+	{
+		return tjzBackMapper.addWarning(warning);
+	}
+
+
+	/**
+	 * 教师查看班级安全教育
+	 * by 汤建志
+	 */
+	public TjzTbTable classSafeStudy(Map<String, Object> map){
+		TjzTbTable tbBean = new TjzTbTable();
+		List<TjzTblBaby> list = tjzBackMapper.classSafeStudy(map);
+		tbBean.setData(list);
+		tbBean.setCount(String.valueOf(tjzBackMapper.classSafeStudyNum(map)));
+		tbBean.setCode("0");
+		tbBean.setMsg(null);
+		return tbBean;
+	};
+
+
+	/**
+	 * 家长查看安全教育
+	 * by 汤建志
+	 */
+	public TjzTbTable parentSafeStudy(String page, String limit, String startDate, String endDate, String safeName,String pid){
+		TjzTbTable tbBean = new TjzTbTable();
+		Map<String, Object> map = new HashMap<String, Object>();
+		int psize = Integer.valueOf(limit);
+		int pstart = (Integer.valueOf(page) - 1) * psize;
+		map.put("pstart", pstart);
+		map.put("psize", psize);
+		map.put("startDate", startDate);
+		map.put("endDate", endDate);
+		map.put("safeName", safeName);
+		map.put("pid", pid);
+		List<TjzTblSafeStudy> list = tjzBackMapper.parentSafeStudy(map);
+		Date date=new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		for (int i = 0; i <list.size() ; i++)
+		{
+
+			try
+			{
+				Date date2 = sdf.parse(list.get(i).getEndDate());
+				if(date.getTime()<date2.getTime()){
+
+					if (null==list.get(i).getScore()||list.get(i).getScore().equals("")){
+						list.get(i).setState("未完成");
+					}else {
+						list.get(i).setState("已经完成");
+					}
+				}else{
+					list.get(i).setState("已过期");
+				}
+			} catch (ParseException e)
+			{
+				e.printStackTrace();
+			}
+
+		}
+		tbBean.setData(list);
+		tbBean.setCount(String.valueOf(tjzBackMapper.parentSafeStudyNum(map)));
+		tbBean.setCode("0");
+		tbBean.setMsg(null);
+		return tbBean;
+	};
+
+
+	/**
+	 * 教师上传安全教育试题
+	 * by 汤建志
+	 */
+	@Transactional
+	public int uploadTest(TjzTblSafeStudy safeStudy)
+	{
+		return tjzBackMapper.uploadTest(safeStudy);
+	}
+
+
+
+	/**
+	 * 教师上传安全教育视频
+	 * by 汤建志
+	 */
+	@Transactional
+	public int upload(TjzTblSafeStudy safeStudy)
+	{
+		return tjzBackMapper.upload(safeStudy);
+	}
+
+
+
+	/**
+	 * 教师发布安全教育试题
+	 * by 汤建志
+	 */
+	public TjzTbTable uploadsafestudy(String page, String limit, String startDate, String endDate, String safeName,String wid){
+		TjzTbTable tbBean = new TjzTbTable();
+		Map<String, Object> map = new HashMap<String, Object>();
+		int psize = Integer.valueOf(limit);
+		int pstart = (Integer.valueOf(page) - 1) * psize;
+		map.put("pstart", pstart);
+		map.put("psize", psize);
+		map.put("startDate", startDate);
+		map.put("endDate", endDate);
+		map.put("safeName", safeName);
+		map.put("wid", wid);
+		List<TjzTblSafeStudy> list = tjzBackMapper.safeStudy(map);
+		tbBean.setData(list);
+		tbBean.setCount(String.valueOf(tjzBackMapper.safeStudyNum(map)));
+		tbBean.setCode("0");
+		tbBean.setMsg(null);
+		return tbBean;
+	};
+
+
+
 
 	/**
 	 * 按月统计日志
@@ -140,7 +276,7 @@ public class TjzBackService
 	 */
 	@Transactional
 	public Map<String, List<TjzTbCourse>>  teacherCourseTable(Map<String, Object> map2 )
-	{
+		{
 		Map<String, List<TjzTbCourse>> map = null;
 		List<TjzTbCourse> lis=tjzBackMapper.teacherCourseTable(map2);
 		map = new HashMap<>();
