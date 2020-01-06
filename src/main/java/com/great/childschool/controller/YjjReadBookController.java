@@ -201,8 +201,7 @@ public class YjjReadBookController
 	/**
 	项目根路径下的目录  -- SpringBoot static 目录相当于是根路径下（SpringBoot 默认）
 	 */
-	public final static String UPLOAD_PATH_PREFIX = "static/uploadFile/";
-
+	public final static String UPLOAD_PATH_PREFIX = "/ChildSchool/static/";
 	@RequestMapping("/doUpload.action")
 	@ResponseBody
 	public Map<String,Object> doUpload(@RequestParam("file") MultipartFile file, HttpServletRequest request)
@@ -238,12 +237,12 @@ public class YjjReadBookController
 		System.out.println("------------------prefixName--------------" + prefixName);
 
 		//构建文件上传所要保存的"文件夹路径"--这里是相对路径，保存到项目根路径的文件夹下
-		String realPath = "src/main/resources/" + UPLOAD_PATH_PREFIX;
-		System.out.println("------------------realPath--------------" + realPath);
+		String realPath =System.getProperty("user.dir")+"/uploadFile";
+//		System.out.println("------------------realPath--------------" + realPath);
+
 		//存放上传文件的文件夹
 		File file1 = new File(realPath);
 		if(!file1.isDirectory()){
-			//递归生成文件夹
 			file1.mkdirs();
 		}
 
@@ -253,7 +252,14 @@ public class YjjReadBookController
 
 
 		//file1.getAbsolutePath()获得绝对路径.file1.getpath()相对路径
-		String url=file1.getAbsolutePath() + File.separator +prefixName+"_"+ newName;
+		String url=file1.getPath() + File.separator +prefixName+"_"+ newName;
+
+		System.out.println("-----file1.getAbsolutePath()------"+file1.getAbsolutePath());
+		System.out.println("-----file1.getpath()------"+file1.getPath());
+		//工程文件所在的路径
+		System.out.println("-----System.getProperty('user.dir')------"+System.getProperty("user.dir"));
+
+
 		File newFile = new File(url);
 		System.out.println(newFile);
 
@@ -362,7 +368,7 @@ public class YjjReadBookController
 		System.out.println("------------------prefixName--------------" + prefixName);
 
 		//构建文件上传所要保存的"文件夹路径"--这里是相对路径，保存到项目根路径的文件夹下
-		String realPath = "src/main/resources/" + UPLOAD_PATH_PREFIX;
+		String realPath =System.getProperty("user.dir")+"/uploadFile";
 		System.out.println("------------------realPath--------------" + realPath);
 		//存放上传文件的文件夹
 		File file1 = new File(realPath);
