@@ -2,11 +2,9 @@ package com.great.childschool.controller;
 
 import com.great.childschool.entity.CmjTblBaby;
 import com.great.childschool.entity.DataBean;
-import com.great.childschool.entity.TjzTbTable;
 import com.great.childschool.service.CmjClassInfoService;
 import com.great.childschool.tools.FaceSpot;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

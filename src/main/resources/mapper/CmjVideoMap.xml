@@ -11,6 +11,16 @@
         limit #{page},#{size}
     </select>
 
+    <select id="findVideoByRoleId" resultType="CmjTblVideo">
+        select * from tbl_video where vid =
+        (select vid from tbl_video_role where rid = 5)
+        limit #{page},#{size}
+    </select>
+
+    <select id="countVideoByRoleId" resultType="java.lang.Integer">
+        select count(vid) from tbl_video_role where rid = 5
+    </select>
+
     <select id="findVidByRid" resultType="java.lang.Integer">
         select vid from tbl_video_role where rid = #{_parameter}
     </select>

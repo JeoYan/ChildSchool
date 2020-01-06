@@ -57,6 +57,17 @@ public class CmjVideoController
 		return dataBean;
 	}
 
+	@RequestMapping("/findVideoByRole")
+	@ResponseBody
+	public DataBean findVideoByRole(String page,String limit){
+		int size = Integer.valueOf(limit);
+		int curPage = (Integer.valueOf(page)-1)*size;
+		DataBean<CmjTblVideo> dataBean = new DataBean<>();
+		dataBean.setData(videoService.findVideoByRoleId(curPage,size));
+		dataBean.setCount(videoService.countVideoByRoleId());
+		return dataBean;
+	}
+
 	@RequestMapping("/updateMenu")
 	@ResponseBody
 	public String updateMenu(String str,int rid){
