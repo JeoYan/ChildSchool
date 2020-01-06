@@ -121,53 +121,54 @@ public class CcTAttendanceController
 		return map;
 	}
 
-	/**
-	 * @Author chenchao
-	 * @Description //查询宝宝考勤
-	 * @Date 2020-01-01
-	 **/
-	@RequestMapping("/babySign.action")
-	@ResponseBody
-	public Map<String, Object> babySign(int bid,String flag,String thisDate){
-		System.out.println("bid----"+bid);
-		Date currentDate =new Date();
-
-		Map<String, Object> map =new HashMap<>();
-		try
-		{
-			if (null!=flag && flag.equals("pre")){
-				Date tmpDate = DateFormatUtil.dateParseWeek(thisDate);
-
-				currentDate = DateFormatUtil.getLastWeekMonday(tmpDate);
-			}
-			else if (null != flag && flag.equals("next"))
-			{
-				Date tmpDate = DateFormatUtil.dateParseWeek(thisDate);
-				System.out.println();
-				currentDate = DateFormatUtil.getNextWeekMonday(tmpDate);
-			}
-			List<Date> dateList = CcDateFormatUtil.dateToWeek(currentDate);
-
-			List<String > dateString = new ArrayList<>();
-			String beginDate =DateFormatUtil.dateString(dateList.get(0));
-			String endDate = DateFormatUtil.dateString(dateList.get(4));
-
-			List<CcTblWorkerSign> babySignList = ccTAttendanceService.findtime(bid, beginDate, endDate);
-			for(CcTblWorkerSign ccTblWorkerSign :babySignList){
-				ccTblWorkerSign.setWsdate(DateFormatUtil.weekString(DateFormatUtil.dateParse(ccTblWorkerSign.getWsdate())));
-			}
-
-			for (Date date:dateList){
-				dateString.add(DateFormatUtil.weekString(date));
-			}
-			map.put("babySignList",babySignList);
-			map.put("dateString",dateString);
-		} catch (ParseException e)
-		{
-			e.printStackTrace();
-		}
-
-		return map;
-	}
+//	/**
+//	 * @Author chenchao
+//	 * @Description //查询宝宝考勤
+//	 * @Date 2020-01-01
+//	 **/
+//	@RequestMapping("/babySign.action")
+//	@ResponseBody
+//	public Map<String, Object> babySign(int bid,String flag,String thisDate){
+//		System.out.println("bid----"+bid);
+//		Date currentDate =new Date();
+//
+//		Map<String, Object> map =new HashMap<>();
+//		try
+//		{
+//			if (null!=flag && flag.equals("pre")){
+//				Date tmpDate = DateFormatUtil.dateParseWeek(thisDate);
+//				currentDate = DateFormatUtil.getLastWeekMonday(tmpDate);
+//			}
+//
+//			else if (null != flag && flag.equals("next"))
+//			{
+//				Date tmpDate = DateFormatUtil.dateParseWeek(thisDate);
+//				currentDate = DateFormatUtil.getNextWeekMonday(tmpDate);
+//			}
+//			System.out.println();
+//			List<Date> dateList = CcDateFormatUtil.dateToWeek(currentDate);
+//
+//			List<String > dateString = new ArrayList<>();
+//			String beginDate =DateFormatUtil.dateString(dateList.get(0));
+//			System.out.println();
+//			String endDate = DateFormatUtil.dateString(dateList.get(4));
+//
+//			List<CcTblWorkerSign> babySignList = ccTAttendanceService.findtime(bid, beginDate, endDate);
+//			for(CcTblWorkerSign ccTblWorkerSign :babySignList){
+//				ccTblWorkerSign.setWsdate(DateFormatUtil.weekString(DateFormatUtil.dateParse(ccTblWorkerSign.getWsdate())));
+//			}
+//
+//			for (Date date:dateList){
+//				dateString.add(DateFormatUtil.weekString(date));
+//			}
+//			map.put("babySignList",babySignList);
+//			map.put("dateString",dateString);
+//		} catch (ParseException e)
+//		{
+//			e.printStackTrace();
+//		}
+//
+//		return map;
+//	}
 
 }

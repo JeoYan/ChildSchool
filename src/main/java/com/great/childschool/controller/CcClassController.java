@@ -23,7 +23,7 @@ public class CcClassController
 	private CcClassService ccClassService;
 
 	/**
-	 * 幼儿管理-新增弹窗
+	 * 班级管理-新增弹窗
 	 * by 陈超
 	 */
 	@RequestMapping("/xzclass.action")
@@ -44,7 +44,7 @@ public class CcClassController
 	}
 
 	/**
-	 * 调用幼儿管理页面
+	 * 调用班级管理页面
 	 * by 陈超
 	 */
 	@RequestMapping("/class.action")
@@ -57,7 +57,7 @@ public class CcClassController
 	}
 
 	/**
-	 * 幼儿管理-修改弹窗
+	 * 班级管理-修改弹窗
 	 * by 陈超
 	 */
 	@RequestMapping("/xgclass.action")
@@ -78,12 +78,12 @@ public class CcClassController
 	}
 
 	/**
-	 * 调用幼儿管理数据显示
+	 * 调用班级管理数据显示
 	 * by 陈超
 	 */
 	@RequestMapping("/classxs.action")
 	@ResponseBody
-	@Log(operationType = "查询操作", operationName = "查询宝宝")
+	@Log(operationType = "查询操作", operationName = "查询班级")
 	public MSG table(String cname,String starttime, String endtime, int page){
 
 		CcTableInf ccTableInf =new CcTableInf();
@@ -115,27 +115,36 @@ public class CcClassController
 	}
 
 	/**
-	 * 幼儿管理--入园信息增加
+	 * 班级管理--班级增加
 	 * by 陈超
 	 */
 	@RequestMapping("/addclass.action")
 	@ResponseBody
-	@Log(operationType = "增加操作", operationName = "添加宝宝")
+	@Log(operationType = "增加操作", operationName = "添加班级")
 	public MSG add(CcTblClassroom ccTblClassroom,HttpServletRequest request)
 	{
 		//宝宝
 		String cname=request.getParameter("cname");
 		String wid=request.getParameter("wid");
-		String cid=request.getParameter("cid");
-		ccTblClassroom=ccClassService.findclassroom1(Integer.valueOf(cid));
+
 		Date date =new Date();
 		SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd");
 		String time =sdf.format(date);
+//下拉框获取的教室
+//		String cid=request.getParameter("cid");
+//		ccTblClassroom=ccClassService.findclassroom1(Integer.valueOf(cid));
+//		ccTblClassroom.setCourseadddate(time);
+//		ccTblClassroom.setWid(Integer.valueOf(wid));
+//		ccTblClassroom.setCname(cname);
+//		ccTblClassroom.setClassroom(ccTblClassroom.getClassroom());
 
+		//手写新教室
+		String classroom=request.getParameter("classroom");
 		ccTblClassroom.setCourseadddate(time);
 		ccTblClassroom.setWid(Integer.valueOf(wid));
 		ccTblClassroom.setCname(cname);
-		ccTblClassroom.setClassroom(ccTblClassroom.getClassroom());
+		ccTblClassroom.setClassroom(classroom);
+
 		int flag =ccClassService.addclass(ccTblClassroom);
 		System.out.println(flag);
 
@@ -144,13 +153,13 @@ public class CcClassController
 		if (flag >0 )
 		{
 			msg.setMsg("1");
-			System.out.println("增加入园信息成功");
+			System.out.println("增加班级成功");
 
 		}
 		else
 		{
 			msg.setMsg("2");
-			System.out.println("增加入园信息失败");
+			System.out.println("增加班级失败");
 		}
 		return msg;
 
@@ -158,16 +167,15 @@ public class CcClassController
 	}
 
 	/**
-	 * 幼儿管理--修改逻辑
+	 * 班级管理--修改逻辑
 	 * by 陈超
 	 */
 	@RequestMapping("/updateclass.action")
 	@ResponseBody
-	@Log(operationType = "更新操作", operationName = "修改宝宝信息")
+	@Log(operationType = "更新操作", operationName = "修改班级信息")
 	public MSG update(int cid,String cname,int wid,String classroom)
 	{
 		CcTblClassroom ccTblClassroom =new CcTblClassroom();
-
 
 		ccTblClassroom.setWid(wid);
 		ccTblClassroom.setCname(cname);
@@ -180,11 +188,11 @@ public class CcClassController
 		if (flag >0)
 		{
 			msg.setMsg("1");
-			System.out.println("修改成功");
+			System.out.println("修改班级成功");
 		} else
 		{
 			msg.setMsg("2");
-			System.out.println("修改失败");
+			System.out.println("修改班级失败");
 		}
 		return msg;
 
@@ -192,12 +200,12 @@ public class CcClassController
 	}
 
 	/**
-	 * 幼儿管理--删除逻辑
+	 * 班级管理--删除逻辑
 	 * by 陈超
 	 */
 	@RequestMapping("/deleteclass.action")
 	@ResponseBody
-	@Log(operationType = "删除操作", operationName = "删除宝宝")
+	@Log(operationType = "删除操作", operationName = "删除班级")
 	public MSG delete(String cid)
 	{
 		System.out.println("cid"+cid);

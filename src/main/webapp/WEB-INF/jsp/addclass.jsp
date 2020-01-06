@@ -1,10 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Administrator
-  Date: 2019/11/19
-  Time: 16:11
-  To change this template use File | Settings | File Templates.
---%>
+
 <%--/**--%>
 <%--* 班级管理-增加界面--%>
 <%--* by 陈超--%>
@@ -63,23 +57,31 @@
 
 	</div>
 
-	<div class="layui-form-item" >
-		<div class="layui-inline">
-			<label class="layui-form-label">所在教室</label>
-			<div class="layui-input-inline">
-				<select name="classroom" id="classroom">
-					<option value="">请选择教室</option>
 
-
-					<c:forEach items="${requestScope.classroom}" begin="0" step="1" var="y">
-						<option value="${y.cid}">${y.classroom}</option>
-					</c:forEach>
-
-				</select>
-			</div>
+	<div class="layui-form-item" style="text-align: center">
+		<label class="layui-form-label">所在教室</label>
+		<div class="layui-input-inline">
+			<input type="text"  name="classroom" id="classroom" lay-verify="required" placeholder="请输入教室" autocomplete="off" class="layui-input">
 		</div>
-
 	</div>
+
+<%--	<div class="layui-form-item" >--%>
+<%--		<div class="layui-inline">--%>
+<%--			<label class="layui-form-label">所在教室</label>--%>
+<%--			<div class="layui-input-inline">--%>
+<%--				<select name="classroom" id="classroom">--%>
+<%--					<option value="">请选择教室</option>--%>
+
+
+<%--					<c:forEach items="${requestScope.classroom}" begin="0" step="1" var="y">--%>
+<%--						<option value="${y.cid}">${y.classroom}</option>--%>
+<%--					</c:forEach>--%>
+
+<%--				</select>--%>
+<%--			</div>--%>
+<%--		</div>--%>
+
+<%--	</div>--%>
 
 
 	<div class="layui-form-item layui-hide" style="text-align: center">

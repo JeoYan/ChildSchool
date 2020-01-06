@@ -219,16 +219,6 @@
 			// 		}
 			// 	});
 			// },
-			uploadFile:function () {
-				layer.open({
-					type:2,
-					title:"选择文件",
-					content:"/jsp/upload.jsp",
-					area:["500px","500px"],
-
-				})
-			}
-
 
 		};
 

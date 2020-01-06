@@ -81,11 +81,12 @@ public class CcTeacherController
 	@ResponseBody
 	@Log(operationType = "查询操作", operationName = "查询教师")
 	public MSG table(String wname,String rname,String starttime, String endtime, int page){
-		System.out.println(page);
+
 		System.out.println("rname"+rname);
 		CcTableInf ccTableInf =new CcTableInf();
 		ccTableInf.setWname(wname);
 		ccTableInf.setRname(rname);
+
 		ccTableInf.setStarttime(starttime);
 		ccTableInf.setEndtime(endtime);
 		ccTableInf.setPage((page-1)*5);

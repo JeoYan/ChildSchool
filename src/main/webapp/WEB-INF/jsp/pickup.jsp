@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <%--/**--%>
-<%--* 宝宝考勤---%>
+<%--* 接送管理---%>
 <%--* by 陈超--%>
 <%--*/--%>
 
@@ -17,7 +17,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>宝宝考勤</title>
+	<title>接送信息</title>
 	<meta name="renderer" content="webkit">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1 ,user-scalable=0">
@@ -32,12 +32,14 @@
 <body>
 <div class="layui-row" id="lookBabySign" style="display:none;">
 	<div style="text-align: center">
-		<h1 style="text-align: center;">宝宝考勤信息</h1>
+		<h1 style="text-align: center;">宝宝接送信息</h1>
 		<div class="layui-form-item" style="text-align: center">
 			<label class="layui-form-label" >宝宝姓名：</label>
 			<label class="layui-form-label" id="showBName"></label>
 			<label class="layui-form-label" >宝宝性别：</label>
 			<label class="layui-form-label" id="showBSex"></label>
+			<label class="layui-form-label" >班级名称：</label>
+			<label class="layui-form-label" id="showCname"></label>
 		</div>
 	<table id="BabySignInfo" border="1px" >
 		<tr id="dateTr" >
@@ -56,8 +58,24 @@
 			<td>1</td>
 			<td>1</td>
 		</tr>
+		<tr id="apeo" >
+			<td>接送人</td>
+			<td>1</td>
+			<td>1</td>
+			<td>1</td>
+			<td>1</td>
+			<td>1</td>
+		</tr>
 		<tr id="pTr" >
 			<td>下午</td>
+			<td>1</td>
+			<td>1</td>
+			<td>1</td>
+			<td>1</td>
+			<td>1</td>
+		</tr>
+		<tr id="ppeo" >
+			<td>接送人</td>
 			<td>1</td>
 			<td>1</td>
 			<td>1</td>
@@ -72,35 +90,35 @@
 </div>
 
 <div class="demoTable">
-	<h1 style="text-align: center">宝宝考勤</h1>
-
-
-	<div style="text-align: center">
-
-		园所名称:英才幼儿园
+	<h1 style="text-align: center">接送信息</h1>
+	<div >
+		查询条件:
 	</div>
-
 
 	<div style="text-align: center">
 		<form class="layui-form" action="" onsubmit="return false">
-		宝宝名称:
-		<div class="layui-inline">
-			<input class="layui-input" name="wname" id="demoReload" autocomplete="off">
-		</div>
 
-		<div class="layui-inline">
-			<label class="layui-form-label">角色选择</label>
-			<div class="layui-input-inline" >
-				<select name="rname" id="demoReload1">
-					<option value=""></option>
+				宝宝名称:
+				<div class="layui-inline">
+					<input class="layui-input" name="bname" id="demoReload" autocomplete="off">
+				</div>
 
-					<c:forEach items="${requestScope.role}" begin="0" step="1" var="y">
-						<option value="${y.rid}">${y.rname}</option>
-					</c:forEach>
+				班级名称:
 
-				</select>
-			</div>
-		</div>
+					<div class="layui-inline">
+						<label class="layui-form-label">班级名称</label>
+						<div class="layui-input-inline">
+							<select name="cname" id="demoReload1">
+								<option value=""></option>
+
+
+								<c:forEach items="${requestScope.cname}" begin="0" step="1" var="y">
+									<option value="${y.cid}">${y.cname}</option>
+								</c:forEach>
+
+							</select>
+						</div>
+					</div>
 
 		<button class="layui-btn" data-type="reload" id="search">查询</button>
 <%--			<button class="layui-btn layui-btn-normal" data-type="add" >考勤</button>--%>
@@ -118,8 +136,8 @@
 </body>
 <script type="text/html" id="barDemo">
 	<div class="layui-btn-container" >
-		<a class="layui-btn layui-btn-xs" lay-event="attend">考勤</a>
-		<button class="layui-btn layui-btn-sm" lay-event="teacherSign">考勤信息</button>
+<%--		<a class="layui-btn layui-btn-xs" lay-event="attend">考勤</a>--%>
+		<button class="layui-btn layui-btn-sm" lay-event="teacherSign">接收信息</button>
 	</div>
 </script>
 
@@ -139,7 +157,7 @@
 			elem: '#LAY_table_user',
 			filter: 'test',
 			height: 350,
-			url: '/ChildSchool/attendancexs.action',
+			url: '/ChildSchool/pickupxs.action',
 			page: 1,
 			limit: 5,
 			id: 'testReload',
@@ -149,9 +167,10 @@
 				{type: 'numbers', title: '序号'} ,
 				{field: 'bid', title: '宝宝编号', hide: true,sort: true, fixed: 'center'},
 				{field: 'bname', title: '宝宝名称'},
-				{field: 'bsex', title: '宝宝性别', sort: true},
-				{field: 'rid', title: '角色id', sort: true, hide: true},
-
+				{field: 'cname', title: '所在班级', sort: true},
+				{field: 'wid', title: '教师编号', hide: true,sort: true, fixed: 'center'},
+				{field: 'wname', title: '教师名称'},
+				{field: 'bsex', title: '性别'},
 				{fixed: 'right', title: '操作', toolbar: '#barDemo'}
 			]]
 
@@ -165,29 +184,38 @@
 			data = obj.data;
 			var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
 			if (layEvent === 'teacherSign') {
-				alert(data.wname);
-				alert(data.wid);
-				var wid = data.wid;
+				alert(data.bname);
+				alert(data.bsex);
+				alert(data.cname);
+				var bid = data.bid;
 
 				var $dateTds = $("#dateTr").find("td");
 				var $aTds = $("#aTr").find("td");
+				var $apeo = $("#apeo").find("td");
 				var $pTds = $("#pTr").find("td");
+				var $ppeo = $("#ppeo").find("td");
 				for (var i = 1; i < $aTds.length; i++) {
 					$aTds.eq(i).text("");
 				}
 				for (var j = 1; j < $pTds.length ; j++) {
 					$pTds.eq(j).text("");
 				}
+				for (var a = 1; a < $apeo.length; a++) {
+					$apeo.eq(a).text("");
+				}
+				for (var b = 1; b < $ppeo.length; b++) {
+					$ppeo.eq(b).text("");
+				}
 				$.ajax({
 					type: "POST",//提交方式
-					url: "/ChildSchool/teacherSign.action",//路径
-					data: {'wid': wid},//数据
+					url: "/ChildSchool/babypickupSign.action",//路径
+					data: {'bid': bid},//数据
 					dataType: "json",//希望返回的数据类型
 					async: true,//异步操作
 					success: function (BabySignInfo) {//成功的方法 msg为返回数据
 						$("#showBName").text(data.bname);
 						$("#showBSex").text(data.bsex);
-
+						$("#showCname").text(data.cname);
 						var dateString = BabySignInfo["dateString"];
 						var babySignList = BabySignInfo["babySignList"];
 						alert(dateString);
@@ -204,6 +232,7 @@
 										if (babySignList[j].bstime !== null) {
 
 											$aTds.eq(k).text(babySignList[j].bstime);
+											$apeo.eq(k).text(babySignList[j].pname);
 
 										} else {
 											$aTds.eq(k).text(babySignList[j].sname);
@@ -212,6 +241,7 @@
 										else {
 										if (babySignList[j].bstime !== null) {
 											$pTds.eq(k).text(babySignList[j].bstime);
+											$ppeo.eq(k).text(babySignList[j].pname);
 										} else {
 											$pTds.eq(k).text(babySignList[j].sname);
 										}
@@ -228,8 +258,8 @@
 				});
 				layer.open({
 					type: 1,
-					title: "宝宝考勤信息",
-					area: ['50%', '50%'],
+					title: "教师考勤信息",
+					area: ['55%', '60%'],
 					content: $("#lookBabySign")
 				});
 			}
@@ -240,7 +270,7 @@
 				layer.open({
 					type: 2,
 					title: '考勤',
-					content: '/ChildSchool/babyface.action',
+					content: '/ChildSchool/face.action',
 					maxmin: true,
 					area: ['500px', '500px'],
 					btn: ['关闭'],
@@ -253,30 +283,7 @@
 					},
 					yes:function (index,layero) {
 						layer.close(index);
-						// var wid = data.wid;
-						// var ob = {wid: wid};
-						// layer.close(index);
-						// $.ajax({
-						// 	type: "POST",//提交方式
-						// 	url: "/ChildSchool/facelogin.action0",//路径
-						// 	data: ob,//数据
-						// 	dataType: "json",//希望返回的数据类型
-						// 	async: true,//异步操作
-						// 	success: function (msg) {//成功的方法 msg为返回数据
-						//
-						// 		if (msg.msg == "1") {
-						// 			alert("修改成功");
-						// 			table.reload('test');
-						// 			layer.close(index);
-						// 		} else if (msg.msg == "2") {
-						// 			alert("修改失败")
-						// 		}
-						//
-						// 	},
-						// 	error: function () { //错误的方法
-						// 		alert("服务器正忙")
-						// 	}
-						// });
+
 					}
 				})
 
@@ -297,71 +304,67 @@
 					, where: {
 
 						'bname': demoReload.val(),
-						'rname': demoReload1
+						'cname': demoReload1
 					}
 				}, 'data');
 
 			}
-//增加
-// 			add: function () {
-// 				layer.open({
-// 					type: 2,
-// 					title: '考勤',
-// 					content: '/ChildSchool/face.action',
-// 					maxmin: true,
-// 					area: ['800px', '500px'],
-// 					btn: ['确定', '取消']
-//
-// 				});
-// 			}
 
 		};
 		$("#pre").on('click',function () {
 
 			var bid = data.bid;
-			alert(bid);
 			var $dateTds = $("#dateTr").find("td");
 			var $aTds = $("#aTr").find("td");
+			var $apeo = $("#apeo").find("td");
 			var $pTds = $("#pTr").find("td");
+			var $ppeo = $("#ppeo").find("td");
 			for (var i = 1; i < $aTds.length; i++) {
 				$aTds.eq(i).text("");
 			}
 			for (var j = 1; j < $pTds.length ; j++) {
 				$pTds.eq(j).text("");
 			}
+			for (var a = 1; a < $apeo.length; a++) {
+				$apeo.eq(a).text("");
+			}
+			for (var b = 1; b < $ppeo.length; b++) {
+				$ppeo.eq(b).text("");
+			}
 			var ob={'bid': bid,'flag':'pre','thisDate':$dateTds.eq(1).text()};
 			$.ajax({
 				type: "POST",//提交方式
-				url: "/ChildSchool/babySign.action",//路径
+				url: "/ChildSchool/babypickupSign.action",//路径
 				data: ob,//数据
 				dataType: "json",//希望返回的数据类型
 				async: true,//异步操作
 				success: function (BabySignInfo) {//成功的方法 msg为返回数据
 
 					var dateString = BabySignInfo["dateString"];
-					var teacherSignList = BabySignInfo["babySignList"];
+					var babySignList = BabySignInfo["babySignList"];
 
 					for (var i = 1; i < $dateTds.length; i++) {
 						$dateTds.eq(i).text(dateString[i - 1]);
 					}
-					for (var j = 0; j < teacherSignList.length; j++) {
+					for (var j = 0; j < babySignList.length; j++) {
 						for (var k = 1; k < $dateTds.length; k++) {
-							if (teacherSignList[j].wsdate === $dateTds.eq(k).text()) {
+							if (babySignList[j].bsdate === $dateTds.eq(k).text()) {
 
-								if (teacherSignList[j].wsperiod === "上午") {
-									if (teacherSignList[j].wstime !== null) {
+								if (babySignList[j].bsperiod === "上午") {
+									if (babySignList[j].bstime !== null) {
 
-										$aTds.eq(k).text(teacherSignList[j].wstime);
-
+										$aTds.eq(k).text(babySignList[j].bstime);
+										$apeo.eq(k).text(babySignList[j].pname);
 									} else {
-										$aTds.eq(k).text(teacherSignList[j].sname);
+										$aTds.eq(k).text(babySignList[j].sname);
 									}
 								}
 								else {
-									if (teacherSignList[j].wstime !== null) {
-										$pTds.eq(k).text(teacherSignList[j].wstime);
+									if (babySignList[j].bstime !== null) {
+										$pTds.eq(k).text(babySignList[j].bstime);
+										$ppeo.eq(k).text(babySignList[j].pname);
 									} else {
-										$pTds.eq(k).text(teacherSignList[j].sname);
+										$pTds.eq(k).text(babySignList[j].sname);
 									}
 								}
 							}
@@ -377,50 +380,59 @@
 		});
 
 		$("#next").on('click',function () {
-			var wid = data.wid;
+			var bid = data.bid;
 
 			var $dateTds = $("#dateTr").find("td");
 			var $aTds = $("#aTr").find("td");
+			var $apeo = $("#apeo").find("td");
 			var $pTds = $("#pTr").find("td");
+			var $ppeo = $("#ppeo").find("td");
 			for (var i = 1; i < $aTds.length; i++) {
 				$aTds.eq(i).text("");
 			}
 			for (var j = 1; j < $pTds.length ; j++) {
 				$pTds.eq(j).text("");
 			}
-			var ob={'wid': wid,'flag':'next','thisDate':$dateTds.eq(1).text()};
+			for (var a = 1; a < $apeo.length; a++) {
+				$apeo.eq(a).text("");
+			}
+			for (var b = 1; b < $ppeo.length; b++) {
+				$ppeo.eq(b).text("");
+			}
+			var ob={'bid': bid,'flag':'next','thisDate':$dateTds.eq(1).text()};
 			$.ajax({
 				type: "POST",//提交方式
-				url: "/ChildSchool/teacherSign.action",//路径
+				url: "/ChildSchool/babypickupSign.action",//路径
 				data: ob,//数据
 				dataType: "json",//希望返回的数据类型
 				async: true,//异步操作
-				success: function (teacherSignInfo) {//成功的方法 msg为返回数据
+				success: function (BabySignInfo) {//成功的方法 msg为返回数据
 
-					var dateString = teacherSignInfo["dateString"];
-					var teacherSignList = teacherSignInfo["teacherSignList"];
+					var dateString = BabySignInfo["dateString"];
+					var babySignList = BabySignInfo["babySignList"];
 
 					for (var i = 1; i < $dateTds.length; i++) {
 						$dateTds.eq(i).text(dateString[i - 1]);
 					}
-					for (var j = 0; j < teacherSignList.length; j++) {
+					for (var j = 0; j < babySignList.length; j++) {
 						for (var k = 1; k < $dateTds.length; k++) {
-							if (teacherSignList[j].wsdate === $dateTds.eq(k).text()) {
+							if (babySignList[j].bsdate === $dateTds.eq(k).text()) {
 
-								if (teacherSignList[j].wsperiod === "上午") {
-									if (teacherSignList[j].wstime !== null) {
+								if (babySignList[j].bsperiod === "上午") {
+									if (babySignList[j].bstime !== null) {
 
-										$aTds.eq(k).text(teacherSignList[j].wstime);
-
+										$aTds.eq(k).text(babySignList[j].bstime);
+										$apeo.eq(k).text(babySignList[j].pname);
 									} else {
-										$aTds.eq(k).text(teacherSignList[j].sname);
+										$aTds.eq(k).text(babySignList[j].sname);
 									}
 								}
 								else {
-									if (teacherSignList[j].wstime !== null) {
-										$pTds.eq(k).text(teacherSignList[j].wstime);
+									if (babySignList[j].bstime !== null) {
+										$pTds.eq(k).text(babySignList[j].bstime);
+										$ppeo.eq(k).text(babySignList[j].pname);
 									} else {
-										$pTds.eq(k).text(teacherSignList[j].sname);
+										$pTds.eq(k).text(babySignList[j].sname);
 									}
 								}
 							}

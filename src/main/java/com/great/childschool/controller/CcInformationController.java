@@ -35,7 +35,7 @@ public class CcInformationController
 	}
 
 	/**
-	 * 修改密码
+	 * 个人信息
 	 * by 陈超
 	 */
 	@RequestMapping("/information.action")
@@ -54,6 +54,31 @@ public class CcInformationController
 		request.getSession().setAttribute("wdate",ccTblInfo.getWdate());
 		request.getSession().setAttribute("sname",ccTblInfo.getSname());
 		request.getSession().setAttribute("wface",ccTblInfo.getWface());
+		return modelAndView;
+	}
+
+	/**
+	 * 宝宝信息-家长端
+	 * by 陈超
+	 */
+	@RequestMapping("/parentinformation.action")
+	@Log(operationType = "访问操作", operationName = "访问宝宝信息")
+	public ModelAndView parentinformation(HttpServletRequest request){
+		ModelAndView modelAndView =new ModelAndView();
+		modelAndView.setViewName("parentinformation");
+		int pid=  (int)request.getSession().getAttribute("pid");
+
+		System.out.println("pid"+pid);
+		CcTblParentBaby ccTblParentBaby =ccInformationService.findb(pid);
+		int bid=ccTblParentBaby.getBid();
+		CcTblBabyInfo ccTblBabyInfo= ccInformationService.findbabyinfo(bid);
+		request.getSession().setAttribute("bname",ccTblBabyInfo.getBname());
+		request.getSession().setAttribute("bsex",ccTblBabyInfo.getBsex());
+		request.getSession().setAttribute("bbirth",ccTblBabyInfo.getBbirth());
+		request.getSession().setAttribute("bdate",ccTblBabyInfo.getBdate());
+		request.getSession().setAttribute("classroom",ccTblBabyInfo.getClassroom());
+		request.getSession().setAttribute("wname",ccTblBabyInfo.getWname());
+		request.getSession().setAttribute("baddress",ccTblBabyInfo.getBaddress());
 		return modelAndView;
 	}
 
@@ -106,4 +131,19 @@ public class CcInformationController
 		return null;
 	}
 
+	/**
+	 * 修改密码验证
+	 * by 陈超
+	 */
+	@RequestMapping("/exit.action")
+	@ResponseBody
+	public String exit(HttpServletRequest req){
+		String msg= "";
+		//清空session域
+		HttpSession httpSession =req.getSession(true);
+		httpSession.removeAttribute("user");
+		//跳转回登录界面
+		msg="注销";
+		return msg;
+	}
 }

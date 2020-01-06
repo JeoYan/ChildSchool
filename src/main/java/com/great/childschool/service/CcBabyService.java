@@ -123,10 +123,14 @@ public class CcBabyService
         return  ccBabyDeptMapper.findcname();
     }
 
+    //根据宝宝名查询宝宝id
+    @Transactional
     public CcTblBaby findbid (String bname){
         return ccBabyDeptMapper.findbid(bname);
     }
 
+    //	根据家长名查询家长id
+    @Transactional
     public CcTblParent findpid (String pname){
 
         return ccBabyDeptMapper.findpid(pname);

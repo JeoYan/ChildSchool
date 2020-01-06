@@ -40,7 +40,9 @@
 					<dd><a href="/ChildSchool/psw.action">修改密码</a></dd>
 				</dl>
 			</li>
-			<li class="layui-nav-item"><a href="">注销</a></li>
+			<li class="layui-nav-item" id="exit">
+				<a onclick="exit()" >注销</a>
+			</li>
 		</ul>
 		<ul>
 			<li>
@@ -48,7 +50,7 @@
 					<dd><a href="javascript:void(0)" title="修改密码" onclick="dofix(this)">修改密码</a></dd>
 				</dl>
 			</li>
-			<li class="layui-nav-item"><a href="">退出</a></li>
+			<li class="layui-nav-item"><a href="/ChildSchool/workerLogin/workerLoginPage.action">退出</a></li>
 		</ul>
 	</div>
 	<div class="layui-side layui-bg-black">
@@ -133,6 +135,24 @@
 
 <script>
 	//JavaScript代码区域
+	function exit(){
+		if (confirm("是否注销")){
+			$.ajax({
+				type:"POST",
+				url:"/ChildSchool/exit.action",
+				sync:true,
+				dateType:"text",
+				success:function (msg) {
+					if (msg=="注销") {
+						window.location.href="/ChildSchool/workerLogin/workerLoginPage.action";
+					}
+				},
+				error:function () {
+
+				}
+			});
+		}
+	              }
 	layui.use('element', function () {
 		var element = layui.element;
 

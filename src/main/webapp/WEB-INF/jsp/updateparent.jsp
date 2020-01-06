@@ -1,10 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Administrator
-  Date: 2019/11/19
-  Time: 16:11
-  To change this template use File | Settings | File Templates.
---%>
+
 <%--/**--%>
 <%--* 家长管理-修改界面--%>
 <%--* by 陈超--%>
@@ -32,8 +26,6 @@
 	<script src=<%=JsPath+"jquery-3.4.1.js"%>></script>
 </head>
 <body>
-
-
 
 
 <form class="layui-form" action="">

@@ -8,8 +8,10 @@ public class CcTblBabySign
   private int bid;
   private String bstime;
   private int sid;
+  private String sname;
   private String bsdate;
   private String bsperiod;
+  private String pname;
 
 	public int getBsignid()
 	{
@@ -69,5 +71,25 @@ public class CcTblBabySign
 	public void setBsperiod(String bsperiod)
 	{
 		this.bsperiod = bsperiod;
+	}
+
+	public String getSname()
+	{
+		return sname;
+	}
+
+	public void setSname(String sname)
+	{
+		this.sname = sname;
+	}
+
+	public String getPname()
+	{
+		return pname;
+	}
+
+	public void setPname(String pname)
+	{
+		this.pname = pname;
 	}
 }

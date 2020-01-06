@@ -1,6 +1,8 @@
 package com.great.childschool.service;
 
+import com.great.childschool.entity.CcTblBabyInfo;
 import com.great.childschool.entity.CcTblInfo;
+import com.great.childschool.entity.CcTblParentBaby;
 import com.great.childschool.entity.TblWorker;
 import com.great.childschool.mapper.CcInformationDeptMapper;
 import com.great.childschool.mapper.CcTAttendanceDeptMapper;
@@ -42,4 +44,16 @@ public class CcInformationService
     public CcTblInfo findinfo(int wid){
         return  ccInformationDeptMapper.findinfo(wid);
     }
+
+    /**
+     * 家长端-宝宝信息
+     * by 陈超
+     */
+    public CcTblParentBaby findb(int pid){
+        return ccInformationDeptMapper.findb(pid);
+    }
+    public CcTblBabyInfo findbabyinfo(int bid){
+        return ccInformationDeptMapper.findbabyinfo(bid);
+    }
+
 }

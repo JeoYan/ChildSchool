@@ -13,7 +13,8 @@ public class CcTblBaby
   private String cname;
   private String baddress;
   private byte[] bface;
-
+  private int wid;
+  private String wname;
 
   public byte[] getBface()
   {
@@ -97,5 +98,25 @@ public class CcTblBaby
   public void setCname(String cname)
   {
     this.cname = cname;
+  }
+
+  public int getWid()
+  {
+    return wid;
+  }
+
+  public void setWid(int wid)
+  {
+    this.wid = wid;
+  }
+
+  public String getWname()
+  {
+    return wname;
+  }
+
+  public void setWname(String wname)
+  {
+    this.wname = wname;
   }
 }

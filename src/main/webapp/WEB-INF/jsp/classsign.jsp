@@ -76,6 +76,7 @@
 </body>
 <script type="text/html" id="toolbarDemo">
 	<div class="layui-btn-container">
+		<a class="layui-btn layui-btn-xs" lay-event="attend">考勤</a>
 		<button class="layui-btn layui-btn-sm" lay-event="babySign">考勤信息</button>
 	</div>
 </script>
@@ -170,10 +171,30 @@
 					content: $("#lookBabySign")
 				});
 			}
+			else if(obj.event === 'attend'){
+				alert(data.bName);
+				alert(data.bid);
+
+				layer.open({
+					type: 2,
+					title: '考勤',
+					content: '/ChildSchool/babyface.action',
+					maxmin: true,
+					area: ['500px', '500px'],
+					btn: ['关闭'],
+					success: function (layero,index) {
+						var body = layer.getChildFrame('body', index);
+						body.find("#bid").val(data.bid);
+
+					},
+					yes:function (index,layero) {
+						layer.close(index);
+
+					}
+				})
+
+			}
 		});
-
-
-
 
 		var active = {
 			reload: function(){

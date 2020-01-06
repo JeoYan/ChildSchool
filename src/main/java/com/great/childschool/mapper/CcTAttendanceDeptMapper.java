@@ -12,19 +12,19 @@ public interface CcTAttendanceDeptMapper
 {
 
 	/**
-	 * 教师管理-数据显示
+	 * 教师考勤管理-数据显示
 	 * by 陈超
 	 */
 	public List<TblWorker> find(CcTableInf ccTableInf);
 	/**
-	 * 教师管理-分页
+	 * 教师考勤管理-分页
 	 * by 陈超
 	 */
 	public List<TblWorker> totalPage(CcTableInf ccTableInf);
 
 
 	/**
-	 * 教师管理-查询角色方法
+	 * 教师考勤管理-查询角色方法
 	 * by 陈超
 	 */
 	public List<TblRole>findrole();

@@ -3,18 +3,22 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.great.childschool.mapper.CcFaceDeptMapper">
-<!--    教师人脸考勤-->
+
+    <!--    教师人脸考勤-->
     <select id="selectAllWorkers" resultType="com.great.childschool.entity.TblWorker" >
 		select * from tbl_worker
 	</select>
+
     <insert id="add" useGeneratedKeys="true" keyProperty="wsignid" parameterType="com.great.childschool.entity.CcTblWorkerSign" >
         insert tbl_worker_sign (wid, wstime, wsid, wsdate, wsperiod)
         values(#{wid},#{wstime},#{wsid},#{wsdate},#{wsperiod})
     </insert>
+
     <!--    宝宝人脸考勤-->
     <select id="selectAllBaby" resultType="com.great.childschool.entity.CcTblBaby" >
 		select * from tbl_baby
 	</select>
+
     <insert id="add1" useGeneratedKeys="true" keyProperty="bsignid" parameterType="com.great.childschool.entity.CcTblBabySign" >
         insert tbl_baby_sign (bid,bstime, sid, bsdate, bsperiod)
         values(#{bid},#{bstime},#{sid},#{bsdate},#{bsperiod})

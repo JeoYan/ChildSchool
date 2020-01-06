@@ -1,10 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Administrator
-  Date: 2019/11/19
-  Time: 16:11
-  To change this template use File | Settings | File Templates.
---%>
+
 <%--/**--%>
 <%--* 教师管理-增加界面--%>
 <%--* by 陈超--%>
@@ -41,7 +35,7 @@
 	<div class="layui-form-item" style="text-align: center">
 		<label class="layui-form-label">教师名称</label>
 		<div class="layui-input-inline">
-			<input type="text"  name="wname" id="wname" lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+			<input type="text"  name="wname" id="wname" lay-verify="required" placeholder="请输入教师名称" autocomplete="off" class="layui-input">
 		</div>
 	</div>
 

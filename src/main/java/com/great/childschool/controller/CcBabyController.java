@@ -37,7 +37,7 @@ public class CcBabyController
 
 		return modelAndView;
 	}
-			//新增弹窗
+	//新增入园信息弹窗
 	@RequestMapping("/Admission.action")
 	@Log(operationType = "访问操作", operationName = "访问欢迎页")
 	public ModelAndView Admission(){
@@ -178,11 +178,11 @@ public class CcBabyController
 		if (flag >0)
 		{
 			msg.setMsg("1");
-			System.out.println("修改成功");
+			System.out.println("修改宝宝成功");
 		} else
 		{
 			msg.setMsg("2");
-			System.out.println("修改失败");
+			System.out.println("修改宝宝失败");
 		}
 		return msg;
 	}
@@ -212,11 +212,11 @@ public class CcBabyController
 		if (msg1 >0&&msg2 >0&&msg3 >0)
 		{
 			msg.setMsg("1");
-			System.out.println("删除成功");
+			System.out.println("删除宝宝成功");
 		} else
 		{
 			msg.setMsg("2");
-			System.out.println("删除失败");
+			System.out.println("删除宝宝失败");
 		}
 		return msg;
 	}

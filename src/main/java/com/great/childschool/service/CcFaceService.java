@@ -46,7 +46,7 @@ public class CcFaceService
 //	}
 
 	/**
-	 * 考勤方法-增加语句
+	 * 考勤方法-增加教师语句
 	 * by 陈超
 	 */
 	public int  add(CcTblWorkerSign ccTblWorkerSign){

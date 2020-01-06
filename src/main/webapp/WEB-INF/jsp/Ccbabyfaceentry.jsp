@@ -33,7 +33,10 @@
 <form class="layui-form" action="">
 <div class="layui-form" lay-filter="layui-btn-normal" id="layui-btn-normal" style="padding: 20px 0 0 0;">
 	<h2 style="text-align: center">人脸识别</h2>
-
+	<dd>
+		<input type="button" onclick="query()" value="人脸录入"
+		       class="submit_btn" />
+	</dd>
 <%--	<div class="layui-form-item" style="text-align: center">--%>
 <%--		<label class="layui-form-label">职工id</label>--%>
 <%--		<div class="layui-input-inline">--%>
@@ -44,10 +47,7 @@
 			<video id="video" width="530" height="300" autoplay></video>
 			<canvas id="canvas" width="400" height="300"></canvas>
 		</div>
-		<dd>
-			<input type="button" onclick="query()" value="人脸录入"
-			       class="submit_btn" />
-		</dd>
+
 
 
 <%--	</div>--%>

@@ -182,11 +182,11 @@ public class CcParentController
 		if (flag1 >0 && flag2 >0 && flag3 >0)
 		{
 			msg.setMsg("1");
-			System.out.println("修改成功");
+			System.out.println("修改家长成功");
 		} else
 		{
 			msg.setMsg("2");
-			System.out.println("修改失败");
+			System.out.println("修改家长失败");
 		}
 		return msg;
 	}
@@ -201,8 +201,7 @@ public class CcParentController
 	public MSG deletebaby(String pid)
 	{
 		System.out.println("pid"+pid);
-		CcTblParentBaby ccTblParentBaby =new CcTblParentBaby();
-		ccTblParentBaby=ccParentService.findb(Integer.valueOf(pid));
+		CcTblParentBaby ccTblParentBaby =ccParentService.findb(Integer.valueOf(pid));
 		int bid =ccTblParentBaby.getBid();
 		int msg1 = ccParentService.deleteparent(Integer .valueOf(pid));
 		int msg2 =ccParentService.deletebaby(bid);
@@ -216,11 +215,11 @@ public class CcParentController
 		if (msg1 >0 && msg2>0 && msg3>0)
 		{
 			msg.setMsg("1");
-			System.out.println("删除成功");
+			System.out.println("删除家长成功");
 		} else
 		{
 			msg.setMsg("2");
-			System.out.println("删除失败");
+			System.out.println("删除家长失败");
 		}
 		return msg;
 	}

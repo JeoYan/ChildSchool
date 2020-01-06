@@ -40,7 +40,10 @@
 <%--			<input  type="dhiden" name="wid" id="wid" value="${sessionScope.wid}">--%>
 <%--		</div>--%>
 	<div class="layui-form-item" style="text-align: center">
-		<label class="layui-form-label">职工id</label>
+		<dd>
+			<input type="button" onclick="query()" value="考勤"
+			       class="submit_btn" />
+		</dd>
 		<div class="layui-input-inline">
 			<input type="hidden"  name="wid" id="wid" lay-verify="required" placeholder="请输入宝宝名称" autocomplete="off" class="layui-input">
 		</div>
@@ -49,10 +52,7 @@
 			<video id="video" width="530" height="300" autoplay></video>
 			<canvas id="canvas" width="400" height="300"></canvas>
 		</div>
-		<dd>
-			<input type="button" onclick="query()" value="考勤"
-			       class="submit_btn" />
-		</dd>
+
 
 
 <%--	</div>--%>

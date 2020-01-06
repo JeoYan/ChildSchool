@@ -1,12 +1,6 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Administrator
-  Date: 2019/11/19
-  Time: 16:11
-  To change this template use File | Settings | File Templates.
---%>
+
 <%--/**--%>
-<%--* 班级成员管理-修改界面--%>
+<%--* 班级管理-修改界面--%>
 <%--* by 陈超--%>
 <%--*/--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -41,16 +35,16 @@
 		<div class="layui-form-item" style="text-align: center">
 			<label class="layui-form-label">班级名称</label>
 			<div class="layui-input-inline">
-				<input type="text"  name="cname" id="cname" lay-verify="required" placeholder="请输入家长名称" autocomplete="off" class="layui-input">
+				<input type="text"  name="cname" id="cname" lay-verify="required" placeholder="请输入班级名称" autocomplete="off" class="layui-input">
 			</div>
 		</div>
 
 		<div class="layui-form-item" >
 			<div class="layui-inline">
-				<label class="layui-form-label">班主任</label>
+				<label class="layui-form-label">教师</label>
 				<div class="layui-input-inline">
 					<select name="wname" id="wname">
-						<option value="">请选择班主任</option>
+						<option value="">请选择教师</option>
 
 						<c:forEach items="${requestScope.teacher}" begin="0" step="1" var="y">
 							<option value="${y.wname}">${y.wname}</option>

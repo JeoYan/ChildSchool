@@ -74,12 +74,9 @@
 <div class="demoTable">
 	<h1 style="text-align: center">教师考勤</h1>
 
-
 	<div style="text-align: center">
-
 		园所名称:英才幼儿园
 	</div>
-
 
 	<div style="text-align: center">
 		<form class="layui-form" action="" onsubmit="return false">
@@ -229,7 +226,7 @@
 				layer.open({
 					type: 1,
 					title: "教师考勤信息",
-					area: ['50%', '50%'],
+					area: ['60%', '60%'],
 					content: $("#lookTeacherSign")
 				});
 			}

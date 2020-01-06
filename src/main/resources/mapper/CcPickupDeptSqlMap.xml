@@ -2,44 +2,73 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.great.childschool.mapper.CcInformationDeptMapper">
+<mapper namespace="com.great.childschool.mapper.CcPickupDeptMapper">
 
-    <!--   修改密码sql-->
+    <!--   接送管理&#45;&#45;数据显示sql-->
     <!--    by 陈超-->
-    <select id="findpsw" parameterType="java.lang.Integer" resultType="com.great.childschool.entity.TblWorker">
-       select * from tbl_worker where wid=#{wid};
-    </select>
-
-    <!--   修改密码sql-->
-    <!--    by 陈超-->
-    <update id="updatepsw" parameterType="com.great.childschool.entity.TblWorker">
-       update  tbl_worker set wpsw=#{wpsw} where wid=#{wid};
-    </update>
-
-    <!--   个人信息sql-->
-    <!--    by 陈超-->
-    <select id="findinfo" parameterType="java.lang.Integer" resultType="com.great.childschool.entity.CcTblInfo">
-     select w.wname ,r.rname,w.wbrith,w.wsex,w.wdate,s.sname,w.wface
-        from tbl_worker w,tbl_status s ,tbl_worker_role twr ,tbl_role r
-            where w.wid=twr.wid
-            and w.sid=s.sid
-            and twr.rid =r.rid
-            and w.wid=#{wid}
-    </select>
-
-
-    <!--   家长端-宝宝信息sql-->
-    <!--    by 陈超-->
-    <select id="findb" parameterType="java.lang.Integer" resultType="com.great.childschool.entity.CcTblParentBaby">
-        select * from tbl_parent_baby where pid=#{pid}
-    </select>
-    <select id="findbabyinfo" parameterType="java.lang.Integer" resultType="com.great.childschool.entity.CcTblBabyInfo">
-     select b.bname, b.bsex, b.bbirth, b.bdate, c.classroom,w.wname, b.baddress
+    <select id="find" parameterType="com.great.childschool.entity.CcTableInf" resultType="com.great.childschool.entity.CcTblBaby">
+        select b.bid,b.bname, c.cid,c.cname,w.wid,w.wname,b.bsex
         from tbl_baby b,tbl_classroom c,tbl_worker w
-        where b.cid=c.cid
-          and w.wid=c.wid
-            and b.bid=#{bid}
+
+        <where>
+            b.cid=c.cid and w.wid=c.wid
+            <if test="cname != null and cname !='' " >
+                and c.cname = #{cname}
+            </if>
+            <if test="bname != null and bname !='' " >
+                and b.bname like '%${bname}%'
+            </if>
+
+        </where>
+        limit #{page} ,5
+
     </select>
+
+    <!--   接送管理&#45;&#45;页数显示sql-->
+    <!--    by 陈超-->
+    <select id="totalPage" parameterType="com.great.childschool.entity.CcTableInf" resultType="com.great.childschool.entity.CcTblBaby">
+
+        select b.bid,b.bname, c.cid,c.cname,w.wid,w.wname,b.bsex
+        from tbl_baby b,tbl_classroom c,tbl_worker w
+
+        <where>
+            b.cid=c.cid and w.wid=c.wid
+            <if test="cname != null and cname !='' " >
+                and c.cname like '%${cname}%'
+            </if>
+            <if test="bname != null and bname !='' " >
+                and b.bname =#{bname}
+            </if>
+
+        </where>
+    </select>
+
+    <!--   班级管理-下拉框-查询班级教室sql-->
+    <!--    by 陈超-->
+    <select id="findclassroom" resultType="com.great.childschool.entity.CcTblClassroom">
+       select * from tbl_classroom
+    </select>
+
+<!--    &lt;!&ndash;   教师管理&#45;&#45;角色查询sql&ndash;&gt;-->
+<!--    &lt;!&ndash;    by 陈超&ndash;&gt;-->
+<!--    <select id="findrole" resultType="com.great.childschool.entity.TblRole">-->
+<!--       select * from tbl_role-->
+<!--    </select>-->
+
+    <!--   教师管理-角色查询sql-->
+    <!--    by 陈超-->
+    <select id="findtime"  resultType="com.great.childschool.entity.CcTblBabySign">
+        select bs.bstime, s.sname, bs.bsdate, bs.bsperiod,p.pname
+        from tbl_baby_sign bs,tbl_status s,tbl_parent_baby pb,tbl_parent p
+           <where>
+               bs.sid =s.sid and p.pid=pb.pid and pb.bid=bs.bid
+               and bs.bid=#{bid}
+               and bs.bsdate  &gt;= #{beginDate}
+               and bs.bsdate  &lt;= #{endDate}
+           </where>
+
+    </select>
+
 
 </mapper>
 

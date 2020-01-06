@@ -3,13 +3,7 @@
 <%--* 班级成员管理---%>
 <%--* by 陈超--%>
 <%--*/--%>
-<%--
-  Created by IntelliJ IDEA.
-  User: Administrator
-  Date: 2019/10/23
-  Time: 11:22
-  To change this template use File | Settings | File Templates.
---%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
@@ -23,7 +17,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>班级管理</title>
+	<title>班级成员管理</title>
 	<meta name="renderer" content="webkit">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -64,7 +58,6 @@
 		</div>
 
 	<button class="layui-btn" data-type="reload">查询</button>
-	<button class="layui-btn layui-btn-normal" data-type="add" >新增</button>
 	</div>
 </div>
 
@@ -128,62 +121,51 @@
 				}, 'data');
 			},
 			//增加
-			add: function () {
-				layer.open({
-					type: 2,
-					title: '新增',
-					content: '/ChildSchool/xzclassmen.action',
-					maxmin: true,
-					area: ['500px', '500px'],
-					btn: ['确定', '取消'],
-					yes: function (index, layero) {
-						//教室名称
-						var cname=$(layero).find('iframe')[0].contentWindow.cname.value;
-						//教师名称
-						var wname=$(layero).find('iframe')[0].contentWindow.wname.value;
-						//宝宝名称
-						var bname=$(layero).find('iframe')[0].contentWindow.bname.value;
-
-
-
-						var ob={cname:cname,wname:wname,bname:bname};
-
-						alert(ob);
-						$.ajax({
-							type:"POST",//提交方式
-							url:"/ChildSchool/addclassmen.action",//提交地址
-							data:ob,//数据
-							dataType:"json",//希望返回的数据类型
-							async:true,//异步操作
-							success:function (msg) {
-								alert(msg);
-								if(msg.msg==1){
-									alert("增加入园信息成功");
-									table.reload('test');
-									layer.close(index);
-								}else if(msg.msg=="2"){
-									alert("增加入园信息失败");
-								}
-
-							},
-							error:function () {
-								alert("服务器正忙")
-							}
-						})
-					}
-				});
-			},
-
-			uploadFile:function () {
-				layer.open({
-					type:2,
-					title:"选择文件",
-					content:"/jsp/upload.jsp",
-					area:["500px","500px"],
-
-				})
-			}
-          
+			// add: function () {
+			// 	layer.open({
+			// 		type: 2,
+			// 		title: '新增',
+			// 		content: '/ChildSchool/xzclassmen.action',
+			// 		maxmin: true,
+			// 		area: ['500px', '500px'],
+			// 		btn: ['确定', '取消'],
+			// 		yes: function (index, layero) {
+			// 			//教室名称
+			// 			var cname=$(layero).find('iframe')[0].contentWindow.cname.value;
+			// 			//教师名称
+			// 			var wname=$(layero).find('iframe')[0].contentWindow.wname.value;
+			// 			//宝宝名称
+			// 			var bname=$(layero).find('iframe')[0].contentWindow.bname.value;
+			//
+			//
+			//
+			// 			var ob={cname:cname,wname:wname,bname:bname};
+			//
+			// 			alert(ob);
+			// 			$.ajax({
+			// 				type:"POST",//提交方式
+			// 				url:"/ChildSchool/addclassmen.action",//提交地址
+			// 				data:ob,//数据
+			// 				dataType:"json",//希望返回的数据类型
+			// 				async:true,//异步操作
+			// 				success:function (msg) {
+			// 					alert(msg);
+			// 					if(msg.msg==1){
+			// 						alert("增加入园信息成功");
+			// 						table.reload('test');
+			// 						layer.close(index);
+			// 					}else if(msg.msg=="2"){
+			// 						alert("增加入园信息失败");
+			// 					}
+			//
+			// 				},
+			// 				error:function () {
+			// 					alert("服务器正忙")
+			// 				}
+			// 			})
+			// 		}
+			// 	});
+			// },
 
 		};
 

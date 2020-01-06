@@ -27,4 +27,11 @@ public interface CcInformationDeptMapper
 	 * by 陈超
 	 */
 	public CcTblInfo findinfo(int wid);
+
+	/**
+	 * 家长端-宝宝信息
+	 * by 陈超
+	 */
+	public CcTblParentBaby findb(int pid);
+	public CcTblBabyInfo findbabyinfo(int bid);
 }

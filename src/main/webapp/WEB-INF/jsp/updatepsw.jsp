@@ -4,13 +4,6 @@
                by 陈超
 ------------------------------------------------
 --%>
-<%--
-  Created by IntelliJ IDEA.
-  User: Administrator
-  Date: 2019/12/17 0017
-  Time: 11:20
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
 	String path = request.getContextPath();
@@ -36,6 +29,7 @@
 			<h2>智慧幼儿园</h2>
 			<p>修改密码</p>
 		</div>
+
 		<div class="layadmin-user-login-box layadmin-user-login-body layui-form">
 			<div class="layui-form-item">
 				<label class="layadmin-user-login-icon layui-icon layui-icon-password"
@@ -43,26 +37,31 @@
 				<input type="password" name="password" id="LAY-user-login-password" lay-verify="required"
 				       placeholder="旧密码" class="layui-input" >
 			</div>
+
 			<div class="layui-form-item">
 				<label class="layadmin-user-login-icon layui-icon layui-icon-password"
 				       for="LAY-user-login-password"></label>
 				<input type="password" name="password1" id="LAY-user-login-password1" lay-verify="required"
 				       placeholder="新密码" class="layui-input" >
 			</div>
+
 			<div class="layui-form-item">
 				<label class="layadmin-user-login-icon layui-icon layui-icon-password"
 				       for="LAY-user-login-password"></label>
 				<input type="password" name="password2" id="LAY-user-login-password2" lay-verify="required"
 				       placeholder="确认密码" class="layui-input" >
 			</div>
+
 			<div class="layui-form-item" style="margin-bottom: 20px;">
 				<%--				<input type="checkbox" name="remember" lay-skin="primary" title="记住密码">--%>
 				<a class="layadmin-user-jump-change layadmin-link" style="margin-top: 7px;"
 				   href=<%=path + "/parentLogin/parentForgetPage.action"%>>忘记密码？</a>
 			</div>
+
 			<div class="layui-form-item">
 				<button class="layui-btn layui-btn-fluid" lay-submit lay-filter="LAY-user-login-submit">确定修改</button>
 			</div>
+
 <%--			<div class="layui-trans layui-form-item layadmin-user-login-other">--%>
 <%--				&lt;%&ndash;				<label>社交账号登入</label>&ndash;%&gt;--%>
 <%--				&lt;%&ndash;				<a href="javascript:;"><i class="layui-icon layui-icon-login-qq"></i></a>&ndash;%&gt;--%>
@@ -72,6 +71,7 @@
 <%--			</div>--%>
 		</div>
 	</div>
+
 	<div class="layui-trans layadmin-user-login-footer">
 
 		<p>© 2019 Design by Jeo</p>
@@ -82,6 +82,7 @@
 		<%--			<span><a href="http://www.layui.com/admin/" target="_blank">前往官网</a></span>--%>
 		<%--		</p>--%>
 	</div>
+
 <input type="hidden" id="wid" value="${sessionScope.wid}">
 
 </div>

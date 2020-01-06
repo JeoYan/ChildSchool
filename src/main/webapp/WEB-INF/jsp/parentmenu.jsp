@@ -154,9 +154,10 @@
 							<cite>个人中心</cite>
 						</a>
 						<dl class="layui-nav-child">
-							<dd><a lay-href="set/system/website.html">宝宝信息</a></dd>
+							<dd><a lay-href="/ChildSchool/parentinformation.action">宝宝信息</a></dd>
 							<dd><a lay-href="/ChildSchool/web/parentchangepassword.action">修改密码</a></dd>
-							<dd><a lay-href="set/system/email22.html">退出</a></dd>
+							<a onclick="exit()" >退出</a>
+<%--							<a lay-href="javascript:if(confirm('确实要退出？'))location='/ChildSchool/workerLogin/workerLoginPage.action'">退出</a>---%>
 						</dl>
 					</li>
 				</ul>
@@ -244,6 +245,26 @@
 <%-- -----------------------------------------------------------%>
 <%-- -----------------------------------------------------------%>
 <script>
+
+	function exit(){
+		if (confirm("是否退出")){
+			$.ajax({
+				type:"POST",
+				url:"/ChildSchool/exit.action",
+				sync:true,
+				dateType:"text",
+				success:function (msg) {
+					if (msg=="注销") {
+						window.location.href="/ChildSchool/parentLogin/parentLoginPage.action";
+					}
+				},
+				error:function () {
+
+				}
+			});
+		}
+	}
+
 	layui.config({
 		base: '${pageContext.request.contextPath}/layuiadmin/' //静态资源所在路径
 	}).extend({
