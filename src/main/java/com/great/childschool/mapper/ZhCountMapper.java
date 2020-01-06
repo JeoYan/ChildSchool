@@ -18,7 +18,7 @@ import java.util.List;
 public interface ZhCountMapper
 {
 	//查询全部角色
-	@Select("select * from  tbl_role ")
+	@Select("select * from  tbl_role where rid BETWEEN   1  and 4 ")
 	public List<ZhTblRole> findAllRole();
 
 
