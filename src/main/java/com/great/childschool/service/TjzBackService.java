@@ -26,6 +26,123 @@ public class TjzBackService
 
 
 	/**
+	 * 查看得分
+	 * by 汤建志
+	 */
+	public List<TjzTblquestion> queryScore(Map<String, Object> map){
+		return tjzBackMapper.queryScore(map);
+	};
+
+	/**
+	 * 验证试题答案
+	 * by 汤建志
+	 */
+	@Transactional
+	public int checkAnswer(Map<String, String> answerMap,String pid,String safeId){
+
+		int count=0;
+		int score=0;
+		Date day = new Date();
+		Map<String, Object> map=new HashMap<String, Object>() ;
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Set<String> set = answerMap.keySet();
+		for (String s:set) {
+			System.out.println(s+","+answerMap.get(s));
+			map.put("questionId",Integer.valueOf(s));
+			TjzTblquestion tblquestion=tjzBackMapper.checkAnswer(map);
+			TjzTblSafeStudy safeStudy=new TjzTblSafeStudy();
+			safeStudy.setPid(Integer.valueOf(pid));
+			safeStudy.setSafeId(tblquestion.getSafeId());
+			safeStudy.setSubmitTime(dateFormat.format(day));
+			safeStudy.setQuestionId(tblquestion.getQuestionId());
+			safeStudy.setMyAnswer(answerMap.get(s));
+			if (tblquestion.getAnswer().equals(answerMap.get(s))){
+				safeStudy.setScore("1");
+				score++;
+			}else {
+				safeStudy.setScore("0");
+			}
+			int flag=tjzBackMapper.addTestRecord(safeStudy);
+			if (flag>0){
+				count++;
+			}
+
+		}
+		if (set.size()==count){
+			TjzTblSafeStudy totalScore=new TjzTblSafeStudy();
+			totalScore.setPid(Integer.valueOf(pid));
+			totalScore.setSafeId(Integer.valueOf(safeId));
+			totalScore.setTotalScore(String.valueOf(score));
+			tjzBackMapper.addTotalScore(totalScore);
+			return score;
+		}else{
+			return 0;
+		}
+
+	};
+
+
+
+	/**
+	 * 修改安全教育考试题目
+	 * by 汤建志
+	 */
+	@Transactional
+	public int updateQuestion(TjzTblquestion tblquestion){
+		return tjzBackMapper.updateQuestion(tblquestion);
+	};
+
+	/**
+	 * 删除安全教育考试题目
+	 * by 汤建志
+	 */
+	@Transactional
+	public int deleteQuestion(int questionId){
+		return tjzBackMapper.deleteQuestion(questionId);
+	};
+
+
+	/**
+	 * 添加安全教育试题
+	 * by 汤建志
+	 */
+	@Transactional
+	public int addSafeStudyTest(TjzTblquestion tblquestion){
+		return tjzBackMapper.addSafeStudyTest(tblquestion);
+	};
+
+
+	/**
+	 *安全教育试题页面
+	 * by 汤建志
+	 */
+	@Transactional
+	public List<TjzTblquestion> addSafeStudyTestView(int safeId){
+		return tjzBackMapper.addSafeStudyTestView(safeId);
+	};
+
+
+	/**
+	 * 教师修改安全教育视频
+	 * by 汤建志
+	 */
+	@Transactional
+	public int updateVideo(TjzTblSafeStudy safeStudy){
+		return  tjzBackMapper.updateVideo(safeStudy);
+	};
+
+
+	/**
+	 * 删除安全教育视频
+	 * by 汤建志
+	 */
+	@Transactional
+	public int delSafeStudyVideo(int safeId){
+		return tjzBackMapper.delSafeStudyVideo(safeId);
+	};
+
+
+	/**
 	 * 电子围栏查询报警日志
 	 * by 汤建志
 	 */
@@ -108,7 +225,7 @@ public class TjzBackService
 				Date date2 = sdf.parse(list.get(i).getEndDate());
 				if(date.getTime()<date2.getTime()){
 
-					if (null==list.get(i).getScore()||list.get(i).getScore().equals("")){
+					if (null==list.get(i).getTotalScore()||list.get(i).getTotalScore().equals("")){
 						list.get(i).setState("未完成");
 					}else {
 						list.get(i).setState("已经完成");
@@ -147,18 +264,18 @@ public class TjzBackService
 	 * by 汤建志
 	 */
 	@Transactional
-	public int upload(TjzTblSafeStudy safeStudy)
+	public int uploadVideo(TjzTblSafeStudy safeStudy)
 	{
-		return tjzBackMapper.upload(safeStudy);
+		return tjzBackMapper.uploadVideo(safeStudy);
 	}
 
 
 
 	/**
-	 * 教师发布安全教育试题
+	 * 安全教育管理
 	 * by 汤建志
 	 */
-	public TjzTbTable uploadsafestudy(String page, String limit, String startDate, String endDate, String safeName,String wid){
+	public TjzTbTable safeStudyManagement(String page, String limit, String startDate, String endDate, String safeName){
 		TjzTbTable tbBean = new TjzTbTable();
 		Map<String, Object> map = new HashMap<String, Object>();
 		int psize = Integer.valueOf(limit);
@@ -168,10 +285,9 @@ public class TjzBackService
 		map.put("startDate", startDate);
 		map.put("endDate", endDate);
 		map.put("safeName", safeName);
-		map.put("wid", wid);
-		List<TjzTblSafeStudy> list = tjzBackMapper.safeStudy(map);
+		List<TjzTblSafeStudy> list = tjzBackMapper.safeStudyManagement(map);
 		tbBean.setData(list);
-		tbBean.setCount(String.valueOf(tjzBackMapper.safeStudyNum(map)));
+		tbBean.setCount(String.valueOf(tjzBackMapper.safeStudyManagementNum(map)));
 		tbBean.setCode("0");
 		tbBean.setMsg(null);
 		return tbBean;

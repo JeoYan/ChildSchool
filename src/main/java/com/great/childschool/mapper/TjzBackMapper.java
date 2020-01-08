@@ -17,6 +17,69 @@ public interface TjzBackMapper
 {
 
 	/**
+	 * 考试记录分数赋值
+	 * by 汤建志
+	 */
+	public int addTotalScore(TjzTblSafeStudy safeStudy);
+
+
+	/**
+	 * 查看得分
+	 * by 汤建志
+	 */
+	public List<TjzTblquestion> queryScore(Map<String, Object> map);
+
+	/**
+	 * 添加考试记录
+	 * by 汤建志
+	 */
+	public int addTestRecord(TjzTblSafeStudy safeStudy);
+
+	/**
+	 * 验证试题答案
+	 * by 汤建志
+	 */
+	public TjzTblquestion checkAnswer(Map<String, Object> map);
+
+
+	/**
+	 * 修改安全教育考试题目
+	 * by 汤建志
+	 */
+	public int updateQuestion(TjzTblquestion tblquestion);
+	/**
+	 * 删除安全教育考试题目
+	 * by 汤建志
+	 */
+	public int deleteQuestion(int questionId);
+
+
+	/**
+	 * 添加安全教育试题
+	 * by 汤建志
+	 */
+	public int addSafeStudyTest(TjzTblquestion tblquestion);
+
+	/**
+	 * 安全教育试题页面
+	 * by 汤建志
+	 */
+	public List<TjzTblquestion> addSafeStudyTestView(int safeId);
+
+
+	/**
+	 * 教师修改安全教育视频
+	 * by 汤建志
+	 */
+	public int updateVideo(TjzTblSafeStudy safeStudy);
+
+	/**
+	 * 删除安全教育视频
+	 * by 汤建志
+	 */
+	public int delSafeStudyVideo(int safeId);
+
+	/**
 	 * 电子围栏查询报警日志
 	 * by 汤建志
 	 */
@@ -77,19 +140,19 @@ public interface TjzBackMapper
 	 * 教师上传安全教育视频
 	 * by 汤建志
 	 */
-	public int upload(TjzTblSafeStudy safeStudy);
+	public int uploadVideo(TjzTblSafeStudy safeStudy);
 
 	/**
-	 * 教师发布安全教育试题
+	 * 安全教育管理
 	 * by 汤建志
 	 */
-	public List<TjzTblSafeStudy> safeStudy(Map<String, Object> map);
+	public List<TjzTblSafeStudy> safeStudyManagement(Map<String, Object> map);
 
 	/**
-	 * 教师发布安全教育试题数目
+	 * 安全教育管理数量
 	 * by 汤建志
 	 */
-	public int safeStudyNum(Map<String, Object> map);
+	public int safeStudyManagementNum(Map<String, Object> map);
 
 
 

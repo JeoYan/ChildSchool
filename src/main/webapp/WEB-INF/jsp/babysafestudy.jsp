@@ -34,9 +34,6 @@
 	</div>
 
 <table id="demo" lay-filter="test" ></table>
-<script type="text/html" id="barDemo">
-	<a class="layui-btn layui-btn-xs" lay-event="playTest">安全试题</a>
-</script>
 <script>
 
 	var reloadTable = null;
@@ -48,15 +45,14 @@
 		//数据表格
 			reloadTable = table.render({
 			elem: '#demo'
-			, url: '/ChildSchool/BackAction/quarySafeStudy.action?pid='+"<%=request.getParameter("pid")%>"
+			, url: '/ChildSchool/BackAction/querySafeStudy.action?pid='+"<%=request.getParameter("pid")%>"
 			, page: true //开启分页
 			, cols: [[ //表头
 					{field: 'safeId',title: '视频编号', sort: true, fixed: 'left',align: 'center'}
 					,{field: 'safeName', title: '视频名称', sort: true, fixed: 'left', align: 'center'}
 					, {field: 'endDate', title: '结束时间', sort: true, align: 'center'}
-					, {field: 'score', title: '得分', align: 'center'}
+					, {field: 'totalScore', title: '得分', align: 'center'}
 					, {field: 'state', title: '完成情况', align: 'center'}
-					, {fixed: 'right', title: '操作', toolbar: '#barDemo', align: 'center'}
 			]]
 			, id: 'testReload'
 			, limit: 5
@@ -91,19 +87,7 @@
 			active[type] ? active[type].call(this) : '';
 		});
 
-		//配置课程
-		table.on('tool(test)', function (obj) {
-			var data = obj.data;
-			 if (obj.event === 'playVideo') {
 
-				alert(2)
-
-			}else  if (obj.event === 'playTest') {
-
-				alert(1)
-
-			 }
-		});
 	});
 
 </script>

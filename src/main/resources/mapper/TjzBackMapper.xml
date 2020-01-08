@@ -6,6 +6,98 @@
 <mapper namespace="com.great.childschool.mapper.TjzBackMapper">
 
 
+    <!-- 考试记录分数赋值-->
+    <update id="addTotalScore" parameterType="com.great.childschool.entity.TjzTblSafeStudy">
+       UPDATE tbl_parent_safestudy SET totalscore=#{totalScore}
+        WHERE safeid=#{safeId}
+        AND pid=#{pid}
+    </update>
+
+
+    <!-- 查看得分-->
+    <select id="queryScore" parameterType="map" resultType="com.great.childschool.entity.TjzTblquestion">
+       SELECT qu.*,ps.myanswer
+       FROM tbl_parent_safestudy ps,tbl_question qu
+       WHERE ps.questionid=qu.questionid
+       AND ps.pid=#{pid}
+       AND ps.safeid=#{safeId}
+    </select>
+
+
+    <!-- 验证试题答案-->
+    <select id="checkAnswer" parameterType="map" resultType="com.great.childschool.entity.TjzTblquestion">
+      SELECT *
+      FROM tbl_question
+      WHERE questionid=#{questionId}
+    </select>
+
+    <!-- 添加考试记录-->
+    <insert id="addTestRecord" parameterType="com.great.childschool.entity.TjzTblSafeStudy">
+       INSERT INTO tbl_parent_safestudy (pid, safeid, score, submittime, questionid,myanswer)
+       VALUES(#{pid},#{safeId},#{score},#{submitTime},#{questionId},#{myAnswer})
+    </insert>
+
+
+
+    <!--    修改安全教育考试题目-->
+    <update id="updateQuestion" parameterType="com.great.childschool.entity.TjzTblquestion">
+       UPDATE tbl_question
+        <set>
+            <if test="question!=null  and question!=''">
+                question=#{question},
+            </if>
+            <if test="optionA!=null  and optionA!=''">
+                optiona=#{optionA},
+            </if>
+            <if test="optionB!=null  and optionB!=''">
+                optionb=#{optionB},
+            </if>
+            <if test="answer!=null  and answer!=''">
+                answer=#{answer},
+            </if>
+        </set>
+        WHERE questionid=#{questionId}
+    </update>
+
+
+
+
+    <!--    删除安全教育考试题目-->
+    <delete id="deleteQuestion" parameterType="int">
+              DELETE FROM tbl_question WHERE questionid =#{questionId}
+    </delete>
+
+
+    <!-- 添加安全教育试题目-->
+    <insert id="addSafeStudyTest" parameterType="com.great.childschool.entity.TjzTblquestion">
+       INSERT INTO tbl_question (question, optiona, optionb, answer, safeid)
+       VALUES(#{question},#{optionA},#{optionB},#{answer},#{safeId})
+    </insert>
+
+
+    <!-- 安全教育试题页面-->
+    <select id="addSafeStudyTestView" parameterType="map" resultType="com.great.childschool.entity.TjzTblquestion">
+       SELECT qu.*
+       FROM tbl_question qu
+       WHERE qu.safeid
+       AND qu.safeid=#{safeId}
+       ORDER BY qu.questionid
+    </select>
+
+
+    <!--    教师修改安全教育视频-->
+    <update id="updateVideo" parameterType="com.great.childschool.entity.TjzTblSafeStudy">
+       UPDATE tbl_safestudy SET safename=#{safeName},startdate=#{startDate},enddate=#{endDate},vurl=#{vUrl}
+        WHERE safeid=#{safeId}
+    </update>
+
+
+    <!--    删除安全教育视频-->
+    <delete id="delSafeStudyVideo" parameterType="int">
+              DELETE FROM tbl_safestudy WHERE safeid =#{safeId}
+          </delete>
+
+
     <!-- 电子围栏查询报警日志数量-->
     <select id="findWarningNum" parameterType="map" resultType="int">
         SELECT COUNT(wa.warnid)
@@ -92,7 +184,7 @@
     <select id="parentSafeStudyNum" parameterType="map" resultType="int">
         SELECT COUNT(sa.safeid)
         FROM tbl_safestudy sa
-        LEFT JOIN (SELECT * FROM tbl_parent_safestudy WHERE tbl_parent_safestudy.pid=#{pid}) psa
+        LEFT JOIN (SELECT DISTINCT ps.pid,ps.safeid,ps.totalscore FROM tbl_parent_safestudy ps WHERE ps.pid=#{pid}) psa
         ON sa.safeid=psa.safeid
         <where>
             <if test="safeName !=null and safeName!=''">
@@ -110,9 +202,9 @@
 
     <!-- 家长查看安全教育-->
     <select id="parentSafeStudy" parameterType="map" resultType="com.great.childschool.entity.TjzTblSafeStudy">
-        SELECT sa.*,psa.score
+        SELECT sa.*,psa.totalscore
         FROM tbl_safestudy sa
-        LEFT JOIN (SELECT * FROM tbl_parent_safestudy WHERE tbl_parent_safestudy.pid=#{pid}) psa
+        LEFT JOIN (SELECT DISTINCT ps.pid,ps.safeid,ps.totalscore FROM tbl_parent_safestudy ps WHERE ps.pid=#{pid}) psa
         ON sa.safeid=psa.safeid
         <where>
             <if test="safeName !=null and safeName!=''">
@@ -134,14 +226,14 @@
     </update>
 
     <!--    教师上传安全教育视频-->
-    <insert id="upload" parameterType="com.great.childschool.entity.TjzTblSafeStudy">
+    <insert id="uploadVideo" parameterType="com.great.childschool.entity.TjzTblSafeStudy">
         INSERT INTO tbl_safestudy(safename,startdate,enddate,safedate,vurl,wid)
         VALUES (#{safeName},#{startDate},#{endDate},#{safeDate},#{vUrl},#{wid})
     </insert>
 
 
-    <!-- 教师安全教育试题表格-->
-    <select id="safeStudy" parameterType="map" resultType="com.great.childschool.entity.TjzTblSafeStudy">
+    <!-- 安全教育管理-->
+    <select id="safeStudyManagement" parameterType="map" resultType="com.great.childschool.entity.TjzTblSafeStudy">
         SELECT *
         FROM tbl_safestudy
         <where>
@@ -158,8 +250,8 @@
         LIMIT #{pstart},#{psize}
     </select>
 
-    <!--教师发布安全教育试题数量-->
-    <select id="safeStudyNum" parameterType="map" resultType="int">
+    <!--安全教育视频管理数量-->
+    <select id="safeStudyManagementNum" parameterType="map" resultType="int">
         SELECT COUNT(safeid)
         FROM tbl_safestudy
         <where>

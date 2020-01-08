@@ -113,7 +113,7 @@
 		});
 
 
-		//配置课程
+		//查看宝宝安全教育
 		table.on('tool(test)', function (obj) {
 			var data = obj.data;
 			 if (obj.event === 'classSafeStudy') {
@@ -122,7 +122,7 @@
 					type: 2
 					, title: '查看宝宝安全教育'
 					, offset: 'auto'
-					, content: '/ChildSchool/BackAction/teacherbabysafe.action?cid='+data.cid
+					, content: '/ChildSchool/BackAction/teacherBabySafe.action?cid='+data.cid
 					, area: ['1000px', '700px']
 					, btn: ['确定', '取消']
 					, shade: 0

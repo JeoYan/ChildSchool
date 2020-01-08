@@ -115,7 +115,7 @@
 					type: 2
 					, title: '查看宝宝安全教育'
 					, offset: 'auto'
-					, content: '/ChildSchool/BackAction/babysafestudy.action?pid='+data.pid
+					, content: '/ChildSchool/BackAction/babySafeStudy.action?pid='+data.pid
 					, area: ['900px', '550px']
 					, btn: ['确定', '取消']
 					, shade: 0

@@ -6,12 +6,14 @@ import com.great.childschool.entity.*;
 import com.great.childschool.service.TjzBackService;
 import com.great.childschool.tools.MessageSendDemo;
 import com.great.childschool.tools.Tool;
+import net.sf.json.JSONObject;
 import org.apache.commons.io.FileUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -46,6 +48,406 @@ public class TjzAdminHandler
 
 
 	/**
+	 * 安全教育考试
+	 * by 汤建志
+	 */
+	@RequestMapping("/queryScore.action")
+	public String queryScore(HttpServletRequest request, String safeId, String totalScore)
+	{
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		String pid = request.getSession().getAttribute("pid").toString();
+		map.put("pid", pid);
+		map.put("safeId", Integer.valueOf(safeId));
+		List<TjzTblquestion> tblquestions = tjzBackService.queryScore(map);
+		if (null != tblquestions && tblquestions.size() > 0)
+		{
+			request.setAttribute("tableBody", tblquestions);
+			request.setAttribute("safeId", safeId);
+			request.setAttribute("totalScore", totalScore + "分");
+			request.setAttribute("questionNum", tblquestions.size());
+			return "queryscore";
+		} else
+		{
+			System.out.println("fail");
+			request.setAttribute("safeId", safeId);
+			return "queryscore";
+		}
+	}
+
+
+	/**
+	 * 提交答案
+	 * by 汤建志
+	 */
+	@RequestMapping("/submitAnswers.action")
+	@ResponseBody
+	public Map<String, Object> submitAnswers(HttpServletRequest request)
+	{
+
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		String pid = request.getSession().getAttribute("pid").toString();
+		String answer = request.getParameter("answer");
+		String safeId = request.getParameter("safeId");
+		System.out.println(answer);
+		JSONObject jsonObject = JSONObject.fromObject(answer);
+		Map<String, String> answerMap = (Map) jsonObject;
+		int flag = tjzBackService.checkAnswer(answerMap, pid, safeId);
+		if (flag == 0)
+		{
+			map.put("msg", "0");
+			return map;
+		} else
+		{
+			map.put("msg", flag);
+			return map;
+		}
+
+
+	}
+
+	/**
+	 * 安全教育考试
+	 * by 汤建志
+	 */
+	@RequestMapping("/SafeStudyTest.action")
+	public String SafeStudyTest(HttpServletRequest request, String safeId, String endDate, String startDate)
+	{
+
+
+		List<TjzTblquestion> tblquestions = tjzBackService.addSafeStudyTestView(Integer.valueOf(safeId));
+		if (null != tblquestions && tblquestions.size() > 0)
+		{
+
+
+			Date day = new Date();
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			String toDay = dateFormat.format(day);
+			System.out.println("toDay" + toDay);
+			System.out.println("endDate" + endDate);
+			System.out.println("startDate" + startDate);
+			String type = "";
+			int result = toDay.compareTo(endDate);
+			int result2 = toDay.compareTo(startDate);
+			if (result > 0)
+			{
+				type = "0";
+				System.out.println("已过期");
+
+			} else if (result2 < 0)
+			{
+				type = "1";
+				System.out.println("未开始");
+			} else
+			{
+				type = "2";
+				System.out.println("开始");
+			}
+			request.setAttribute("tableBody", tblquestions);
+			request.setAttribute("safeId", safeId);
+			request.setAttribute("type", type);
+			request.setAttribute("questionNum", tblquestions.size());
+			return "safestudytest";
+		} else
+		{
+			System.out.println("fail");
+			request.setAttribute("safeId", safeId);
+			return "safestudytest";
+		}
+	}
+
+
+	/**
+	 * 修改安全教育考试题目
+	 * by 汤建志
+	 */
+	@RequestMapping("/updateQuestion.action")
+	@ResponseBody
+	public Map<String, Object> updateQuestion(HttpServletRequest request)
+	{
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		String question = request.getParameter("question");
+		String optiona = request.getParameter("optiona");
+		String optionb = request.getParameter("optionb");
+		String safeId = request.getParameter("safeId");
+		String answer = request.getParameter("answer");
+		String questionId = request.getParameter("questionId");
+		TjzTblquestion tblquestion = new TjzTblquestion();
+		tblquestion.setQuestion(question);
+		tblquestion.setOptionA(optiona);
+		tblquestion.setOptionB(optionb);
+		tblquestion.setSafeId(35);
+		tblquestion.setAnswer(answer);
+		tblquestion.setQuestionId(Integer.valueOf(questionId));
+
+		int flag = tjzBackService.updateQuestion(tblquestion);
+		if (flag > 0)
+		{
+
+			map.put("msg", "1");
+			return map;
+		} else
+		{
+			map.put("msg", "0");
+			return map;
+
+		}
+	}
+
+	/**
+	 * 删除安全教育考试题目
+	 * by 汤建志
+	 */
+	@PostMapping("/deleteQuestion.action")
+	@ResponseBody
+	public Map<String, Object> deleteQuestion(HttpServletRequest request)
+	{
+		Map<String, Object> map = new HashMap<String, Object>();
+		String questionId = request.getParameter("questionId");
+
+		int flag = tjzBackService.deleteQuestion(Integer.valueOf(questionId));
+		if (flag > 0)
+		{
+			map.put("msg", "ok");
+		} else
+		{
+			map.put("msg", "error");
+
+		}
+
+		return map;
+	}
+
+
+	/**
+	 * 添加安全教育试题
+	 * by 汤建志
+	 */
+	@RequestMapping("/addSafeStudyTest.action")
+	@ResponseBody
+	public Map<String, Object> addSafeStudyTest(HttpServletRequest request)
+	{
+
+		Map<String, Object> map = new HashMap<String, Object>();
+
+
+		String question = request.getParameter("question");
+		String optiona = request.getParameter("optiona");
+		String optionb = request.getParameter("optionb");
+		String answer = request.getParameter("answer");
+		String safeId = request.getParameter("safeId");
+		TjzTblquestion tblquestion = new TjzTblquestion();
+		tblquestion.setQuestion(question);
+		tblquestion.setOptionA(optiona);
+		tblquestion.setOptionB(optionb);
+		tblquestion.setSafeId(Integer.valueOf(safeId));
+		tblquestion.setAnswer(answer);
+
+		int flag = tjzBackService.addSafeStudyTest(tblquestion);
+
+		if (flag > 0)
+		{
+
+			map.put("msg", "1");
+			return map;
+		} else
+		{
+			map.put("msg", "0");
+			return map;
+
+		}
+	}
+
+	/**
+	 * 安全教育考试题目页面
+	 * by 汤建志
+	 */
+	@RequestMapping("/addSafeStudyTestView.action")
+	public String addSafeStudyTestView(HttpServletRequest request, String safeId)
+	{
+
+		List<TjzTblquestion> tblquestions = tjzBackService.addSafeStudyTestView(Integer.valueOf(safeId));
+		if (null != tblquestions && tblquestions.size() > 0)
+		{
+			request.setAttribute("tableBody", tblquestions);
+			request.setAttribute("safeId", safeId);
+			request.setAttribute("questionNum", tblquestions.size());
+			return "addsafestudytest";
+		} else
+		{
+			System.out.println("fail");
+			request.setAttribute("safeId", safeId);
+			return "addsafestudytest";
+		}
+	}
+
+
+	/**
+	 * 教师修改安全教育视频
+	 * by 汤建志
+	 */
+	@RequestMapping(value = "/updateVideo.action")
+	@ResponseBody
+	@Log(operationType = "上传操作", operationName = "修改教育视频")
+	public Map<String, Object> updateVideo(@RequestParam(value = "file") MultipartFile file, HttpServletRequest request)
+	{
+		Map<String, Object> map = new HashMap<String, Object>();
+		String safeName = request.getParameter("safeName");
+		String oldSafeName = request.getParameter("oldSafeName");
+		String rangeDate = request.getParameter("rangeDate");
+		String safeId = request.getParameter("safeId");
+		if (safeName.equals("") || safeName == null)
+		{
+			map.put("msg", "请输入文件名");
+		} else if (rangeDate.equals("") || rangeDate == null)
+		{
+			map.put("msg", "请输入时间范围");
+		} else
+		{
+			String[] arr = rangeDate.split("\\s+");
+			String startDate = arr[0];
+			String endDate = arr[2];
+			String wid = request.getSession().getAttribute("wid").toString();
+			String originalFilename = file.getOriginalFilename();
+			System.out.println(originalFilename + "----------文件名-----------");
+			String suffix = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
+			Date day = new Date();
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			TjzTblSafeStudy safeStudy = new TjzTblSafeStudy();
+			safeStudy.setSafeName(safeName);
+			safeStudy.setStartDate(startDate);
+			safeStudy.setEndDate(endDate);
+			safeStudy.setSafeDate(dateFormat.format(day));
+			safeStudy.setWid(Integer.valueOf(wid));
+			String newFilename = safeName + "." + suffix;
+			String oldFilename = oldSafeName + "." + suffix;
+			System.out.println(System.getProperty("user.dir"));
+			String saveFilePath = System.getProperty("user.dir") + ISAFESTUDY_PATH;
+			safeStudy.setTestUrl(null);
+			File newFilePath = new File(saveFilePath);
+			if (newFilePath.exists())
+			{
+
+
+				File oldFile = new File(saveFilePath + oldFilename);
+				if (oldFile.exists())
+				{
+
+					File newFile = new File(saveFilePath + newFilename);
+					if (newFile.exists() && !oldFilename.equals(newFilename))
+					{
+
+						map.put("msg", "该文件名已存在");
+					}else {
+						try
+						{
+
+							oldFile.delete();
+							//保存文件到服务器
+							file.transferTo(newFile);
+							safeStudy.setvUrl(saveFilePath);
+							safeStudy.setSafeId(Integer.valueOf(safeId));
+							//保存到数据库
+							int flag = tjzBackService.updateVideo(safeStudy);
+							if (flag > 0)
+							{
+								map.put("msg", "ok");
+							} else
+							{
+								map.put("msg", "error");
+								newFile.delete();
+							}
+						} catch (IOException e)
+						{
+							map.put("msg", "error");
+							e.printStackTrace();
+						}
+					}
+
+				} else
+				{
+					map.put("msg", "error");
+				}
+
+
+				//				File newFile = new File(saveFilePath+newFilename);
+				//				if (newFile.exists())
+				//				{
+				//					map.put("msg", "该文件名已存在");
+				//				} else
+				//				{
+				//					try
+				//					{
+				//
+				//						File oldFile = new File(saveFilePath+ oldFilename);
+				//						oldFile.delete();
+				//						//保存文件到服务器
+				//						file.transferTo(newFile);
+				//						safeStudy.setvUrl(saveFilePath);
+				//						safeStudy.setSafeId(Integer.valueOf(safeId));
+				//						//保存到数据库
+				//						int flag = tjzBackService.updateVideo(safeStudy);
+				//						if (flag > 0)
+				//						{
+				//							map.put("msg", "ok");
+				//						} else
+				//						{
+				//							map.put("msg", "error");
+				//							newFile.delete();
+				//						}
+				//					} catch (IOException e)
+				//					{
+				//						map.put("msg", "error");
+				//						e.printStackTrace();
+				//					}
+				//				}
+			} else
+			{
+				map.put("msg", "error");
+			}
+
+		}
+		return map;
+	}
+
+	/**
+	 * 删除安全教育视频
+	 * by 汤建志
+	 */
+	@PostMapping("/delSafeStudyVideo.action")
+	@ResponseBody
+	public Map<String, Object> delSafeStudyVideo(HttpServletRequest request)
+	{
+		Map<String, Object> map = new HashMap<String, Object>();
+		String safeName = request.getParameter("safeName");
+		String safeId = request.getParameter("safeId");
+		String newFilename = safeName + "." + "mp4";
+		String saveFilePath = System.getProperty("user.dir") + ISAFESTUDY_PATH + newFilename;
+		System.out.println(saveFilePath);
+		File newFile = new File(saveFilePath);
+		if (newFile.exists())
+		{
+			int flag = tjzBackService.delSafeStudyVideo(Integer.valueOf(safeId));
+			if (flag > 0)
+			{
+				map.put("msg", "ok");
+				newFile.delete();
+			} else
+			{
+				map.put("msg", "error");
+
+			}
+		} else
+		{
+			map.put("msg", "error");
+		}
+		return map;
+	}
+
+
+	/**
 	 * 电子围栏查询报警日志
 	 * by 汤建志
 	 */
@@ -58,8 +460,20 @@ public class TjzAdminHandler
 		int pstart = (Integer.valueOf(page) - 1) * psize;
 		map.put("pstart", pstart);
 		map.put("psize", psize);
-		map.put("startDate", startDate+" 00:00:00");
-		map.put("endDate", endDate+" 24:00:00");
+		if (startDate == null || startDate.equals(""))
+		{
+			map.put("startDate", "0000" + " 00:00:00");
+		} else
+		{
+			map.put("startDate", startDate + " 00:00:00");
+		}
+		if (endDate == null || endDate.equals(""))
+		{
+			map.put("endDate", "9999" + " 24:00:00");
+		} else
+		{
+			map.put("endDate", endDate + " 24:00:00");
+		}
 		map.put("area", area);
 		return tjzBackService.findWarning(map);
 	}
@@ -71,52 +485,59 @@ public class TjzAdminHandler
 	 */
 	@RequestMapping("/addWarning.action")
 	@ResponseBody
-	public  synchronized Map<String,Object> addWarning(String bid,String area,HttpServletRequest request){
+	public synchronized Map<String, Object> addWarning(String bid, String area, HttpServletRequest request)
+	{
 
-		if (bidList==null){
+		if (bidList == null)
+		{
 			bidList = new ArrayList();
 		}
-		System.out.println("+++++bid"+bid);
-		System.out.println("+++++area"+area);
-		Map<String,Object> map;
-		if (bidList.contains(bid)){
-			map = new HashMap<String,Object>();
-			map.put("msg","0");
+		System.out.println("+++++bid" + bid);
+		System.out.println("+++++area" + area);
+		Map<String, Object> map;
+		if (bidList.contains(bid))
+		{
+			map = new HashMap<String, Object>();
+			map.put("msg", "0");
 			System.out.println("存在");//false
-		}{
+		}
+		{
 			bidList.add(bid);
 			System.out.println("不存在");//false
-			map = new HashMap<String,Object>();
-			TjzTblWarning warning=new TjzTblWarning();
+			map = new HashMap<String, Object>();
+			TjzTblWarning warning = new TjzTblWarning();
 			warning.setBid(Integer.valueOf(bid));
 			warning.setArea(area);
-			Date day=new Date();
+			Date day = new Date();
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			String datTime=dateFormat.format(day);
+			String datTime = dateFormat.format(day);
 			warning.setWarnTime(datTime);
 			warning.setWarnName("越界");
-			int flag  = tjzBackService.addWarning(warning);
-			if (flag>0){
-				map.put("msg","1");
-				TjzTblBaby baby=tjzBackService.fenceBaby(Integer.valueOf(bid));
-				System.out.println(baby.getpPhone()+"+++"+baby.getbName());
-				String pPhone=baby.getpPhone();
-				String bName=baby.getbName();
-				String content="【智慧幼儿园】亲爱的家长："+baby.getpName()+"，"+datTime+"，您的宝宝【"+bName+"】越过电子围栏【"+area+"】触发报警。请及时与班主任联系。";
+			int flag = tjzBackService.addWarning(warning);
+			if (flag > 0)
+			{
+				map.put("msg", "1");
+				TjzTblBaby baby = tjzBackService.fenceBaby(Integer.valueOf(bid));
+				System.out.println(baby.getpPhone() + "+++" + baby.getbName());
+				String pPhone = baby.getpPhone();
+				String bName = baby.getbName();
+				String content = "【智慧幼儿园】亲爱的家长：" + baby.getpName() + "，" + datTime + "，您的宝宝【" + bName + "】越过电子围栏【" + area + "】触发报警。请及时与班主任联系。";
 				System.out.println(content);
 				String response = MessageSendDemo.send("44962", "b3cb27bee6dbb9f1d717950da9fbd627", pPhone, content);
 				System.out.println(response);
-			}else {
-				map.put("msg","0");
+			} else
+			{
+				map.put("msg", "0");
 			}
 		}
 		return map;
-	};
+	}
+
+	;
 
 
-	@RequestMapping("/babysafestudy.action")
-	//	@Log(operationType = "查询操作", operationName = "课程表")
-	public String babysafestudy(HttpServletRequest request,String pid)
+	@RequestMapping("/babySafeStudy.action")
+	public String babySafeStudy(HttpServletRequest request, String pid)
 	{
 
 		request.setAttribute("pid", pid);
@@ -128,14 +549,17 @@ public class TjzAdminHandler
 	 * 教师查看家长提交
 	 * by 汤建志
 	 */
-	@RequestMapping("/quarySafeStudy.action")
+	@RequestMapping("/querySafeStudy.action")
 	@ResponseBody
-	public TjzTbTable quarySafeStudy(HttpServletRequest request, String page, String limit, String startDate, String endDate, String safeName){
+	public TjzTbTable querySafeStudy(HttpServletRequest request, String page, String limit, String startDate, String endDate, String safeName)
+	{
 		String pid = request.getParameter("pid");
-		System.out.println("+++++pid"+pid);
+		System.out.println("+++++pid" + pid);
 		TjzTbTable tbBean = tjzBackService.parentSafeStudy(page, limit, startDate, endDate, safeName, pid);
 		return tbBean;
-	};
+	}
+
+	;
 
 
 	/**
@@ -145,40 +569,44 @@ public class TjzAdminHandler
 	@RequestMapping(value = "/uploadAnswer.action")
 	@ResponseBody
 	@Log(operationType = "上传操作", operationName = "上传教育试题")
-	public Map<String,Object> uploadAnswer(@RequestParam(value = "file") MultipartFile file, HttpServletRequest request)
+	public Map<String, Object> uploadAnswer(@RequestParam(value = "file") MultipartFile file, HttpServletRequest request)
 	{
-		Map<String,Object> map = new HashMap<String,Object>();
-		String safeName=request.getParameter("safeName");
-		String safeId=request.getParameter("safeId");
-		String originalFilename =file.getOriginalFilename();//
-		System.out.println(originalFilename+"----------文件名-----------");
+		Map<String, Object> map = new HashMap<String, Object>();
+		String safeName = request.getParameter("safeName");
+		String safeId = request.getParameter("safeId");
+		String originalFilename = file.getOriginalFilename();//
+		System.out.println(originalFilename + "----------文件名-----------");
 		String suffix = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
-		TjzTblSafeStudy safeStudy=new TjzTblSafeStudy();
-		String newFilename = safeName + "试题"+"." + suffix;
-		String saveFilePath = System.getProperty("user.dir") +ISAFESTUDY_PATH+newFilename;
+		TjzTblSafeStudy safeStudy = new TjzTblSafeStudy();
+		String newFilename = safeName + "试题" + "." + suffix;
+		String saveFilePath = System.getProperty("user.dir") + ISAFESTUDY_PATH + newFilename;
 		safeStudy.setTestUrl(saveFilePath);
 		safeStudy.setSafeId(Integer.valueOf(safeId));
 		try
 		{
 			//保存文件到服务器
-			File newFile=new File(saveFilePath);
-			if (newFile.exists()){
-				map.put("msg","该文件名已存在");
-			}else {
+			File newFile = new File(saveFilePath);
+			if (newFile.exists())
+			{
+				map.put("msg", "该文件名已存在");
+			} else
+			{
 				file.transferTo(newFile);
 				//保存到数据库
 				int flag = tjzBackService.uploadTest(safeStudy);
-				if (flag>0){
-					map.put("msg","ok");
-				}else {
-					map.put("msg","error");
+				if (flag > 0)
+				{
+					map.put("msg", "ok");
+				} else
+				{
+					map.put("msg", "error");
 					newFile.delete();
 				}
 			}
 
 		} catch (IOException e)
 		{
-			map.put("msg","error");
+			map.put("msg", "error");
 			e.printStackTrace();
 		}
 		return map;
@@ -190,8 +618,8 @@ public class TjzAdminHandler
 	@RequestMapping("/download.action")
 	public ResponseEntity<byte[]> export(String fileName) throws IOException
 	{
-		System.out.println("文件下载："+fileName);
-		String downloadPath = System.getProperty("user.dir") +ISAFESTUDY_PATH;
+		System.out.println("文件下载：" + fileName);
+		String downloadPath = System.getProperty("user.dir") + ISAFESTUDY_PATH;
 		File file = new File(downloadPath + fileName);
 		HttpHeaders headers = new HttpHeaders();
 		// MediaType:互联网媒介类型 contentType：具体请求中的媒体类型信息
@@ -201,9 +629,9 @@ public class TjzAdminHandler
 	}
 
 
-	@RequestMapping("/teacherbabysafe.action")
+	@RequestMapping("/teacherBabySafe.action")
 	//	@Log(operationType = "查询操作", operationName = "课程表")
-	public String teacherbabysafe(HttpServletRequest request,String cid)
+	public String teacherBabySafe(HttpServletRequest request, String cid)
 	{
 
 
@@ -218,7 +646,7 @@ public class TjzAdminHandler
 	@RequestMapping("/classSafeStudy.action")
 	@ResponseBody
 	//	@Log(operationType = "查询操作", operationName = "课程表")
-	public TjzTbTable classSafeStudy(HttpServletRequest request,String page, String limit,String bName,String cid)
+	public TjzTbTable classSafeStudy(HttpServletRequest request, String page, String limit, String bName, String cid)
 	{
 
 
@@ -229,10 +657,9 @@ public class TjzAdminHandler
 		map.put("psize", psize);
 		map.put("bName", bName);
 		map.put("cid", cid);
-		TjzTbTable  tbTable = tjzBackService.classSafeStudy(map);
-			return tbTable;
+		TjzTbTable tbTable = tjzBackService.classSafeStudy(map);
+		return tbTable;
 	}
-
 
 
 	/**
@@ -241,13 +668,15 @@ public class TjzAdminHandler
 	 */
 	@RequestMapping("/parentSafeStudy.action")
 	@ResponseBody
-	public TjzTbTable parentSafeStudy(HttpServletRequest request, String page, String limit, String startDate, String endDate, String safeName){
+	public TjzTbTable parentSafeStudy(HttpServletRequest request, String page, String limit, String startDate, String endDate, String safeName)
+	{
 		String pid = request.getSession().getAttribute("pid").toString();
-		System.out.println("+++++pid"+pid);
+		System.out.println("+++++pid" + pid);
 		TjzTbTable tbBean = tjzBackService.parentSafeStudy(page, limit, startDate, endDate, safeName, pid);
 		return tbBean;
-	};
+	}
 
+	;
 
 
 	/**
@@ -257,75 +686,82 @@ public class TjzAdminHandler
 	@RequestMapping(value = "/uploadTest.action")
 	@ResponseBody
 	@Log(operationType = "上传操作", operationName = "上传教育试题")
-	public Map<String,Object> uploadTest(@RequestParam(value = "file") MultipartFile file, HttpServletRequest request)
+	public Map<String, Object> uploadTest(@RequestParam(value = "file") MultipartFile file, HttpServletRequest request)
 	{
-		Map<String,Object> map = new HashMap<String,Object>();
-		String safeName=request.getParameter("safeName");
-		String safeId=request.getParameter("safeId");
-			String originalFilename =file.getOriginalFilename();//
-			System.out.println(originalFilename+"----------文件名-----------");
-			String suffix = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
-			TjzTblSafeStudy safeStudy=new TjzTblSafeStudy();
-			String newFilename = safeName + "试题"+"." + suffix;
-			String saveFilePath = System.getProperty("user.dir") +ISAFESTUDY_PATH+newFilename;
-			safeStudy.setTestUrl(saveFilePath);
-			safeStudy.setSafeId(Integer.valueOf(safeId));
-			try
+		Map<String, Object> map = new HashMap<String, Object>();
+		String safeName = request.getParameter("safeName");
+		String safeId = request.getParameter("safeId");
+		String originalFilename = file.getOriginalFilename();//
+		System.out.println(originalFilename + "----------文件名-----------");
+		String suffix = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
+		TjzTblSafeStudy safeStudy = new TjzTblSafeStudy();
+		String newFilename = safeName + "试题" + "." + suffix;
+		String saveFilePath = System.getProperty("user.dir") + ISAFESTUDY_PATH + newFilename;
+		safeStudy.setTestUrl(saveFilePath);
+		safeStudy.setSafeId(Integer.valueOf(safeId));
+		try
+		{
+			//保存文件到服务器
+			File newFile = new File(saveFilePath);
+			if (newFile.exists())
 			{
-				//保存文件到服务器
-				File newFile=new File(saveFilePath);
-				if (newFile.exists()){
-					map.put("msg","该文件名已存在");
-				}else {
-					file.transferTo(newFile);
-					//保存到数据库
-					int flag = tjzBackService.uploadTest(safeStudy);
-					if (flag>0){
-						map.put("msg","ok");
-					}else {
-						map.put("msg","error");
-						newFile.delete();
-					}
+				map.put("msg", "该文件名已存在");
+			} else
+			{
+				file.transferTo(newFile);
+				//保存到数据库
+				int flag = tjzBackService.uploadTest(safeStudy);
+				if (flag > 0)
+				{
+					map.put("msg", "ok");
+				} else
+				{
+					map.put("msg", "error");
+					newFile.delete();
 				}
-
-			} catch (IOException e)
-			{
-				map.put("msg","error");
-				e.printStackTrace();
 			}
-			return map;
+
+		} catch (IOException e)
+		{
+			map.put("msg", "error");
+			e.printStackTrace();
+		}
+		return map;
 
 
 	}
 
 
 	/**
-	 * 教师上传安全教育视频
+	 * 新增安全教育视频
 	 * by 汤建志
 	 */
-	@RequestMapping(value = "/upload.action")
+	@RequestMapping(value = "/uploadVideo.action")
 	@ResponseBody
 	@Log(operationType = "上传操作", operationName = "上传教育视频")
-	public Map<String,Object> backUpload(@RequestParam(value = "file") MultipartFile file, HttpServletRequest request)
+	public Map<String, Object> uploadVideo(@RequestParam(value = "file") MultipartFile file, HttpServletRequest request)
 	{
-		Map<String,Object> map = new HashMap<String,Object>();
-		String safeName=request.getParameter("safeName");
-		String rangeDate=request.getParameter("rangeDate");
-		if (safeName.equals("")||safeName==null){
-			map.put("msg","请输入文件名");
-		}else if (rangeDate.equals("")||rangeDate==null){
-			map.put("msg","请输入时间范围");
-		}else{
-			String [] arr = rangeDate.split("\\s+");
-			String startDate=arr[0];
-			String endDate=arr[2];
+		Map<String, Object> map = new HashMap<String, Object>();
+		String safeName = request.getParameter("safeName");
+		String rangeDate = request.getParameter("rangeDate");
+		if (safeName.equals("") || safeName == null)
+		{
+			map.put("msg", "请输入文件名");
+		} else if (rangeDate.equals("") || rangeDate == null)
+		{
+			map.put("msg", "请输入时间范围");
+		} else
+		{
+			String[] arr = rangeDate.split("\\s+");
+			String startDate = arr[0];
+			String endDate = arr[2];
 			String wid = request.getSession().getAttribute("wid").toString();
-			String originalFilename =file.getOriginalFilename();
-			System.out.println(originalFilename+"----------文件名-----------");
+			String originalFilename = file.getOriginalFilename();
+			System.out.println(originalFilename + "----------文件名-----------");
 			String suffix = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
-			Date day=new Date();
+			Date day = new Date();
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-			TjzTblSafeStudy safeStudy=new TjzTblSafeStudy();
+			TjzTblSafeStudy safeStudy = new TjzTblSafeStudy();
 			safeStudy.setSafeName(safeName);
 			safeStudy.setStartDate(startDate);
 			safeStudy.setEndDate(endDate);
@@ -333,36 +769,42 @@ public class TjzAdminHandler
 			safeStudy.setWid(Integer.valueOf(wid));
 			String newFilename = safeName + "." + suffix;
 			System.out.println(System.getProperty("user.dir"));
-			String saveFilePath = System.getProperty("user.dir") +ISAFESTUDY_PATH;
+			String saveFilePath = System.getProperty("user.dir") + ISAFESTUDY_PATH;
 			safeStudy.setTestUrl(null);
-			File newFilePath=new File(saveFilePath);
-			if (newFilePath.exists()){
-				saveFilePath+=newFilename;
-				File newFile=new File(saveFilePath);
-				if (newFile.exists()){
-					map.put("msg","该文件名已存在");
-				}else {
+			File newFilePath = new File(saveFilePath);
+			if (newFilePath.exists())
+			{
+				saveFilePath += newFilename;
+				File newFile = new File(saveFilePath);
+				if (newFile.exists())
+				{
+					map.put("msg", "该文件名已存在");
+				} else
+				{
 					try
 					{
 						//保存文件到服务器
 						file.transferTo(newFile);
 						safeStudy.setvUrl(saveFilePath);
 						//保存到数据库
-						int flag = tjzBackService.upload(safeStudy);
-						if (flag>0){
-							map.put("msg","ok");
-						}else {
-							map.put("msg","error");
+						int flag = tjzBackService.uploadVideo(safeStudy);
+						if (flag > 0)
+						{
+							map.put("msg", "ok");
+						} else
+						{
+							map.put("msg", "error");
 							newFile.delete();
 						}
 					} catch (IOException e)
 					{
-						map.put("msg","error");
+						map.put("msg", "error");
 						e.printStackTrace();
 					}
 				}
-			}else {
-				map.put("msg","error");
+			} else
+			{
+				map.put("msg", "error");
 			}
 
 		}
@@ -371,17 +813,18 @@ public class TjzAdminHandler
 
 
 	/**
-	 * 教师发布安全教育试题
+	 * 安全教育管理
 	 * by 汤建志
 	 */
-	@RequestMapping("/uploadSafeStudy.action")
+	@RequestMapping("/safeStudyManagement.action")
 	@ResponseBody
-	public TjzTbTable uploadSafeStudy(HttpServletRequest request, String page, String limit, String startDate, String endDate, String safeName){
-		String wid = request.getSession().getAttribute("wid").toString();
-		TjzTbTable tbBean = tjzBackService.uploadsafestudy(page, limit, startDate, endDate, safeName, wid);
+	public TjzTbTable safeStudyManagement(String page, String limit, String startDate, String endDate, String safeName)
+	{
+		TjzTbTable tbBean = tjzBackService.safeStudyManagement(page, limit, startDate, endDate, safeName);
 		return tbBean;
-	};
+	}
 
+	;
 
 
 	/**
@@ -414,8 +857,9 @@ public class TjzAdminHandler
 	 */
 	@RequestMapping("/logCountByMonth.action")
 	@ResponseBody
-	public List<TjzLogCount> logCountByMonth(){
-		List<TjzLogCount> logCounts=tjzBackService.logCountByMonth();
+	public List<TjzLogCount> logCountByMonth()
+	{
+		List<TjzLogCount> logCounts = tjzBackService.logCountByMonth();
 		System.out.println(logCounts.toString());
 		return logCounts;
 	}
@@ -426,12 +870,12 @@ public class TjzAdminHandler
 	 */
 	@RequestMapping("/logCountByWid.action")
 	@ResponseBody
-	public List<TjzLogCount> logCountByWid(){
-		List<TjzLogCount> logCounts=tjzBackService.logCountByWid();
+	public List<TjzLogCount> logCountByWid()
+	{
+		List<TjzLogCount> logCounts = tjzBackService.logCountByWid();
 		System.out.println(logCounts.toString());
 		return logCounts;
 	}
-
 
 
 	/**
@@ -476,10 +920,12 @@ public class TjzAdminHandler
 
 				parent.setPid(Integer.valueOf(pid));
 				parent.setPpsw(newPassword);
-				int flag=tjzBackService.parentChangePassword(parent);
-				if (flag>0){
+				int flag = tjzBackService.parentChangePassword(parent);
+				if (flag > 0)
+				{
 					tbTable.setMsg("2");
-				}else {
+				} else
+				{
 					tbTable.setMsg("3");
 				}
 
@@ -490,14 +936,14 @@ public class TjzAdminHandler
 
 		return tbTable;
 
-}
+	}
 
 	/**
 	 * 家长查看上下周课程表
 	 * by 汤建志
 	 */
 	@RequestMapping("/parentWeekCourseTable.action")
-//	@Log(operationType = "查询操作", operationName = "查询课程表")
+	//	@Log(operationType = "查询操作", operationName = "查询课程表")
 	public String parentWeekCourseTable(HttpServletRequest request, HttpServletResponse response, String bid)
 	{
 		String nowDate = request.getParameter("now-Date");
@@ -532,7 +978,7 @@ public class TjzAdminHandler
 	 * by 汤建志
 	 */
 	@RequestMapping("/parentCourseTable.action")
-//	@Log(operationType = "查询操作", operationName = "查询课程表")
+	//	@Log(operationType = "查询操作", operationName = "查询课程表")
 	public String parentCourseTable(HttpServletRequest request, String bid)
 	{
 
@@ -559,14 +1005,13 @@ public class TjzAdminHandler
 	}
 
 
-
 	/**
 	 * 家长查看孩子所在班级信息
 	 * by 汤建志
 	 */
 	@RequestMapping("/parentCourseQuery.action")
 	@ResponseBody
-//	@Log(operationType = "查询操作", operationName = "课程管理")
+	//	@Log(operationType = "查询操作", operationName = "课程管理")
 	public TjzTbTable parentCourseQuery(HttpServletRequest request)
 	{
 
@@ -581,7 +1026,7 @@ public class TjzAdminHandler
 	 */
 	@RequestMapping("/teacherCourseQuery.action")
 	@ResponseBody
-//	@Log(operationType = "查询操作", operationName = "课程管理")
+	//	@Log(operationType = "查询操作", operationName = "课程管理")
 	public TjzTbTable teacherCourseQuery(HttpServletRequest request, String page, String limit, String startDate, String endDate, String cName)
 	{
 
@@ -596,7 +1041,7 @@ public class TjzAdminHandler
 	 * by 汤建志
 	 */
 	@RequestMapping("/teacherWeekcourseTable.action")
-//	@Log(operationType = "查询操作", operationName = "课程表")
+	//	@Log(operationType = "查询操作", operationName = "课程表")
 	public String teacherWeekcourseTable(HttpServletRequest request, HttpServletResponse response, String cid, String wid)
 	{
 		String nowDate = request.getParameter("now-Date");
@@ -636,7 +1081,7 @@ public class TjzAdminHandler
 	 * by 汤建志
 	 */
 	@RequestMapping("/teacherCourseTable.action")
-//	@Log(operationType = "查询操作", operationName = "课程表")
+	//	@Log(operationType = "查询操作", operationName = "课程表")
 	public String teacherCourseTable(HttpServletRequest request, String cid, String bid)
 	{
 
@@ -735,7 +1180,7 @@ public class TjzAdminHandler
 	 * by 汤建志
 	 */
 	@RequestMapping("/weekcourseTable.action")
-//	@Log(operationType = "查询操作", operationName = "课程表")
+	//	@Log(operationType = "查询操作", operationName = "课程表")
 	public String weekcourseTable(HttpServletRequest request, HttpServletResponse response, String cid)
 	{
 		String nowDate = request.getParameter("now-Date");
@@ -811,7 +1256,7 @@ public class TjzAdminHandler
 	 * by 汤建志
 	 */
 	@RequestMapping("/courseTable.action")
-//	@Log(operationType = "查询操作", operationName = "课程表")
+	//	@Log(operationType = "查询操作", operationName = "课程表")
 	public String courseTable(HttpServletRequest request, String cid)
 	{
 
@@ -867,15 +1312,13 @@ public class TjzAdminHandler
 	 */
 	@RequestMapping("/courseManagement.action")
 	@ResponseBody
-//	@Log(operationType = "管理操作", operationName = "课程管理")
+	//	@Log(operationType = "管理操作", operationName = "课程管理")
 	public TjzTbTable courseManagement(String page, String limit, String startDate, String endDate, String cName)
 	{
 
 		TjzTbTable tbBean = tjzBackService.courseManagement(page, limit, startDate, endDate, cName);
 		return tbBean;
 	}
-
-
 
 
 }

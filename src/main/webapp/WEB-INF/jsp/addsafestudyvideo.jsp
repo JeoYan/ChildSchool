@@ -70,7 +70,7 @@
 		//选完文件后不自动上传
 		upload.render({
 			elem: '#test8'
-			, url: '/ChildSchool/BackAction/upload.action'
+			, url: '/ChildSchool/BackAction/uploadVideo.action'
 			, accept: 'video'
 			,exts: 'mp4' //只允许上传压缩文件
 			// ,size: 102400 //限制文件大小，单位 KB
@@ -98,7 +98,7 @@
 						icon: 1,
 						offset: '50px'
 					}, function () {
-						location.reload()
+						parent.location.reload()
 					});
 				}else if(res.msg=="error"){
 					layer.closeAll('loading'); //关闭loading
@@ -115,19 +115,9 @@
 				}
 			},error: function () {
 				layer.closeAll('loading'); //关闭loading
-				layer.msg('上传失败');
+				layer.msg("服务器正忙", {icon: 5});
 			}
-			// ,choose: function(obj){
-			// 	alert($("#test2").val())
-			// // 	//将每次选择的文件追加到文件队列
-			// // 	obj.preview(function(index, file, result) {
-			// // 		if ($('#safeName').val() != ''&& $('#startDate').val() != ''&& $('#endDate').val() != '') {
-			// // 			$('#test9').removeClass("layui-btn-disabled");
-			// // 			$('#test9').removeAttr("disabled");
-			// // 			$('#upload-choose').text(file.name);
-			// // 		}
-			// // 	})
-			// }
+
 
 
 		});

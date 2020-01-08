@@ -31,8 +31,12 @@
 <table id="demo" lay-filter="test" ></table>
 <script type="text/html" id="barDemo">
 	<a class="layui-btn layui-btn-xs" lay-event="playVideo">播放视频</a>
-	<a class="layui-btn layui-btn-xs" lay-event="download">安全试题</a>
-<%--	<a class="layui-btn layui-btn-xs" lay-event="upload">提交</a>--%>
+	{{# if(d.totalScore ==null){ }}
+	<a class="layui-btn layui-btn-xs" lay-event="SafeStudyTest">安全试题</a>
+	{{# } }}
+	{{# if(d.totalScore !=null){ }}
+	<a class="layui-btn layui-btn-xs" lay-event="queryScore">查看得分</a>
+	{{# } }}
 </script>
 <script>
 
@@ -53,7 +57,7 @@
 					, {field: 'startDate', title: '开始时间', align: 'center'}
 					, {field: 'endDate', title: '结束时间', sort: true, align: 'center'}
 					, {field: 'safeDate', title: '发布时间', align: 'center'}
-					, {field: 'score', title: '得分', align: 'center'}
+					, {field: 'totalScore', title: '得分', align: 'center'}
 					, {field: 'state', title: '完成情况', align: 'center'}
 					, {fixed: 'right', title: '操作', toolbar: '#barDemo', align: 'center'}
 			]]
@@ -102,64 +106,41 @@
 						 type: 1,
 						 title: '播放视频',
 						 content: loadstr
+						 ,offset: 'auto'
 						 ,maxmin:true
 						 ,resize:true
 					 });
 
-			}else  if (obj.event === 'download') {
-				 // layer.confirm('真的下载么', function (index) {
-					 // var ob = {"userId": data.documentId};
-					 //下载的文件名
-					 var fileName=data['safeName']+"试题."+"docx";
-					 // var type=data['documentName']+"&type=txt";
-//请求下载的路径
-// 					var fileName=data.documentName;
-					 var url="/ChildSchool/BackAction/download.action?fileName="+fileName;
-					 var xmlResquest = new XMLHttpRequest();
-					 xmlResquest.open("POST",url, true);
-					 xmlResquest.setRequestHeader("Content-type", "application/json");
-					 xmlResquest.setRequestHeader("Authorization", "Bearer 6cda86e3-ba1c-4737-972c-f815304932ee");
-					 xmlResquest.responseType = "blob";
-					 xmlResquest.onload = function (oEvent) {
-						 var content = xmlResquest.response;
-						 var elink = document.createElement('a');
-						 elink.download = fileName;
-						 elink.style.display = 'none';
-						 var blob = new Blob([content]);
-						 elink.href = URL.createObjectURL(blob);
-						 document.body.appendChild(elink);
-						 elink.click();
-						 document.body.removeChild(elink)
-					 };
-					 xmlResquest.send();
+			}else  if (obj.event === 'SafeStudyTest') {
 
-					 // layer.close(index); //关闭弹窗
-
-				 // });
-
-				 // layer.close(index); //关闭弹窗
-
-
-			 }
-			 else  if (obj.event === 'upload') {
 				 layer.open({
 					 type: 2
-					 , title: '提交试题'
+					 , title: '安全试题'
 					 , offset: 'auto'
-					 , content: '/ChildSchool/web/uploadAnswer.action'
-					 , area: ['500px', '450px']
+					 , content: '/ChildSchool/BackAction/SafeStudyTest.action?safeId='+data.safeId+"&endDate="+data.endDate+"&startDate="+data.startDate
+					 , area: ['950px', '700px']
 					 , btn: ['关闭']
 					 , shade: 0
-					 , success: function (layero, index) {
-						 var body = layer.getChildFrame('body', index);
-						 body.find("#safeName").val(data.safeName);
-						 body.find("#startDate").val(data.startDate);
-						 body.find("#endDate").val(data.endDate);
-						 body.find("#safeId").val(data.safeId);
-					 }
+
 				 });
 
+
+			 }else  if (obj.event === 'queryScore') {
+
+				 layer.open({
+					 type: 2
+					 , title: '查看得分'
+					 , offset: 'auto'
+					 , content: '/ChildSchool/BackAction/queryScore.action?safeId='+data.safeId+'&totalScore='+data.totalScore
+					 , area: ['950px', '700px']
+					 , btn: ['关闭']
+					 , shade: 0
+
+				 });
+
+
 			 }
+
 		});
 	});
 

@@ -18,9 +18,54 @@ public class TjzTblSafeStudy
 	private int pid;
 	private String score;
 	private String state;
+	private String submitTime;
+	private int questionId;
+	private String myAnswer;
+	private String  totalScore;
 
 	public TjzTblSafeStudy()
 	{
+	}
+
+
+	public String getTotalScore()
+	{
+		return totalScore;
+	}
+
+	public void setTotalScore(String totalScore)
+	{
+		this.totalScore = totalScore;
+	}
+
+	public String getMyAnswer()
+	{
+		return myAnswer;
+	}
+
+	public void setMyAnswer(String myAnswer)
+	{
+		this.myAnswer = myAnswer;
+	}
+
+	public String getSubmitTime()
+	{
+		return submitTime;
+	}
+
+	public void setSubmitTime(String submitTime)
+	{
+		this.submitTime = submitTime;
+	}
+
+	public int getQuestionId()
+	{
+		return questionId;
+	}
+
+	public void setQuestionId(int questionId)
+	{
+		this.questionId = questionId;
 	}
 
 	public String getState()
