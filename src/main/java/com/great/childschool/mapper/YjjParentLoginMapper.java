@@ -46,7 +46,7 @@ public interface YjjParentLoginMapper
 	 * 获得书籍对应的page
 	 *
 	 */
-	@Select("select tbl_book_page.*,tbl_readbook.bookname from tbl_book_page,tbl_readbook where tbl_book_page.bookid=#{bookid} and tbl_book_page.bookid=tbl_readbook.bookid ORDER BY pagenum ASC")
+	@Select("select tbl_book_page.*,tbl_readbook.bookname,tbl_readbook.paytype from tbl_book_page,tbl_readbook where tbl_book_page.bookid=#{bookid} and tbl_book_page.bookid=tbl_readbook.bookid ORDER BY pagenum ASC")
 	List<YjjTblBookPage> findBookPage(@Param("bookid")int bookid);
 
 

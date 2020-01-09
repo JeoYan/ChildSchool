@@ -49,8 +49,13 @@
 							</span>
 							<span class="nub">
 							<button type="button" class="layui-btn layui-btn-sm" onclick="download(this)">下载</button>
-							<input type="hidden" value="${i.bookid}">
+
+								<button type="button" class="layui-btn layui-btn-sm" onclick="pay(this)">购买</button>
+
+								<input type="hidden" value="${i.bookid}">
 								<input type="hidden" value="${i.bookName}">
+								<input type="hidden" value="${i.paytype}">
+
 							</span>
 						</div>
 					</c:forEach>
@@ -79,38 +84,168 @@
 	}
 
 	function download(node) {
-		alert("下载");
+
 		var bookid = $(node).parent().find("input").eq(0).val();
 		var bookName = $(node).parent().find("input").eq(1).val();
-		// alert(bookid);
-		// alert(bookName);
-		//
-		// var msg={
-		// 	'bookid':bookid,
-		// 	'bookName':bookName
-		// };
 
-		var url = "${pageContext.request.contextPath}/readBook/downloadBook.action?bookid="+bookid+"&bookName="+bookName;
-		var xmlResquest = new XMLHttpRequest();
-		xmlResquest.open("POST", url, true);
-		xmlResquest.setRequestHeader("Content-type", "application/json");
-		xmlResquest.setRequestHeader("Authorization", "Bearer 6cda86e3-ba1c-4737-972c-f815304932ee");
-		xmlResquest.responseType = "blob";
-		xmlResquest.onload = function (oEvent) {
-			var content = xmlResquest.response;
-			var elink = document.createElement('a');
-			elink.download = bookName+".zip";
-			elink.style.display = 'none';
-			var blob = new Blob([content]);
-			elink.href = URL.createObjectURL(blob);
-			document.body.appendChild(elink);
-			elink.click();
-			document.body.removeChild(elink);
+		//alert(bookid);
 
-		};
-		xmlResquest.send();
 
-		layer.msg("开始下载！");
+
+		var ob = {bookid: bookid};
+
+
+		$.ajax({
+			type: "POST",//提奥的方式
+			url: "/ChildSchool/findbooktype.action",//提交的地址
+			data: ob,//提交的数据
+			dataType: "json",//希望返回的数据类型
+			async: true,//异步操作
+			success: function (data) {//成功的方法  msg为返回数据
+
+				//alert(data);
+				layui.use('layer', function () {
+
+					if(data===2){
+						var bookid = $(node).parent().find("input").eq(0).val();
+						var bookName = $(node).parent().find("input").eq(1).val();
+						layer.msg('确定下载?', {
+							// area:['200px', '150px'],
+							anim: 1,
+							btn: ['确定', '取消']
+							,yes: function(index, layer){
+								//按钮【按钮一】的回调
+								layui.layer.close(index);
+								var url = "${pageContext.request.contextPath}/readBook/downloadBook.action?bookid="+bookid+"&bookName="+bookName;
+								var xmlResquest = new XMLHttpRequest();
+								xmlResquest.open("POST", url, true);
+								xmlResquest.setRequestHeader("Content-type", "application/json");
+								xmlResquest.setRequestHeader("Authorization", "Bearer 6cda86e3-ba1c-4737-972c-f815304932ee");
+								xmlResquest.responseType = "blob";
+								xmlResquest.onload = function (oEvent) {
+									var content = xmlResquest.response;
+									var elink = document.createElement('a');
+									elink.download = bookName+".zip";
+									elink.style.display = 'none';
+									var blob = new Blob([content]);
+									elink.href = URL.createObjectURL(blob);
+									document.body.appendChild(elink);
+									elink.click();
+									document.body.removeChild(elink);
+
+								};
+								xmlResquest.send();
+
+								layer.msg("开始下载！");
+
+
+							}
+
+
+
+						});
+
+					}else {
+
+						layer.msg("您还未购买过此书，请您先购买，才能下载！");
+
+					}
+
+				});
+
+			},
+			error: function () {//错误的方法
+				alert("服务器未找到")
+			}
+		});
+
+
+
+
+
+
+
+
+
+
+
+
+
+		// alert("下载");
+		// layer.msg("开始下载！");
+
+
+
+	}
+
+
+	function pay(node) {
+
+		var bookid = $(node).parent().find("input").eq(0).val();
+		var bookName = $(node).parent().find("input").eq(1).val();
+		var paytype = $(node).parent().find("input").eq(2).val();
+
+		var ob = {bookid: bookid};
+
+		//alert(bookid);
+
+
+		$.ajax({
+			// type: "POST",//提奥的方式
+			url: "/ChildSchool/findbooktype.action",//提交的地址
+			data: ob,//提交的数据
+			dataType: "json",//希望返回的数据类型
+			async: true,//异步操作
+			success: function (data) {//成功的方法  msg为返回数据
+
+
+
+
+				layui.use('layer', function () {
+
+					if(data===1){
+
+						layer.open({
+							type: 2
+							,title: '购买'
+							,content: '${pageContext.request.contextPath}/payView.action'
+							,maxmin: true
+							,btn: ['关闭']
+							,area: ['400px', '300px']
+							, success : function(layero, index) {
+								// var bookid1 = $(node).parent().find("input").eq(0).val();
+								//alert("插入"+bookid);
+
+								var body = layui.layer.getChildFrame('body', index);
+								body.find("#bookid").val(bookid);
+								//window.location.href="/demo5/PayDemo.jsp";
+							}
+
+
+						});
+
+
+
+
+
+					}else {
+
+						layer.msg("您已购买过此书，无需再次购买！");
+
+					}
+
+
+
+				});
+
+
+
+			},
+			error: function () {//错误的方法
+				alert("服务器未找到")
+			}
+		});
+
 
 
 
@@ -124,5 +259,6 @@
 
 
 </script>
+
 </body>
 </html>

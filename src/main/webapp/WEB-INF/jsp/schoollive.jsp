@@ -47,7 +47,7 @@
 		table.render({
 			elem: '#LAY_table_user'
 			,filter:'test'
-			,url: '/ChildSchool/VideoController/findAllVideo'
+			,url: '/ChildSchool/VideoController/findVideoByRole'
 			,cols: [[
 				{field: 'vName', title: '监控位置',align: 'center'}
 				,{field: 'url', title: '监控视频路径',align: 'center',hide:true}

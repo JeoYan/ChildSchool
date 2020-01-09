@@ -13,7 +13,17 @@ public class YjjTblBookPage
   private String url;
   private String wName;
   private String bookName;
+  private String paytype;
 
+  public String getPaytype()
+  {
+    return paytype;
+  }
+
+  public void setPaytype(String paytype)
+  {
+    this.paytype = paytype;
+  }
 
   public String getBookName()
   {

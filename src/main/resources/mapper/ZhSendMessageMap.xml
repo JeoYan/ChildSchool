@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.great.childschool.mapper.ZhSendMessageMapper">
+
+
+    <select id="findNoticelManage"  parameterType="com.great.childschool.entity.ZhTblNotice" resultType="com.great.childschool.entity.ZhTblNotice">
+
+        select * from tbl_notice n,tbl_worker w
+        <where>
+             n.wid=w.wid
+
+            <if test="notitle != null and notitle != '' ">
+
+                AND n.notitle like "%"#{notitle}"%"
+
+            </if>
+
+            <if test="startDate!=null and startDate!=''">
+                <if test="endDate!=null and endDate!=''">
+                    AND n.ndate BETWEEN #{startDate} and #{endDate}
+                </if>
+            </if>
+
+
+            ORDER BY n.ndate desc
+        </where>
+
+        limit #{page},5
+
+    </select>
+
+
+
+
+
+    <select id="totalPageNoticelManage" parameterType="com.great.childschool.entity.ZhTblNotice" resultType="com.great.childschool.entity.ZhTblNotice">
+
+        select * from tbl_notice n,tbl_worker w
+        <where>
+            n.wid=w.wid
+
+            <if test="notitle != null and notitle != '' ">
+
+                AND n.notitle like "%"#{notitle}"%"
+
+            </if>
+
+            <if test="startDate!=null and startDate!=''">
+                <if test="endDate!=null and endDate!=''">
+                    AND n.ndate BETWEEN #{startDate} and #{endDate}
+                </if>
+            </if>
+
+
+            ORDER BY n.ndate desc
+        </where>
+
+
+    </select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

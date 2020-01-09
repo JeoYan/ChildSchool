@@ -3,6 +3,7 @@ package com.great.childschool.service;
 import com.great.childschool.entity.TblBaby;
 import com.great.childschool.entity.TblChecklist;
 import com.great.childschool.entity.TblClassroom;
+import com.great.childschool.entity.ZhTblCourse;
 import com.great.childschool.mapper.ZhMedicalManageDao;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
@@ -95,6 +96,19 @@ public class ZhMedicalManageService
 
 		return  zhMedicalManageDao.totalPageMedicalCase(tblChecklist);
 
+	}
+
+
+
+	//查看体检课程
+	public List<ZhTblCourse>  findMedicalCourse (ZhTblCourse zhTblCourse){
+
+		return zhMedicalManageDao.findMedicalCourse(zhTblCourse);
+	}
+
+	public List<ZhTblCourse>  totalPageMedicalCourse (ZhTblCourse zhTblCourse){
+
+		return zhMedicalManageDao.totalPageMedicalCourse(zhTblCourse);
 	}
 
 }

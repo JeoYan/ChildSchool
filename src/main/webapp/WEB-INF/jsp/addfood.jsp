@@ -82,39 +82,37 @@
 		<%--	// });--%>
 
 
-		layui.use(['form'], function(){
-			var form = layui.form;
+			layui.use(['form'], function(){
+				var form = layui.form;
 
-			layui.form.on('select(class)',function (date) {
-				var classname=date.value;
-				// alert(classname);
+				layui.form.on('select(class)',function (date) {
+					var classname=date.value;
+					// alert(classname);
 
-				var ob = {
-					cId: classname
-				};
-				// $.ajax({
-				//
-				// 	type: "POST",//提奥的方式
-				// 	url: "/ChildSchool/findBaby.action",//提交的地址
-				// 	data: ob ,//提交的数据
-				// 	dataType: "json",//希望返回的数据类型
-				// 	async: true,//异步操作
-				// 	success: function (list) {//成功的方法  msg为返回数据
-				// 		// alert(list.length);
-				// 		$("#babyname").html("");
-				// 		var babyName="";
-				// 		for (var i = 0; i <list.length ; i++) {
-				// 			babyName +='<option value="'+list[i].bId+'">'+list[i].bName+'</option>   '
-				// 		}
-				// 		$("#babyname").append(babyName);
-				form.render();
-				// 	},
-				// 	error: function () {//错误的方法
-				// 		alert("服务器未找到")
-				// 	}
-				// });
-
-
+					var ob = {
+						cId: classname
+					};
+					// $.ajax({
+					//
+					// 	type: "POST",//提奥的方式
+					// 	url: "/ChildSchool/findBaby.action",//提交的地址
+					// 	data: ob ,//提交的数据
+					// 	dataType: "json",//希望返回的数据类型
+					// 	async: true,//异步操作
+					// 	success: function (list) {//成功的方法  msg为返回数据
+					// 		// alert(list.length);
+					// 		$("#babyname").html("");
+					// 		var babyName="";
+					// 		for (var i = 0; i <list.length ; i++) {
+					// 			babyName +='<option value="'+list[i].bId+'">'+list[i].bName+'</option>   '
+					// 		}
+					// 		$("#babyname").append(babyName);
+					form.render();
+					// 	},
+					// 	error: function () {//错误的方法
+					// 		alert("服务器未找到")
+					// 	}
+					// });
 
 
 
@@ -122,27 +120,28 @@
 
 
 
+
+
+
+
+
+
+				});
 
 
 
 
 			});
 
+			//时间选择器
+			layui.use('laydate', function () {
+				var laydate = layui.laydate;
+				//常规用法
+				laydate.render({
+					elem: '#fdate'
+				});
 
-
-
-		});
-
-		//时间选择器
-		layui.use('laydate', function () {
-			var laydate = layui.laydate;
-			//常规用法
-			laydate.render({
-				elem: '#fdate'
 			});
-
-
-		});
 
 
 

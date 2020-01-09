@@ -19,7 +19,7 @@
 	<link rel="stylesheet" type="text/css" href=<%=path + "/css/bootstrap.min.css"%>/>
 	<link rel="stylesheet" type="text/css" href=<%=path + "/css/main.css"%>/>
 	<link href=<%=path + "/css/homeinside.css"%> rel="stylesheet" type="text/css" />
-	<script src=<%=path + "/jquery-3.4.1.js"%>></script>
+	<script src=<%=path + "/js/jquery-3.4.1.js"%>></script>
 	<script src=<%=path+"/js/nav.js"%> type="text/javascript"></script>
 </head>
 <body>

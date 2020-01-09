@@ -68,8 +68,8 @@
     <!--   教师管理&#45;&#45;增加教师sql-->
     <!--    by 陈超-->
     <insert id="addteacher" useGeneratedKeys="true" keyProperty="wid" parameterType="com.great.childschool.entity.TblWorker" >
-        insert into tbl_worker    (wname,wpsw,wbrith,wsex,wdate,sid)
-            values(#{wname},123,#{wbrith},#{wsex},#{wdate},1)
+        insert into tbl_worker    (wname,wpsw,wbrith,wsex,wdate,sid,wface,wphone)
+            values(#{wname},123,#{wbrith},#{wsex},#{wdate},1,#{wface,typeHandler=org.apache.ibatis.type.BlobTypeHandler},#{wphone})
     </insert>
 
     <!--   教师管理&#45;&#45;工作人员角色关系表 增加sql-->

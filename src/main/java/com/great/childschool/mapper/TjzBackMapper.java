@@ -17,16 +17,157 @@ public interface TjzBackMapper
 {
 
 	/**
+	 * 考试记录分数赋值
+	 * by 汤建志
+	 */
+	public int addTotalScore(TjzTblSafeStudy safeStudy);
+
+
+	/**
+	 * 查看得分
+	 * by 汤建志
+	 */
+	public List<TjzTblquestion> queryScore(Map<String, Object> map);
+
+	/**
+	 * 添加考试记录
+	 * by 汤建志
+	 */
+	public int addTestRecord(TjzTblSafeStudy safeStudy);
+
+	/**
+	 * 验证试题答案
+	 * by 汤建志
+	 */
+	public TjzTblquestion checkAnswer(Map<String, Object> map);
+
+
+	/**
+	 * 修改安全教育考试题目
+	 * by 汤建志
+	 */
+	public int updateQuestion(TjzTblquestion tblquestion);
+	/**
+	 * 删除安全教育考试题目
+	 * by 汤建志
+	 */
+	public int deleteQuestion(int questionId);
+
+
+	/**
+	 * 添加安全教育试题
+	 * by 汤建志
+	 */
+	public int addSafeStudyTest(TjzTblquestion tblquestion);
+
+	/**
+	 * 安全教育试题页面
+	 * by 汤建志
+	 */
+	public List<TjzTblquestion> addSafeStudyTestView(int safeId);
+
+
+	/**
+	 * 教师修改安全教育视频
+	 * by 汤建志
+	 */
+	public int updateVideo(TjzTblSafeStudy safeStudy);
+
+	/**
+	 * 删除安全教育视频
+	 * by 汤建志
+	 */
+	public int delSafeStudyVideo(int safeId);
+
+	/**
+	 * 电子围栏查询报警日志
+	 * by 汤建志
+	 */
+	public  List<TjzTblWarning> findWarning(Map<String, Object> map);
+	/**
+	 * 电子围栏查询报警日志数量
+	 * by 汤建志
+	 */
+	public int findWarningNum(Map<String, Object> map);
+
+
+
+	/**
+	 * 电子围栏查询孩子
+	 * by 汤建志
+	 */
+	public TjzTblBaby fenceBaby(int bid);
+
+
+	/**
+	 * 添加报警信息
+	 * by 汤建志
+	 */
+	public int addWarning(TjzTblWarning warning);
+
+
+	/**
+	 * 教师查看班级安全教育
+	 * by 汤建志
+	 */
+	public  List<TjzTblBaby> classSafeStudy(Map<String, Object> map);
+	/**
+	 * 教师查看班级安全教育数目
+	 * by 汤建志
+	 */
+	public int classSafeStudyNum(Map<String, Object> map);
+	/**
+	 * 家长查看安全教育数目
+	 * by 汤建志
+	 */
+	public int parentSafeStudyNum(Map<String, Object> map);
+
+
+	/**
+	 * 家长查看安全教育
+	 * by 汤建志
+	 */
+	public List<TjzTblSafeStudy> parentSafeStudy(Map<String, Object> map);
+
+	/**
+	 * 教师上传安全教育试题
+	 * by 汤建志
+	 */
+	public int uploadTest(TjzTblSafeStudy safeStudy);
+
+
+	/**
+	 * 教师上传安全教育视频
+	 * by 汤建志
+	 */
+	public int uploadVideo(TjzTblSafeStudy safeStudy);
+
+	/**
+	 * 安全教育管理
+	 * by 汤建志
+	 */
+	public List<TjzTblSafeStudy> safeStudyManagement(Map<String, Object> map);
+
+	/**
+	 * 安全教育管理数量
+	 * by 汤建志
+	 */
+	public int safeStudyManagementNum(Map<String, Object> map);
+
+
+
+
+	/**
 	 * 按月统计日志
 	 * by 汤建志
 	 */
-	public List<TjzLogCount> logCountByMonth( );
+	public List<TjzLogCount> logCountByMonth();
 
 	/**
 	 * 按人员统计日志
 	 * by 汤建志
 	 */
-	public List<TjzLogCount> logCountByWid( );
+	public List<TjzLogCount> logCountByWid();
 
 
 	/**
@@ -138,7 +279,7 @@ public interface TjzBackMapper
 	 * 批量插入未排班课程
 	 * by 汤建志
 	 */
-	public int insertCodeBatch(List<TjzTbCourse > courseList);
+	public int insertCodeBatch(List<TjzTbCourse> courseList);
 
 
 

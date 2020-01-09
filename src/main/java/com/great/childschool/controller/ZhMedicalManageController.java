@@ -1,10 +1,7 @@
 package com.great.childschool.controller;
 
 
-import com.great.childschool.entity.TblBaby;
-import com.great.childschool.entity.TblChecklist;
-import com.great.childschool.entity.TblClassroom;
-import com.great.childschool.entity.ZhSend;
+import com.great.childschool.entity.*;
 import com.great.childschool.service.ZhMedicalManageService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,7 +39,8 @@ public class ZhMedicalManageController
 	public ModelAndView tableView()
 	{
 		ModelAndView modelAndView = new ModelAndView();
-
+		List<TblClassroom> list =zhMedicalManageService.allClass();
+		modelAndView.addObject("allClass", list);
 		modelAndView.setViewName("medicalmanage");
 
 		return modelAndView;
@@ -236,6 +234,50 @@ public class ZhMedicalManageController
 		zhSend.setCount(new BigDecimal(totalPage));
 
 		zhSend.setData(list);
+
+		return zhSend;
+	}
+
+
+
+	//查看体检课程
+	//页面
+	//体检界面显示
+	@RequestMapping("/medicalPlanView.action")
+	public ModelAndView medicalPlanView()
+	{
+		ModelAndView modelAndView = new ModelAndView();
+
+		modelAndView.setViewName("medicalplan");
+
+		return modelAndView;
+	}
+
+	//表格
+	@RequestMapping("/findmedicalplan.action")
+	@ResponseBody
+	public ZhSend findMedicalPlan(ZhTblCourse zhTblCourse, String page)
+	{
+
+		//发送表格实体类
+		ZhSend zhSend = new ZhSend();
+
+		zhTblCourse.setPage((Integer.valueOf(page) - 1) * 5);
+
+		List<ZhTblCourse> list = zhMedicalManageService.findMedicalCourse(zhTblCourse);
+
+		List<ZhTblCourse> pageList = zhMedicalManageService.totalPageMedicalCourse(zhTblCourse);
+
+
+		int totalPage = pageList.size();
+
+
+		zhSend.setCode(new BigDecimal(0));
+
+		zhSend.setCount(new BigDecimal(totalPage));
+
+		zhSend.setData(list);
+
 
 		return zhSend;
 	}

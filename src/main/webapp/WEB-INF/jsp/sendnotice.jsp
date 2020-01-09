@@ -29,22 +29,32 @@
 </head>
 <body>
 
-<form class="layui-form" action="">
 
-	<div class="layadmin-user-login layadmin-user-display-show" id="LAY-user-login" style="display: none;">
+
+	<div class=" layadmin-user-display-show" id="LAY-user-login" style="display: none;">
 		<div style="text-align: center;">
 			<div class="layadmin-user-login-box layadmin-user-login-header">
-				<h2>发送公告</h2>
-				<h4>名字：${requestScope.bybyname} 性别: ${requestScope.bybysex}</h4>
+				<h2>发布公告</h2>
+				<h4 id="wName">发布人：${sessionScope.wName}</h4>
+				<input id="wid" value="${sessionScope.wid}" type="hidden">
 
 			</div>
 		</div>
 
-
+		<div class="layui-form-item ">
+			<div class="layui-input-block">
+			</div>
+		</div>
+		<div class="layui-form-item" style="font-size: 20px">
+			<label class="layui-form-label">标题</label>
+			<div class="layui-input-block">
+				<input type="text" name="title" id="title"placeholder="请输入标题" style="width:95%; size: 50px" autocomplete="off" class="layui-input">
+			</div>
+		</div>
 		<div class="layui-form-item" style="font-size: 20px">
 			<label class="layui-form-label">公告</label>
 			<div class="layui-input-block">
-				<textarea id="vod_content" type="text/plain" style="width:95%;height:150px;resize: none;size: 50px"></textarea>
+				<textarea id="nconntext" type="text/plain" style="width:95%;height:150px;resize: none;size: 50px"></textarea>
 			</div>
 		</div>
 		<div class="layui-form-item ">
@@ -54,7 +64,7 @@
 
 		<div class="layui-form-item ">
 			<div class="layui-input-block">
-				<button class="layui-btn layui-btn-fluid" lay-submit lay-filter="LAY-user-login-submit" style="width:95%;">发&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;布</button>
+				<button class="layui-btn layui-btn-fluid" id="send"  style="width:95%;">发&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;布</button>
 			</div>
 		</div>
 
@@ -65,61 +75,59 @@
 
 
 
-</form>
+
 
 
 <script>
 
+
 	layui.use('form', function () {
 		var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
 
-		form.render();
 
-		form.on('submit(LAY-user-login-submit)', function (obj) {
-			var flag = false;
-			var wid = $("#cname").val();
-			var passWord = $("#LAY-user-login-password").val();
-			var verifyCode = $("#LAY-user-login-vercode").val();
-			layer.msg("账号或密码不存在！！！");
+		$('#send').on('click', function (obj) {
+			var wid = $("#wid").val();
+			var notitle = $("#title").val();
+			var nconntext = $("#nconntext").val();
 
-			//请求登入接口
-			$.ajax({
-				async: false,//异步操作
-				type: "POST",
-				url: "${pageContext.request.contextPath}/workerLogin/loginCheck.action",//注意路径
-				data: {wid: wid, passWord: passWord, verifyCode: verifyCode},
-				dataType: "text",
-				success: function (data) {
-					// alert(data);
-					if (data === "NotOk") {
-						layer.msg("账号或密码不存在！！！");
-					} else if (data === "vercodeError") {
-						layer.msg("验证码错误！！！");
-					} else if (data === "NotExist") {
-						layer.msg("账户不存在！！！");
-					} else if (data === "StatusLock") {
-						layer.msg("账户已被禁用，请联系学校管理员！！！");
-					} else {
-						//登入成功的提示与跳转
-						layer.msg('登入成功', {
-							offset: '15px'
-							, icon: 1
-							, time: 1000
-						}, function () {
-							location.href = '${pageContext.request.contextPath}/workerLogin/login.action'; //后台主页
-						});
-					}
-				},
-				error: function (data) {
-					alert("-----失败------" + data);
+			layer.confirm('确定发送？', function (index) {
+				layer.close(index);
+				if (notitle.length===0){
+					layer.msg("请输入标题！");
+				}else if (nconntext.length===0){
+					layer.msg("请输入公告内容！");
+				} else {
+
+					$.ajax({
+						async: false,//异步操作
+						type: "POST",
+						url: "${pageContext.request.contextPath}/addNotice.action",//注意路径
+						data: {wid: wid, notitle: notitle, nconntext: nconntext},
+						dataType: "json",
+						success: function (num) {
+							if (num>0) {
+								layer.msg("发送成功！");
+								$("#title").val("");
+								$("#nconntext").val("");
+								form.render();
+							}else {
+								layer.msg("发送失败！");
+							}
+
+
+						},
+						error: function (data) {
+							alert("-----失败------" + data);
+						}
+					});
+
 				}
-			});
 
-			return flag;
+
+			});
 
 
 		});
-
 
 	});
 

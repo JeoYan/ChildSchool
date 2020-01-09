@@ -104,33 +104,48 @@
             <artifactId>xmlunit-core</artifactId>
         </dependency>
 
+<!--        人脸识别需要的json包-->
+        <dependency>
+            <groupId>net.sf.json-lib</groupId>
+            <artifactId>json-lib</artifactId>
+            <version>2.4</version>
+            <classifier>jdk13</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.baidu.aip</groupId>
+            <artifactId>java-sdk</artifactId>
+            <version>4.11.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.12</version>
+        </dependency>
         <!--FreeMarker模板视图依赖-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-freemarker</artifactId>
         </dependency>
-
         <!--websocket依赖包-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-websocket</artifactId>
         </dependency>
 
+        <!--支付宝依赖包-->
         <dependency>
-            <groupId>com.hynnet</groupId>
-            <artifactId>json-lib</artifactId>
-            <version>2.4</version>
+            <groupId>com.alipay.sdk</groupId>
+            <artifactId>alipay-sdk-java</artifactId>
+            <version>3.3.49.ALL</version>
         </dependency>
         <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-            <version>20160810</version>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.28</version>
         </dependency>
-        <dependency>
-            <groupId>com.baidu.aip</groupId>
-            <artifactId>java-sdk</artifactId>
-            <version>4.11.0</version>
-        </dependency>
+
 
 
     </dependencies>

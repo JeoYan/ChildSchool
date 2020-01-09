@@ -46,7 +46,6 @@
 				<select name="rname" id="rname">
 					<option value="">请选择角色</option>
 
-
 					<c:forEach items="${requestScope.role}" begin="0" step="1" var="y">
 						<option value="${y.rid}">${y.rname}</option>
 					</c:forEach>
@@ -57,33 +56,130 @@
 
 	</div>
 
+	<div class="layui-form-item" >
+		<label class="layui-form-label">人脸录入</label>
+		<div  id="media">
+			<video id="video"  autoplay style="width: 200px; height: 142px; margin-top: 10px; border-radius: 155%;"></video>
+			<canvas id="canvas" width="400" height="300" hidden></canvas>
+		</div>
+	</div>
 
-	<div class="layui-form-item" lay-filter="sex" >
+
+
+
+
+	<div class="layui-inline">
 		<label class="layui-form-label">性别</label>
 		<div class="layui-inline">
-			<select name="wsex"  id="wsex" lay-filter="LAY-user-adminrole-type">
+			<select name="wsex"  id="wsex">
 				<option value="男">男</option>
 				<option value="女">女</option>
-
 			</select>
 		</div>
 	</div>
 
+
 	<div class="layui-form-item" >
 		<label class="layui-form-label">出生年月</label>
 		<div class="layui-inline">
-			<input class="layui-input" type="date" name="wbrith" id="wbrith" autocomplete="off">
+			<input class="layui-input" type="date" name="wbrith" id="wbrith" >
 		</div>
 	</div>
 
-	<div class="layui-form-item layui-hide" style="text-align: center">
-		<input type="button" lay-submit lay-filter="LAY-user-front-submit" id="LAY-user-front-submit" value="确认">
+	<div class="layui-form-item" style="text-align: center">
+		<label class="layui-form-label">教师名称</label>
+		<div class="layui-input-inline">
+			<input type="text"  name="wphone" id="wphone" lay-verify="required" placeholder="请输入电话号码" autocomplete="off" class="layui-input">
+		</div>
 	</div>
+
+
+
+<%--	<div id="media">--%>
+<%--		<video id="video" width="530" height="300" autoplay></video>--%>
+<%--		<canvas id="canvas" width="400" height="300"></canvas>--%>
+<%--	</div>--%>
+
+
+<%--	<dd>--%>
+<%--		<input class="layui-btn layui-btn-fluid" type="button" onclick="query()" value="立即添加"--%>
+<%--		       class="submit_btn" />--%>
+<%--	</dd>--%>
+
+
+	<div class="layui-form-item" style="text-align: center">
+		<input class="layui-btn " type="button" onclick="query()" value="立即添加"
+		       class="submit_btn" />
+	</div>
+
+
 </div>
 </form>
 
 <script src="<%=uiPath+"layui/layui.js"%>"></script>
 <script>
+
+	var video = document.getElementById("video"); //获取video标签
+	var context = canvas.getContext("2d");
+	var con  ={
+		audio:false,
+		video:{
+			width:1980,
+			height:1024,
+		}
+	};
+
+	//导航 获取用户媒体对象
+	navigator.mediaDevices.getUserMedia(con)
+		.then(function(stream){
+			video.srcObject = stream;
+			video.onloadmetadate = function(e){
+				video.play();
+			}
+		});
+
+
+	function query(){
+		//把流媒体数据画到convas画布上去
+		context.drawImage(video,0,0,400,300);
+		var base = getBase64();
+		var wname=$("#wname").val();
+		var wsex=$("#wsex").val();
+		var wbrith=$("#wbrith").val();
+		var rname=$("#rname").val();
+		var wphone=$("#wphone").val();
+		$.ajax({
+			type:"post",
+			url:"${pageContext.request.contextPath}/addteacher.action",
+			data:{"wface":base,"wname":wname,"wsex":wsex, "wbrith":wbrith,"rid":rname,"wphone":wphone},
+			success:function(i){
+				if(i===1){
+					alert("添加成功")
+					parent.location.reload();
+					 // dicTable.reload();
+					 layer.close(index); //关闭弹窗
+				}else if(i===2) {
+					alert("添加失败");
+				}else if(i===3) {
+					alert("该人脸已录入");
+				}
+
+			}
+		});
+
+	}
+
+
+
+	function getBase64() {
+		var imgSrc = document.getElementById("canvas").toDataURL(
+			"image/png");
+		alert(imgSrc);
+		return imgSrc.split("base64,")[1];
+
+	};
+
+
 	layui.use('form', function(){
 		var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
 

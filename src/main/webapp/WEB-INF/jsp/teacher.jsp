@@ -134,41 +134,48 @@
 					title: '新增',
 					content: '/ChildSchool/xzteacher.action',
 					maxmin: true,
-					area: ['500px', '400px'],
-					btn: ['确定', '取消'],
+					area: ['500px', '450px'],
+					btn: ['关闭'],
 					yes: function (index, layero) {
+
+						layer.close(index);
+
 						//教师名称
 						var wname=$(layero).find('iframe')[0].contentWindow.wname.value;
 						//角色
 						var rid=$(layero).find('iframe')[0].contentWindow.rname.value;
 						var wsex=$(layero).find('iframe')[0].contentWindow.wsex.value;
 						var wbrith=$(layero).find('iframe')[0].contentWindow.wbrith.value;
+
+						var base=$(layero).find('iframe')[0].contentWindow.base.value;
+
+						alert(base);
 						alert(wsex);
 						alert(wbrith);
 
-						var ob={wname:wname,rid:rid,wsex:wsex,wbrith:wbrith};
-						alert(ob);
-						$.ajax({
-							type:"POST",//提交方式
-							url:"/ChildSchool/addteacher.action",//提交地址
-							data:ob,//数据
-							dataType:"json",//希望返回的数据类型
-							async:true,//异步操作
-							success:function (msg) {
-								alert(msg);
-								if(msg.msg==1){
-									alert("增加成功");
-									table.reload('test');
-									layer.close(index);
-								}else if(msg.msg=="2"){
-									alert("增加失败");
-								}
-
-							},
-							error:function () {
-								alert("服务器正忙")
-							}
-						})
+						// var ob={wname:wname,rid:rid,wsex:wsex,wbrith:wbrith};
+						// alert(ob);
+						// $.ajax({
+						// 	type:"POST",//提交方式
+						// 	url:"/ChildSchool/addteacher.action",//提交地址
+						// 	data:ob,//数据
+						// 	dataType:"json",//希望返回的数据类型
+						// 	async:true,//异步操作
+						// 	success:function (msg) {
+						// 		alert(msg);
+						// 		if(msg.msg==1){
+						// 			alert("增加成功");
+						// 			table.reload('test');
+						// 			layer.close(index);
+						// 		}else if(msg.msg=="2"){
+						// 			alert("增加失败");
+						// 		}
+						//
+						// 	},
+						// 	error:function () {
+						// 		alert("服务器正忙")
+						// 	}
+						// })
 					}
 				});
 			}

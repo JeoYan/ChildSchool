@@ -22,6 +22,7 @@ public class CmjVideoService
 	public List<CmjTblVideo> findAllVideo(){
 		return videoMapper.findAllVideo();
 	}
+
 	public List<TblRole> findAllVideoRole(int page,int size){
 		return videoMapper.findAllVideoRole(page,size);
 	}
@@ -32,5 +33,13 @@ public class CmjVideoService
 
 	public boolean distributeMenu(List<Integer> list, Integer rid){
 		return videoMapper.distributeMenu(list,rid);
+	}
+
+	public List<CmjTblVideo> findVideoByRoleId(int page, int size){
+		return videoMapper.findVideoByRoleId(page,size);
+	}
+
+	public Integer countVideoByRoleId(){
+		return videoMapper.countVideoByRoleId();
 	}
 }
