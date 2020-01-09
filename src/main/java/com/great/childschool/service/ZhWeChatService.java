@@ -77,6 +77,9 @@ public class ZhWeChatService
 	}
 
 
-
+	//我的订单
+	public List<ZhTblorder> findOrder(ZhTblorder zhTblorder){
+		return zhWeChatMapper.findOrder(zhTblorder);
+	}
 
 }

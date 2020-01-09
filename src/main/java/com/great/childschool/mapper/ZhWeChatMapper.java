@@ -51,4 +51,8 @@ public interface ZhWeChatMapper
 	//通讯录
 	@Select("select w.wname,w.wphone,r.rname FROM tbl_worker w,tbl_role r, tbl_worker_role wr where w.wid=wr.wid and r.rid=wr.rid")
 	public List<TblWorker> findAddress();
+
+
+	//我的订单
+	public List<ZhTblorder> findOrder(ZhTblorder zhTblorder);
 }

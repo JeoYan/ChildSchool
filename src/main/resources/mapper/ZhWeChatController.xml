@@ -47,9 +47,6 @@
     <select id="findScore"  parameterType="com.great.childschool.entity.ZhTblHomework" resultType="com.great.childschool.entity.ZhTblHomework">
 
 
-
-
-
         select A.hid,A.hname,A.hdate,B.score from tbl_homework A,tbl_baby_homework B,(select * from  tbl_parent_baby where pid=#{pid}) c
         <where>
              A.hid = B.hid and B.bid =c.bid
@@ -65,6 +62,26 @@
 
     </select>
 
+
+
+
+    <select id="findOrder"  parameterType="com.great.childschool.entity.ZhTblorder" resultType="com.great.childschool.entity.ZhTblorder">
+
+
+        select o.address,o.otime,c.comtitle,b.bname,s.sname from tbl_order o, tbl_commodity c,tbl_baby b,tbl_status s
+        <where>
+            o.pid=#{pid} and o.comid=c.comid and o.bid=b.bid and o.statusid=s.sid
+           <if test="comtitle != null and comtitle != '' ">
+
+                AND comtitle like   "%"#{comtitle}"%"
+
+            </if>
+            ORDER BY o.otime desc
+        </where>
+
+
+
+    </select>
 
 
 

@@ -203,4 +203,16 @@ public class ZhWeChatController
 	}
 
 
+
+	//我的订单
+	@RequestMapping("/findOrder.action")
+	@ResponseBody
+	public List<ZhTblorder> findOrder(ZhTblorder zhTblorder){
+		zhTblorder.setPid(1);
+		List<ZhTblorder> list =zhWeChatService.findOrder(zhTblorder);
+
+		return  list;
+
+	}
+
 }
