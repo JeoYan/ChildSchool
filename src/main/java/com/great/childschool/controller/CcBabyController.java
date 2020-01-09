@@ -12,8 +12,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -112,49 +110,6 @@ public class CcBabyController
 		return msg;
 	}
 
-//	/**
-//	 * 幼儿管理--增加逻辑
-//	 * by 陈超
-//	 */
-//	@RequestMapping("/addbaby.action")
-//	@ResponseBody
-//	@Log(operationType = "增加操作", operationName = "添加宝宝")
-//	public MSG add(CcTblBaby ccTblBaby,HttpServletRequest request)
-//	{
-//
-//		String bname=request.getParameter("bname");
-//		String bsex=request.getParameter("bsex");
-//		String bbirth=request.getParameter("bbirth");
-//
-//		Date date =new Date();
-//		SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd");
-//		String time =sdf.format(date);
-//		System.out.println();
-//		ccTblBaby.setBdate(time);
-//		ccTblBaby.setBname(bname);
-//		ccTblBaby.setBsex(bsex);
-//		ccTblBaby.setBbirth(bbirth);
-//
-//		System.out.println();
-//		int flag =ccBabyService.addbaby(ccTblBaby);
-//		System.out.println(flag);
-//
-//		MSG msg =new MSG();
-//
-//		if (flag >0 )
-//		{
-//			msg.setMsg("1");
-//			System.out.println("增加宝宝成功");
-//		}
-//		else
-//		{
-//			msg.setMsg("2");
-//			System.out.println("增加宝宝失败");
-//		}
-//		return msg;
-//
-//	}
-
 	/**
 	 * 幼儿管理--修改逻辑
 	 * by 陈超
@@ -197,8 +152,8 @@ public class CcBabyController
 	public MSG deletebaby(String bid)
 	{
 		System.out.println("bid"+bid);
-		CcTblParentBaby ccTblParentBaby =new CcTblParentBaby();
-		ccTblParentBaby=ccBabyService.findp(Integer.valueOf(bid));
+		CcTblParentBaby ccTblParentBaby=ccBabyService.findp(Integer.valueOf(bid));
+
 		int pid=ccTblParentBaby.getPid();
 		int msg1= ccBabyService.deletebaby(Integer .valueOf(bid));
 		int msg2=ccBabyService.deleteparent(pid);
@@ -237,6 +192,7 @@ public class CcBabyController
 
 		return 0;
 	}
+
 	/**
 	 * 幼儿管理--入园信息增加
 	 * by 陈超
@@ -264,6 +220,7 @@ public class CcBabyController
 		SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd");
 		String time =sdf.format(date);
 		System.out.println("base---------------"+base);
+
 		ccTblBaby.setBdate(time);
 		ccTblBaby.setBname(bname);
 		ccTblBaby.setBsex(bsex);

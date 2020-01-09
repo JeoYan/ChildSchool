@@ -13,8 +13,9 @@ public class CcTableInf
 	private String rname;
 	private String pname;
 	private String cname;
+	private String notitle;
 	private int page;
-
+	private String comtitle;
 	public CcTableInf()
 	{
 	}
@@ -97,6 +98,26 @@ public class CcTableInf
 	public void setCname(String cname)
 	{
 		this.cname = cname;
+	}
+
+	public String getNotitle()
+	{
+		return notitle;
+	}
+
+	public void setNotitle(String notitle)
+	{
+		this.notitle = notitle;
+	}
+
+	public String getComtitle()
+	{
+		return comtitle;
+	}
+
+	public void setComtitle(String comtitle)
+	{
+		this.comtitle = comtitle;
 	}
 }
 

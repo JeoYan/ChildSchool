@@ -154,7 +154,6 @@ public class CcClassController
 		{
 			msg.setMsg("1");
 			System.out.println("增加班级成功");
-
 		}
 		else
 		{

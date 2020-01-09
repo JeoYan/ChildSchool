@@ -3,7 +3,7 @@ package com.great.childschool.controller;
 
 import com.great.childschool.aoplog.Log;
 import com.great.childschool.entity.*;
-import com.great.childschool.service.CcClassService;
+
 import com.great.childschool.service.CcClassmenService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,9 +11,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 
@@ -101,31 +98,6 @@ public class CcClassmenController
 		return msg;
 	}
 
-//	/**
-//	 * 班级成员管理--增加
-//	 * by 陈超
-//	 */
-//	@RequestMapping("/addclassmen.action")
-//	@ResponseBody
-//	@Log(operationType = "增加操作", operationName = "添加班级成员")
-//	public MSG add(CcTblClassroom ccTblClassroom,HttpServletRequest request)
-//	{
-//		//宝宝
-//		String bname=request.getParameter("bname");
-//		String bsex=request.getParameter("bsex");
-//		String bbirth=request.getParameter("bbirth");
-//		String baddress=request.getParameter("baddress");
-//
-//
-//		String prelation=request.getParameter("prelation");
-//
-//		Date date =new Date();
-//		SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd");
-//		String time =sdf.format(date);
-//
-//		return null;
-//
-//	}
 	/**
 	 * 班级成员管理--修改逻辑
 	 * by 陈超
@@ -133,7 +105,7 @@ public class CcClassmenController
 	@RequestMapping("/updateclassmen.action")
 	@ResponseBody
 	@Log(operationType = "更新操作", operationName = "修改班级成员信息")
-	public MSG update(int bid,int cid,int wid,String bname,String cname)
+	public MSG update(int bid,int cid,int wid,String bname)
 	{
 
 		CcTblBaby ccTblBaby =new CcTblBaby();
@@ -141,12 +113,13 @@ public class CcClassmenController
 		ccTblBaby.setBid(bid);
 		ccTblBaby.setCid(cid);
 		ccTblBaby.setBname(bname);
+
 		int flag1= ccClassmenService.updateb(ccTblBaby);
 
 		CcTblClassroom ccTblClassroom= ccClassmenService.findcname(cid);
+
 		ccTblClassroom.setCname(ccTblClassroom.getCname());
 		ccTblClassroom.setCid(cid);
-
 		ccTblClassroom.setWid(wid);
 		int flag2 = ccClassmenService.updatec(ccTblClassroom);
 
