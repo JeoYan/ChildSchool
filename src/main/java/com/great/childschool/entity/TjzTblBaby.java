@@ -18,10 +18,32 @@ public class TjzTblBaby
 	private String ePoiLat;
 	private Boolean flag;
 	private String pPhone;
+	private float cardMoney;
+	private String cardNum;
 
 
 	public TjzTblBaby()
 	{
+	}
+
+	public String getCardNum()
+	{
+		return cardNum;
+	}
+
+	public void setCardNum(String cardNum)
+	{
+		this.cardNum = cardNum;
+	}
+
+	public float getCardMoney()
+	{
+		return cardMoney;
+	}
+
+	public void setCardMoney(float cardMoney)
+	{
+		this.cardMoney = cardMoney;
 	}
 
 	public String getpPhone()

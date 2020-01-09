@@ -180,7 +180,7 @@ public class ZhFaceController
 	{
 		ModelAndView modelAndView = new ModelAndView();
 
-		modelAndView.setViewName("AddWorker");
+		modelAndView.setViewName("myaddface");
 		return modelAndView;
 	}
 

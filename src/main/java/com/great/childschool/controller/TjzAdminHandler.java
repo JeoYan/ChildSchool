@@ -1,10 +1,16 @@
 package com.great.childschool.controller;
 
 
+import com.alipay.api.AlipayApiException;
+import com.alipay.api.AlipayClient;
+import com.alipay.api.DefaultAlipayClient;
+import com.alipay.api.internal.util.AlipaySignature;
+import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.great.childschool.aoplog.Log;
 import com.great.childschool.entity.*;
 import com.great.childschool.service.TjzBackService;
 import com.great.childschool.tools.MessageSendDemo;
+import com.great.childschool.tools.TjzGetTon;
 import com.great.childschool.tools.Tool;
 import net.sf.json.JSONObject;
 import org.apache.commons.io.FileUtils;
@@ -13,21 +19,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.IOException;
+import javax.servlet.http.HttpSession;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.*;
-
 
 /**
  * 控制类
@@ -40,11 +45,545 @@ public class TjzAdminHandler
 {
 	@Resource
 	private TjzBackService tjzBackService;
+	private static String accessToken;
 
 	public final static String ISAFESTUDY_PATH = "\\src\\main\\resources\\static\\safestudy\\";
 
 
 	private List bidList;
+
+
+	//支付宝属性
+	private final String APP_ID = "2016101500692907";
+	//私钥
+	private final String APP_PRIVATE_KEY = "MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCoFZEuFOMUMMaDLS4bPNPPRXaE+oFGCi8kz/7iO89vmNdm+cSubeCZdKHlucDccGDvMG4RIa8W5ENGQ8yD6+QEdLNbznrFU+hc58j3n7twK46xy1PUlC/Z3helVA3KusV3DTaQpnCiHIL/FGhBWkhqzoi2yZuKhMOQPkjTUzTO61OU1Hfdizho0yUirUdRCo94KvuqBeriYO4y1p3cLzmWwyevETX4HsxJ0Cf1V6YPy35zKX9yXWKg2yIVVFe0iLv9mV0tGi8/Fx8HxbaClpwRCU7QfRanDAoU4T0z4ajaUSgUcbOUfyW4MG6fE52r3y2+0CVUwyoIeqCwOb68p3zPAgMBAAECggEAAiDzy7+b+J99hB/IW7PzgsaAb8K0bGyomDDCK59SSzmGUNmM8iCWHZtqiXxGwwPxVlYorrLcgs+1QmiNaIZORvgrZVhCGcmsQbD1zJ0LRKpojjvi/eg6iunTJtbfrdebtJxIOqDBAGyYBB8ACwPXsvKWrKn0/FYeG++OAI8nNg+jk9bXw8iMTuLr+kjYWe6CnEj2cVMwI7Uel8J0moj/nKBBGJ+T335aWu7PREEqM+OGWLfRCzE+3M6jyrdxgxb2g0W99xvQRfFJ6GhhHBX9hPYdUwvJiNNQvm438cLVq5KclOTXc79DWy1yZeKeflMahTHkcmGBpFTmNw3hvsTmwQKBgQD23T2kxNytElRzqbVUpT4yxFrAvH7lR+pPnM56NkpUC5WFIOVIp1DKqIfKUS7p04bQe2ZQ6NPjFcbX8SpzeYQXi2Ni4d41TH3qrgNETUnr+S9124aQKuj8Cbi2PCgc86XdxYV4zKFUE1l08GQQHfev7Xc0N7hddbeInKF+zInIfwKBgQCuTfmlQUxvIupg6F4m3X+0DWQNzsxGtxFcT2K07Fb4yEoYuST9BhgTvUyfUV2lFhtG4EVqD+zMBMFx0b1AmKKu3DvDv0YJcc7rCXpr5WJmZHSX0+0X4GyYTN3FRw93azVrxYoKe8VruZDIifoTvYb/4n4QfUm2an+v1xyhM8WjsQKBgQCbK1GWAg/b0cu3sBLEk+FWs8l/oHv6zotfY2b9tqZd0bI4Lgcw9cp4uBoyd3kPjOAOp6IWdWLKOGP2VCak0trOmdTs0KCFzADRxHNVOWefpc/JOyWH9RDha5LpKULlf9jgX0mYNrepS0hNktSytMN9l7v33JZMWLP2cM2qEBMDLQKBgQCi/5wjI6s8iqQvN11EbwIK+DLGjsqMnomHj10434J9Z5+S+yBR1S8S1oUev1IZHVEouHVxN68zIodbzs1x6MrJRn5FEUuHbXwYY2auG3YnVm2Jxc8D8wTab5c78rXN8N2mCLaMEy6NDJ0OS6kmaKgkBkPpW6BhC7qYT0sgnG+IIQKBgEzqPzMpaHwIePS3c1KJJjkLTtaCq+lgixxXr5BQBnRvJoFFSdQLkn6JST08xPGNgmesKIFwyr4qesiB2/S4FR5uyJr5EdUFjwCyFipgzXEawMV8D3jBwU4E5KS6yq+BcyOlnSQUbFuZi0K5nsDtFTKcAMEScCNnAPzWiWTkVolQ";
+	private final String CHARSET = "UTF-8";
+	private final String ALIPAY_PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAh2R6w+HaQAwbGBXxd7bzeX83wwaPqSw/6gn7zQDTvouEG2L/D1T+7FJcPpCL8l+WIRvnfP3q0d1U4AFElf6fToweLvLAkWdNcgckCHx0cqUhbrUaZFNsQZrkFE4D5o4eRbVXdx+7jfrTdxURxuUF+tH7k0gpIOnLThOsHK3dHM8PEMtoFjI8Ku9CYwToObaBi74O2AdvAiusRzCW9YFM7aeuEdoPlR9jNmPFesXxb8KtAcvYaeqQrbRMlaq4qj7+tZn04pMnshkuUiA1p8BgffgzjFhBjTRq/RPCn1J0DBKYDJMd7HGtIHySYEQeKqeDo1R67Ods40qdFX0IH9e1UwIDAQAB";
+	//这是沙箱接口路径,正式路径为https://openapi.alipay.com/gateway.do
+	private final String GATEWAY_URL ="https://openapi.alipaydev.com/gateway.do";
+	private final String FORMAT = "JSON";
+	//签名方式
+	private final String SIGN_TYPE = "RSA2";
+	//支付宝异步通知路径,付款完毕后会异步调用本项目的方法,必须为公网地址
+	private final String NOTIFY_URL = "http://公网地址/notifyUrl";
+	//支付宝同步通知路径,也就是当付款完毕后跳转本项目的页面,可以不是公网地址
+	private final String RETURN_URL = "http://localhost:8080/ChildSchool/BackAction/returnUrl";
+
+
+
+
+	/**
+	 * 卡充值界面
+	 * by 汤建志
+	 */
+	@RequestMapping("/cardRechargeView.action")
+	public String cardRechargeView(HttpServletRequest request)
+	{
+
+		String pid=String.valueOf(request.getSession().getAttribute("pid"));
+		TjzTblBaby baby=tjzBackService.findMoney(Integer.valueOf(pid));
+		List<TjzTblCard> cards =tjzBackService.finNotCard();
+		request.setAttribute("cardNum", baby.getCardNum());
+		request.setAttribute("cardMoney", baby.getCardMoney());
+		request.setAttribute("bid", baby.getBid());
+		request.setAttribute("bName", baby.getbName());
+		return "cardrecharge";
+	}
+
+
+	//支付
+	@RequestMapping(value = "/myAlipay.action" )
+	@ResponseBody
+//	@Log(operationType="支付",operationName="支付宝")
+	public void alipay(HttpServletResponse httpResponse,String rechargeMoney) throws IOException
+	{
+		System.out.println(rechargeMoney+"+++++++rechargeMoney+++++++++");
+		System.out.println("支付宝进入");
+		//实例化客户端,填入所需参数
+		AlipayClient alipayClient = new DefaultAlipayClient(GATEWAY_URL, APP_ID, APP_PRIVATE_KEY, FORMAT, CHARSET, ALIPAY_PUBLIC_KEY, SIGN_TYPE);
+		AlipayTradePagePayRequest request = new AlipayTradePagePayRequest();
+		//在公共参数中设置回跳和通知地址
+		request.setReturnUrl(RETURN_URL);
+		request.setNotifyUrl(NOTIFY_URL);
+		//		System.out.println("订单号1---------"+inout.getMid());
+		//		System.out.println("金额1---------"+inout.getMmoney());
+
+		//		//根据订单编号,查询订单相关信息
+		//		Order order = payService.selectById(orderId);
+		//商户订单号，商户网站订单系统中唯一订单号，必填
+		int out_trade_no =nextItemNo();
+		//付款金额，必填
+		int total_amount = Integer.valueOf(rechargeMoney);
+		//订单名称，必填
+		//		String subject = order.getOrderName();
+		//		商品描述，可空
+		System.out.println("订单号2---------"+out_trade_no);
+		System.out.println("金额2---------"+total_amount);
+		String body = "";
+		request.setBizContent("{\"out_trade_no\":\""+ out_trade_no +"\","
+				+ "\"total_amount\":\""+ total_amount +"\","
+				+ "\"subject\":\""+"卡充值" +"\","
+				+ "\"product_code\":\"FAST_INSTANT_TRADE_PAY\"}");
+
+		String form = "";
+		try {
+			form = alipayClient.pageExecute(request).getBody(); // 调用SDK生成表单
+		} catch (AlipayApiException e) {
+			e.printStackTrace();
+		}
+
+		httpResponse.setContentType("text/html;charset=" + CHARSET);
+		httpResponse.getWriter().write(form);// 直接将完整的表单html输出到页面
+		httpResponse.getWriter().flush();
+		httpResponse.getWriter().close();
+
+	}
+
+
+	//订单界面
+	@RequestMapping(value = "/returnUrl", method = RequestMethod.GET)
+	//	@ResponseBody
+
+	public ModelAndView returnUrl(HttpServletRequest request, HttpServletResponse response)
+			throws IOException, AlipayApiException
+	{
+		System.out.println("=================================同步回调=====================================");
+		// 获取支付宝GET过来反馈信息
+		System.out.println("支付成功, 进入同步通知接口...");
+		//获取支付宝GET过来反馈信息
+		Map<String,String> params = new HashMap<String,String>();
+		Map<String,String[]> requestParams = request.getParameterMap();
+		for (Iterator<String> iter = requestParams.keySet().iterator(); iter.hasNext();) {
+			String name = (String) iter.next();
+			String[] values = (String[]) requestParams.get(name);
+			String valueStr = "";
+			for (int i = 0; i < values.length; i++) {
+				valueStr = (i == values.length - 1) ? valueStr + values[i]
+						: valueStr + values[i] + ",";
+			}
+			//乱码解决，这段代码在出现乱码时使用
+			valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
+			params.put(name, valueStr);
+		}
+
+		System.out.println(params);//查看参数都有哪些
+		boolean signVerified = AlipaySignature.rsaCheckV1(params, ALIPAY_PUBLIC_KEY, CHARSET, SIGN_TYPE); // 调用SDK验证签名
+		//验证签名通过
+		ModelAndView mv1 = new ModelAndView();
+		if (signVerified)
+		{
+			TjzPay pay=new TjzPay();
+			// 商户订单号
+			String out_trade_no = new String(request.getParameter("out_trade_no").getBytes("ISO-8859-1"), "UTF-8");
+
+			// 支付宝交易号
+			String trade_no = new String(request.getParameter("trade_no").getBytes("ISO-8859-1"), "UTF-8");
+
+			// 付款金额
+			String total_amount = new String(request.getParameter("total_amount").getBytes("ISO-8859-1"), "UTF-8");
+
+			System.out.println("商户订单号=" + out_trade_no);
+			System.out.println("支付宝交易号=" + trade_no);
+			System.out.println("付款金额=" + total_amount);
+			pay.setOut_trade_no(out_trade_no);
+			pay.setTotal_amount(total_amount);
+			pay.setTrade_no(trade_no);
+
+			//操作
+			String pid=String.valueOf(request.getSession().getAttribute("pid"));
+			System.out.println(pid+"------------------pid-----------------------");
+			System.out.println(pid+"------------------thisBookid-----------------------");
+
+			TjzTblBaby baby=tjzBackService.findMoney(Integer.valueOf(pid));
+			TjzTblBaby baby2=new TjzTblBaby();
+			baby2.setBid(baby.getBid());
+			Float totalMoney=baby.getCardMoney()+Float.valueOf(total_amount);
+			baby2.setCardMoney(totalMoney);
+			int flag=tjzBackService.addMoney( baby2);
+			if (flag>0){
+				ModelAndView mv = new ModelAndView();
+				mv.addObject("out_trade_no", out_trade_no);
+				mv.addObject("trade_no", trade_no);
+				mv.addObject("save_amount", total_amount);
+				mv.addObject("totalMoney", totalMoney);
+				mv.addObject("flag", "success");
+				mv.setViewName("cardsuccess");
+				return mv;
+			} else
+			{
+
+				return mv1;//跳转付款失败页面
+			}
+
+			//			return "alipaySuccess";//跳转付款成功页面
+		} else
+		{
+
+			return mv1;//跳转付款失败页面
+		}
+	}
+
+
+	//生成订单号
+	public static Integer nextItemNo(){
+		Date date = new Date();
+		SimpleDateFormat sdformat = new SimpleDateFormat("HHmmssSSS");
+		String id = sdformat.format(date);
+		Integer integer = Integer.parseInt(id);
+		return integer;
+	}
+
+
+
+
+
+
+
+
+	//	/**
+//	 * 后台人脸验证
+//	 * by 汤建志
+//	 */
+//	@RequestMapping("/faceCheck.action")
+//	@ResponseBody
+//	public void faceCheck(HttpServletRequest request,  HttpServletResponse response, HttpSession httpSession, Model model) {
+//
+//
+//		int myLoginYzm=(int)((Math.random()*9+1)*100000);
+//		String response = MessageSendDemo.send("44962", "b3cb27bee6dbb9f1d717950da9fbd627", phone, "【智慧幼儿园】亲爱的用户,您的验证码为："+myLoginYzm);
+//		request.getSession().setAttribute("myLoginYzm", myLoginYzm);
+//		System.out.println(response);
+//
+//	}
+
+
+
+
+	/**
+	 * 后台人脸验证
+	 * by 汤建志
+	 */
+	@RequestMapping("/faceCheck.action")
+	@ResponseBody
+	public Map<String, Object> faceCheck(HttpServletRequest request,
+	                            HttpServletResponse response, HttpSession httpSession, Model model) {
+		// 获取前端页面传过来的参数
+		Map<String, Object> map=new HashMap<String, Object>();
+		String base = request.getParameter("base");
+		String wid = request.getSession().getAttribute("wid").toString();
+//		try {
+			TjzTblWorker u = new TjzTblWorker();
+			u.setWface(base.getBytes());
+			//把前端抓取到的图片保存到数据库
+			//				      adminLoginService.save(u);
+			TjzTblWorker user = tjzBackService.findFace(Integer.valueOf(wid));
+			String base64 = "";
+			response.reset();
+
+
+				base64 = new String(user.getWface());
+				boolean result = getResult(base, base64);
+				if (result) {
+					map.put("msg",1);
+				}else {
+					map.put("msg",0);
+				}
+
+		return map;
+	}
+
+
+
+	/** 人脸识别 比对 */
+	public boolean getResult(String imStr1, String imgStr2) {
+
+		accessToken = TjzGetTon.getToken();
+		boolean flag = false;
+		BufferedReader br = null;
+		String result = "";
+		// 定义请求地址
+		String mathUrl = "https://aip.baidubce.com/rest/2.0/face/v3/match";
+		try {
+			//页面抓拍到的人脸
+			List<JSONObject> images = new ArrayList<>();
+			JSONObject image1 = new JSONObject();
+			image1.put("image", imStr1);
+			image1.put("image_type", "BASE64");
+			image1.put("face_type", "LIVE");
+			image1.put("quality_control", "LOW");
+			image1.put("liveness_control", "NORMAL");
+
+			//数据库中人脸
+			JSONObject image2 = new JSONObject();
+			image2.put("image", imgStr2);
+			image2.put("image_type", "BASE64");
+			image2.put("face_type", "LIVE");
+			image2.put("quality_control", "LOW");
+			image2.put("liveness_control", "NORMAL");
+			images.add(image1);
+			images.add(image2);
+			// 调用百度云 【人脸对比】接口
+			String genrearlURL = mathUrl + "?access_token=" + accessToken;
+			// 创建请求对象
+			URL url = new URL(genrearlURL);
+			// 打开请求链接
+			HttpURLConnection connection = (HttpURLConnection) url
+					.openConnection();
+			// 设置请求方法
+			connection.setRequestMethod("POST");
+			// 设置通用的请求属性
+			connection.setRequestProperty("Content-Type",
+					"application/json");
+			connection.setRequestProperty("Connection", "Keep-Alive");
+			connection.setDoInput(true);
+			connection.setDoOutput(true);
+			// 获得请求输出流对象
+			DataOutputStream out = new DataOutputStream(
+					connection.getOutputStream());
+			out.writeBytes(images.toString());
+			// 刷新流
+			out.flush();
+			// 关闭流
+			out.close();
+			// 建立实际链接
+			connection.connect();
+			// 读取URL的响应
+			br = new BufferedReader(new InputStreamReader(
+					connection.getInputStream()));
+			String line = "";
+			while ((line = br.readLine()) != null) {
+				result += line;
+			}
+			br.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+
+		// result ="{"error_msg":"Unsupported openapi method","error_code":3}"
+		System.out.println(result);
+		JSONObject fromObject = JSONObject.fromObject(result);
+
+		JSONObject jsonArray = fromObject.getJSONObject("result");
+
+		double resultList = jsonArray.getDouble("score");
+		if (resultList >= 90) {
+			System.out.println("tttt");
+			flag = true;
+
+		}
+		return flag;
+	}
+
+
+
+
+
+	/**
+	 * 添加后台管理员
+	 * by 汤建志
+	 */
+	@RequestMapping("/addface")
+	@ResponseBody
+	public Map<String, Object> addface(TjzTblWorker worker){
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		int i= tjzBackService.addface(worker);
+		if(i>0){
+
+			map.put("msg", "1");
+
+		}else {
+			map.put("msg", "2");
+		}
+		return map;
+	}
+
+
+
+	/**
+	 * 解除绑定卡
+	 * by 汤建志
+	 */
+	@PostMapping("/unbindCard.action")
+	@ResponseBody
+	public Map<String, Object> unbindCard(HttpServletRequest request)
+	{
+		Map<String, Object> map = new HashMap<String, Object>();
+		String cardNum = request.getParameter("cardNum");
+		int flag = tjzBackService.unbindCard(cardNum);
+		if (flag > 0)
+		{
+			map.put("msg", "ok");
+		} else
+		{
+			map.put("msg", "error");
+
+		}
+
+		return map;
+	}
+
+	/**
+	 * 绑定卡
+	 * by 汤建志
+	 */
+	@PostMapping("/bindCard.action")
+	@ResponseBody
+	public Map<String, Object> bindCard(HttpServletRequest request)
+	{
+		Map<String, Object> map = new HashMap<String, Object>();
+		String cardNum = request.getParameter("cardNum");
+		String bid = request.getParameter("bid");
+
+		TjzTblCard card=new TjzTblCard();
+		card.setCardNum(cardNum);
+		card.setBid(Integer.valueOf(bid));
+		int flag = tjzBackService.bindCard(card);
+		if (flag > 0)
+		{
+			map.put("msg", "ok");
+		} else
+		{
+			map.put("msg", "error");
+
+		}
+
+		return map;
+	}
+
+	/**
+	 * 卡绑定界面
+	 * by 汤建志
+	 */
+	@RequestMapping("/cardBindView.action")
+	public String cardBindView(HttpServletRequest request)
+	{
+
+
+		List<TjzTblCard> cards =tjzBackService.finNotCard();
+		request.setAttribute("cards", cards);
+		return "cardbindview";
+
+	}
+
+
+
+	/**
+	 * 删除卡
+	 * by 汤建志
+	 */
+	@PostMapping("/delCard.action")
+	@ResponseBody
+	public Map<String, Object> delCard(HttpServletRequest request)
+	{
+		Map<String, Object> map = new HashMap<String, Object>();
+		String cardNum = request.getParameter("cardNum");
+
+			int flag = tjzBackService.delCard(cardNum);
+			if (flag > 0)
+			{
+				map.put("msg", "ok");
+			} else
+			{
+				map.put("msg", "error");
+
+			}
+
+		return map;
+	}
+
+
+	/**
+	 * 批量插入卡
+	 * by 汤建志
+	 */
+	@RequestMapping("/addCards.action")
+	@ResponseBody
+	public Map<String, Object> addCards(String cardNum,String cardStart)
+	{
+		Map<String, Object> map=new HashMap<String, Object>();
+		int intCardNum=Integer.valueOf(cardNum);
+		int intCardStart=Integer.valueOf(cardStart);
+		int intCardEnd=intCardStart+intCardNum-1;
+		Date day = new Date();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		String toDay = dateFormat.format(day);
+		List<TjzTblCard> cardList = new ArrayList<TjzTblCard>();
+
+
+		for (int i = intCardStart; i <= intCardEnd; i++)
+		{
+
+
+			TjzTblCard card = new TjzTblCard();
+			card.setCardNum(String.format("%08d", i));
+			card.setCardTime(toDay);
+			cardList.add(card);
+		}
+		int flag= tjzBackService.addCards(cardList);
+		if (flag>0){
+			map.put("msg",1);
+		}else {
+			map.put("msg",0);
+		}
+		return  map;
+	}
+
+	/**
+	 * 卡入库页面
+	 * by 汤建志
+	 */
+	@RequestMapping("/addCardView.action")
+	public String addCardView(HttpServletRequest request )
+	{
+
+
+		String maxCard = tjzBackService.findMaxCard( );
+		if (null != maxCard && maxCard.length() > 0)
+		{
+			request.setAttribute("maxCard", String.format("%08d", Integer.valueOf(maxCard)+1));
+			return "addcard";
+		} else
+		{
+			System.out.println("fail");
+			return "addcard";
+		}
+	}
+
+
+	/**
+	 * 卡片管理
+	 * by 汤建志
+	 */
+	@RequestMapping("/findCard.action")
+	@ResponseBody
+	public TjzTbTable findCard(HttpServletRequest request, String page, String limit, String startNum, String endNum, String bName, String cardTime)
+	{
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		int psize = Integer.valueOf(limit);
+		int pstart = (Integer.valueOf(page) - 1) * psize;
+		map.put("bName",bName);
+		map.put("cardTime",cardTime);
+		if (startNum==null ||"".equals(startNum)){
+			startNum="0";
+		}
+		if (endNum==null ||"".equals(endNum)){
+			endNum="999999";
+		}
+		map.put("startNum",String.format("%08d", Integer.valueOf(startNum)));
+		map.put("endNum",String.format("%08d", Integer.valueOf(endNum)));
+
+//		map.put("startNum",startNum);
+//		map.put("endNum",endNum);
+		map.put("pstart",pstart);
+		map.put("psize",psize);
+		TjzTbTable tbBean = tjzBackService.findCard(map);
+		return tbBean;
+
+	}
+
 
 
 	/**
@@ -371,38 +910,6 @@ public class TjzAdminHandler
 					map.put("msg", "error");
 				}
 
-
-				//				File newFile = new File(saveFilePath+newFilename);
-				//				if (newFile.exists())
-				//				{
-				//					map.put("msg", "该文件名已存在");
-				//				} else
-				//				{
-				//					try
-				//					{
-				//
-				//						File oldFile = new File(saveFilePath+ oldFilename);
-				//						oldFile.delete();
-				//						//保存文件到服务器
-				//						file.transferTo(newFile);
-				//						safeStudy.setvUrl(saveFilePath);
-				//						safeStudy.setSafeId(Integer.valueOf(safeId));
-				//						//保存到数据库
-				//						int flag = tjzBackService.updateVideo(safeStudy);
-				//						if (flag > 0)
-				//						{
-				//							map.put("msg", "ok");
-				//						} else
-				//						{
-				//							map.put("msg", "error");
-				//							newFile.delete();
-				//						}
-				//					} catch (IOException e)
-				//					{
-				//						map.put("msg", "error");
-				//						e.printStackTrace();
-				//					}
-				//				}
 			} else
 			{
 				map.put("msg", "error");

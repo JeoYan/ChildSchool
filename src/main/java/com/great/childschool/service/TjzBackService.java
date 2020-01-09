@@ -26,6 +26,114 @@ public class TjzBackService
 
 
 	/**
+	 * 充值
+	 * by 汤建志
+	 */
+	public int addMoney(TjzTblBaby baby){
+		return 	tjzBackMapper.addMoney(baby);
+	};
+
+
+	/**
+	 * 查询余额
+	 * by 汤建志
+	 */
+	public TjzTblBaby findMoney(int pid){
+	return 	tjzBackMapper.findMoney( pid);
+	};
+
+
+	/**
+	 * 查询人脸
+	 * by 汤建志
+	 */
+	public TjzTblWorker findFace(int wid){
+		return tjzBackMapper.findFace(wid);
+	};
+
+
+
+	public int  addface(TjzTblWorker worker){
+		return tjzBackMapper.addface(worker);
+	};
+
+	/**
+	 * 解除绑定卡
+	 * by 汤建志
+	 */
+	@Transactional
+	public int unbindCard(String cardNum){
+		return tjzBackMapper.unbindCard(cardNum);
+	};
+
+
+	/**
+	 * 绑定卡
+	 * by 汤建志
+	 */
+	@Transactional
+	public int bindCard(TjzTblCard card){
+		return tjzBackMapper.bindCard(card);
+	};
+
+
+	/**
+	 * 查询未绑定卡的宝宝
+	 * by 汤建志
+	 */
+	@Transactional
+	public List<TjzTblCard> finNotCard( ){
+		return tjzBackMapper.finNotCard( );
+	};
+
+	/**
+	 * 删除卡
+	 * by 汤建志
+	 */
+	@Transactional
+	public int delCard(String cardNum){
+		return tjzBackMapper.delCard(cardNum);
+	};
+
+
+	/**
+	 * 插入卡片
+	 * by 汤建志
+	 */
+	@Transactional
+	public int addCards(List<TjzTblCard> cardList){
+		return tjzBackMapper.addCards(cardList);
+	};
+
+
+
+	/**
+	 * 已存在最大卡号
+	 * by 汤建志
+	 */
+	public String findMaxCard( ){
+		return tjzBackMapper.findMaxCard();
+	};
+
+
+
+	/**
+	 * 卡片管理
+	 * by 汤建志
+	 */
+	public TjzTbTable findCard(Map<String, Object> map){
+		TjzTbTable tbBean = new TjzTbTable();
+		List<TjzTblCard> list = tjzBackMapper.findCard(map);
+		tbBean.setData(list);
+		tbBean.setCount(String.valueOf(tjzBackMapper.findCardNum(map)));
+		tbBean.setCode("0");
+		tbBean.setMsg(null);
+
+		return tbBean;
+	};
+
+
+	/**
 	 * 查看得分
 	 * by 汤建志
 	 */

@@ -89,6 +89,9 @@
 							<dd data-name="console">
 								<a lay-href="/ChildSchool/foodCaseView.action">宝宝膳食</a>
 							</dd>
+							<dd data-name="console">
+								<a lay-href="/ChildSchool/BackAction/cardRechargeView.action">宝宝卡充值</a>
+							</dd>
 						</dl>
 					</li>
 

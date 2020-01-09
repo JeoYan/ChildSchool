@@ -17,6 +17,89 @@ public interface TjzBackMapper
 {
 
 	/**
+	 * 充值
+	 * by 汤建志
+	 */
+	public int addMoney(TjzTblBaby baby);
+
+
+	/**
+	 * 查询余额
+	 * by 汤建志
+	 */
+	public TjzTblBaby findMoney(int pid);
+
+
+
+	/**
+	 * 查询人脸
+	 * by 汤建志
+	 */
+	public TjzTblWorker findFace(int wid);
+
+
+	/**
+	 * 添加人脸
+	 * by 汤建志
+	 */
+	public int  addface(TjzTblWorker worker);
+
+
+
+	/**
+	 * 解除绑定卡
+	 * by 汤建志
+	 */
+	public int unbindCard(String cardNum);
+
+
+	/**
+	 * 绑定卡
+	 * by 汤建志
+	 */
+	public int bindCard(TjzTblCard card);
+
+
+	/**
+	 * 查询未绑定卡的宝宝
+	 * by 汤建志
+	 */
+	public List<TjzTblCard> finNotCard( );
+
+	/**
+	 * 删除卡
+	 * by 汤建志
+	 */
+	public int delCard(String cardNum);
+
+	/**
+	 * 批量插入卡片
+	 * by 汤建志
+	 */
+	public int addCards(List<TjzTblCard> cardList);
+
+
+
+	/**
+	 * 已存在最大卡号
+	 * by 汤建志
+	 */
+	public String findMaxCard( );
+
+
+	/**
+	 * 卡片管理
+	 * by 汤建志
+	 */
+	public List<TjzTblCard> findCard(Map<String, Object> map);
+	/**
+	 * 卡片管理数量
+	 * by 汤建志
+	 */
+	public int findCardNum(Map<String, Object> map);
+
+
+	/**
 	 * 考试记录分数赋值
 	 * by 汤建志
 	 */

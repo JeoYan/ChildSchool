@@ -45,6 +45,8 @@
 		<input class="layui-input" name="id" id="cName" autocomplete="off">
 	</div>
 	<button class="layui-btn" data-type="reload">查询</button>
+<%--	<button class="layui-btn"  onclick="addface()">注册</button>--%>
+<%--	<button class="layui-btn"  onclick="loginface()">登录</button>--%>
 </div>
 
 
@@ -145,6 +147,40 @@
 	});
 
 
+	// function addface() {
+	//
+	// 	alert("注册");
+	// 	layer.open({
+	// 		type: 2
+	// 		, title: '注册'
+	// 		, offset: 'auto'
+	// 		, content: '/ChildSchool/web/myaddface.action'
+	// 		, area: ['800px', '1000px']
+	// 		, btn: ['确定', '取消']
+	// 		, shade: 0
+	// 		// , success: function (layero, index) {
+	// 		// 	var body = layer.getChildFrame('body', index);
+	// 		// 	body.find("#className").html(data.cName);
+	// 		// }
+	// 	});
+	//
+	// }
+	// function loginface() {
+	// 	// alert("登录");
+	// 	layer.open({
+	// 		type: 2
+	// 		, title: '注册'
+	// 		, offset: 'auto'
+	// 		, content: '/ChildSchool/web/myloginface.action'
+	// 		, area: ['800px', '700px']
+	// 		, btn: ['确定', '取消']
+	// 		, shade: 0
+	// 		// , success: function (layero, index) {
+	// 		// 	var body = layer.getChildFrame('body', index);
+	// 		// 	body.find("#className").html(data.cName);
+	// 		// }
+	// 	});
+	// }
 </script>
 </div>
 </div>

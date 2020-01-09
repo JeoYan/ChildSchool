@@ -6,6 +6,141 @@
 <mapper namespace="com.great.childschool.mapper.TjzBackMapper">
 
 
+
+    <!-- 充值-->
+    <update id="addMoney"  parameterType="com.great.childschool.entity.TjzTblBaby">
+       UPDATE tbl_baby ba SET ba.cardmoney=#{cardMoney}
+       WHERE ba.bid=#{bid}
+    </update>
+
+    <!-- 查询余额-->
+    <select id="findMoney" resultType="com.great.childschool.entity.TjzTblBaby">
+   SELECT ba.cardmoney,ca.cardnum,ba.bid,ba.bname
+   FROM tbl_parent_baby pa,tbl_baby ba,tbl_card ca
+   WHERE pa.bid=ba.bid
+   AND ca.bid=ba.bid
+   AND pa.pid=#{pid}
+    </select>
+
+
+    <!-- 查询人脸-->
+    <select id="findFace" resultType="com.great.childschool.entity.TjzTblWorker">
+    SELECT *
+    FROM tbl_worker
+    WHERE wid=#{wid}
+    </select>
+
+
+
+    <!-- 添加人脸-->
+    <update id="addface"  parameterType="TjzTblWorker">
+       UPDATE tbl_worker SET wface=#{wface}
+       WHERE wid=#{wid}
+    </update>
+
+
+
+    <!-- 解除绑定卡-->
+    <update id="unbindCard"  parameterType="string">
+       UPDATE tbl_card SET bid=0
+       WHERE cardnum=#{cardNum}
+    </update>
+
+
+    <!-- 绑定卡-->
+    <update id="bindCard"  parameterType="com.great.childschool.entity.TjzTblCard">
+       UPDATE tbl_card SET bid=#{bid}
+       WHERE cardnum=#{cardNum}
+    </update>
+
+
+    <!-- 查询未绑定卡的宝宝-->
+    <select id="finNotCard" resultType="com.great.childschool.entity.TjzTblCard">
+    select B.bid,B.bname from tbl_baby B
+    where (select count(1) as num from tbl_card A where A.bid = B.bid) = 0
+    </select>
+
+    <!-- 删除卡-->
+    <update id="delCard" parameterType="string">
+       UPDATE tbl_card SET cardstate='已删除'
+        WHERE cardnum=#{cardNum}
+    </update>
+
+
+
+    <!-- 批量插入卡片 -->
+    <insert id ="addCards" parameterType="java.util.List" >
+            <selectKey resultType ="java.lang.Integer" keyProperty= "id"
+                   order= "AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey >
+        insert into tbl_card
+        (cardnum, cardtime)
+        values
+        <foreach collection ="list" item="card" index= "index" separator =",">
+            (
+            #{card.cardNum},
+            #{card.cardTime}
+            )
+        </foreach >
+    </insert >
+
+
+    <!-- 已存在最大卡号-->
+    <select id="findMaxCard" resultType="string">
+     SELECT MAX(cardnum)
+     FROM tbl_card
+    </select>
+
+    <!-- 卡片管理-->
+    <select id="findCard" parameterType="map" resultType="com.great.childschool.entity.TjzTblCard">
+      SELECT ca.*,ba.bname
+      FROM tbl_card ca
+      LEFT JOIN tbl_baby ba
+      ON ca.bid=ba.bid
+        <where>
+        <if test="bName !=null and bName!=''">
+        AND ba.bname like '%' #{bName} '%'
+        </if>
+        <if test="cardTime !=null and cardTime!=''">
+            AND cardtime like '%' #{cardTime} '%'
+        </if>
+        <if test="startNum !=null and startNum!=''">
+            AND cardnum &gt;= #{startNum}
+        </if>
+        <if test="endNum !=null and endNum!=''">
+            AND cardnum &lt;= #{endNum}
+        </if>
+        </where>
+      ORDER BY ca.cardid
+        LIMIT #{pstart},#{psize}
+    </select>
+
+
+    <!-- 卡片管理数量-->
+    <select id="findCardNum" parameterType="map" resultType="int">
+        SELECT COUNT(ca.cardid)
+        FROM tbl_card ca
+        LEFT JOIN tbl_baby ba
+        ON ca.bid=ba.bid
+        <where>
+        <if test="bName !=null and bName!=''">
+            AND ba.bname like '%' #{bName} '%'
+        </if>
+        <if test="cardTime !=null and cardTime!=''">
+            AND cardtime like '%' #{cardTime} '%'
+        </if>
+        <if test="startNum !=null and startNum!=''">
+            AND cardnum &gt;= #{startNum}
+        </if>
+        <if test="endNum !=null and endNum!=''">
+            AND cardnum &lt;= #{endNum}
+        </if>
+        </where>
+        ORDER BY ca.cardid
+    </select>
+
+
     <!-- 考试记录分数赋值-->
     <update id="addTotalScore" parameterType="com.great.childschool.entity.TjzTblSafeStudy">
        UPDATE tbl_parent_safestudy SET totalscore=#{totalScore}
