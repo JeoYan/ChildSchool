@@ -64,8 +64,8 @@
 					<select name="wname" id="wname">
 						<option value="">请选择教师</option>
 
-						<c:forEach items="${requestScope.work}" begin="0" step="1" var="y">
-							<option value="${y.wid}">${y.wname}</option>
+						<c:forEach items="${requestScope.teacher}" begin="0" step="1" var="y">
+							<option value="${y.wname}">${y.wname}</option>
 						</c:forEach>
 
 					</select>

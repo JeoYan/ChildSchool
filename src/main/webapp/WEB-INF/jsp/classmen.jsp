@@ -89,7 +89,9 @@
 				{type: 'numbers', title: '序号'} ,
 				{field: 'cid', title: '班级编号' , sort: true, fixed: 'center',hide:true} ,
 				{field: 'bname', title: '宝宝名称'} ,
+				{field: 'bid', title: '宝宝id',hide:true} ,
 				{field: 'cname', title: '班级名称'} ,
+				{field: 'wid', title: '教师id', sort: true,hide:true},
 				{field: 'wname', title: '班主任', sort: true} ,
 				{field: 'courseadddate', title: '创建时间'},
 
@@ -224,19 +226,22 @@
 					btn: ['确定', '取消'],
 					success: function (layero,index) {
 						var body = layer.getChildFrame('body', index);
-						body.find("#cname").val(data.cname)
+						body.find("#cname").val(data.cid);
+						body.find("#bname").val(data.bname);
+						body.find("#wname").val(data.wname)
 
 					},
 					yes:function (index,layero) {
 						//教室名称
-						var cname=$(layero).find('iframe')[0].contentWindow.cname.value;
+						var cid=$(layero).find('iframe')[0].contentWindow.cname.value;
 						//教师名称
 						var wname=$(layero).find('iframe')[0].contentWindow.wname.value;
 						//宝宝名称
 						var bname=$(layero).find('iframe')[0].contentWindow.bname.value;
 
 						var bid = data.bid;
-						var ob = {bid: bid, cname: cname,wname:wname,bname:bname};
+						var wid = data.wid;
+						var ob = {bid: bid, wid:wid,wname:wname,bname:bname,cid:cid};
 						$.ajax({
 							type: "POST",//提交方式
 							url: "/ChildSchool/updateclassmen.action",//路径

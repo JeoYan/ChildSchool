@@ -105,7 +105,7 @@ public class CcClassmenController
 	@RequestMapping("/updateclassmen.action")
 	@ResponseBody
 	@Log(operationType = "更新操作", operationName = "修改班级成员信息")
-	public MSG update(int bid,int cid,int wid,String bname)
+	public MSG update(int bid,int cid,int wid,String bname,String wname)
 	{
 
 		CcTblBaby ccTblBaby =new CcTblBaby();
