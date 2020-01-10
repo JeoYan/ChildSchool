@@ -75,4 +75,7 @@ public interface YjjBookReadMapper
 	int updateBookName(@Param("bookid")String bookid,@Param("bName")String bName);
 
 
+
+
+
 }

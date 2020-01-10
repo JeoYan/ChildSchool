@@ -1,0 +1,124 @@
+	private YjjTblCommodity commodity = new YjjTblCommodity();
+	private boolean flag = false;
+	private int comid=0;
+	@RequestMapping("/doUpload.action")
+	@ResponseBody
+	public Map<String, Object> doUpload(@RequestParam("file")MultipartFile file, HttpServletRequest request)
+	{
+
+		Map map = new HashMap<String, Object>();
+		if (file.isEmpty())
+		{
+			//返回选择文件提示
+			map.put("msg", "notEixst");
+			return map;
+		}
+
+		if (commodity.getWid() == 0)
+		{
+			//商品名
+			String commName = request.getParameter("commName");
+			//类型
+			String type = request.getParameter("type");
+			//库存
+			String commNum = request.getParameter("commNum");
+			//原价
+			String price = request.getParameter("price");
+			//优惠后的价格
+			String newPrice = request.getParameter("newPrice");
+			//是否设置推荐
+			String setHome = request.getParameter("setHome");
+			//说明
+			String commContent = request.getParameter("commContent");
+			//上架人的id
+			ServletRequestAttributes sra = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+			RequestContextHolder.setRequestAttributes(sra, true);
+			request = sra.getRequest();
+			Object wid = request.getSession().getAttribute("wid");
+			System.out.println("----------commName----------------" + commName);
+			System.out.println("----------type----------------" + type);
+			System.out.println("----------commNum----------------" + commNum);
+			System.out.println("----------price----------------" + price);
+			System.out.println("----------newPrice----------------" + newPrice);
+			System.out.println("----------setHome----------------" + setHome);
+			System.out.println("----------commContent----------------" + commContent);
+			System.out.println("----------wid----------------" + wid);
+			commodity.setComtitle(commName);
+			commodity.setType(Integer.valueOf(type));
+			commodity.setComnum(Integer.valueOf(commNum));
+			commodity.setPrice(Integer.valueOf(price));
+			commodity.setNewprice(Integer.valueOf(newPrice));
+			commodity.setHome(setHome);
+			commodity.setComconntext(commContent);
+			commodity.setComdate(getDate());
+			commodity.setStatusid(8);
+			commodity.setWid((int) wid);
+			//将图片的基本信息保存到数据库,并获得新增的商品id
+			 comid = mallService.addComm(commodity);
+			if ( comid > 0)
+			{
+				flag = true;
+			}
+
+		}
+
+		if (flag)
+		{
+			//获得上传过来文件带后缀的名字
+			String filename = file.getOriginalFilename();
+			System.out.println("----------filename------------" + filename);
+			// 后缀名
+			String suffixName = filename.substring(filename.lastIndexOf("."));
+			System.out.println("------------------suffixName--------------" + suffixName);
+			//前缀
+			String prefixName = filename.substring(0, filename.indexOf("."));
+			System.out.println("------------------prefixName--------------" + prefixName);
+			//构建文件上传所要保存的"文件夹路径"--这里是相对路径，保存到项目根路径的文件夹下
+			String realPath = REAL_PATH + "wechatPicUpload";
+			//存放上传文件的文件夹
+			File file1 = new File(realPath);
+			if (!file1.isDirectory())
+			{
+				file1.mkdirs();
+			}
+
+			String uuid = UUID.randomUUID().toString().replace("-", "");
+
+			String newName = uuid + "_" + filename;
+			System.out.println("----------newName-------------" + newName);
+
+
+			//file1.getAbsolutePath()获得绝对路径.file1.getpath()相对路径
+			//File.separator自动补斜杠
+			String url = file1.getPath() + File.separator + newName;
+
+			System.out.println("-----file1.getAbsolutePath()------" + file1.getAbsolutePath());
+			System.out.println("-----file1.getpath()------" + file1.getPath());
+			//工程文件所在的路径
+			System.out.println("-----System.getProperty('user.dir')------" + System.getProperty("user.dir"));
+
+			File newFile = new File(url);
+			System.out.println(newFile);
+			try
+			{
+				//保存文件到服务器
+				file.transferTo(newFile);
+				YjjTblCommodityPic commodityPic=new YjjTblCommodityPic();
+				commodityPic.setComid(comid);
+				//将路径中的\换成/
+				commodityPic.setUrl(newFile.getPath().replace("\\", "/"));
+				//上传的书籍写入数据库中
+				mallService.addCommPic(commodityPic);
+
+				//返回json
+				map.put("msg", "ok");
+
+			} catch (IOException e)
+			{
+				map.put("msg", "error");
+
+			}
+		}
+
+		return map;
+	}

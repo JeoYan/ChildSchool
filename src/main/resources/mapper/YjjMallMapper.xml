@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.great.childschool.mapper.YjjMallMapper">
+    <select id="findComm" parameterType="YjjSearchInfo" resultType="YjjTblCommodity">
+        select * from (select @rownum:=@rownum+1 as RN,A.* FROM (select @rownum:=0,tbl_commodity.*,tbl_worker.wname from tbl_commodity,tbl_worker
+        where tbl_commodity.wid=tbl_worker.wid
+        <if test="bName!=null and bName!=''">
+            AND comtitle like "%" #{bName}"%"
+        </if>
+
+        <if test="startDate!=null and startDate!=''">
+
+            AND comdate = #{startDate}
+
+        </if>
+
+        )A )B where B.RN BETWEEN ((${page} - 1)* ${limit}+1) AND ${page}*${limit}
+    </select>
+    <!--    总条数-->
+    <select id="totalPage" parameterType="YjjSearchInfo" resultType="YjjTblCommodity">
+        select * from (select @rownum:=@rownum+1 as RN,A.* FROM (select @rownum:=0,tbl_commodity.*,tbl_worker.wname from tbl_commodity,tbl_worker
+        where tbl_commodity.wid=tbl_worker.wid
+
+        <if test="bName!=null and bName!=''">
+            AND comtitle like "%" #{bName}"%"
+        </if>
+        <if test="startDate!=null and startDate!=''">
+
+                AND comdate =#{startDate}
+
+        </if>
+        )A )B
+    </select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

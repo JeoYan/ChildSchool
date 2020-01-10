@@ -132,6 +132,7 @@ public class YjjWorkerPowerController
 		{
 			//获得一级菜单得到
 			List<TblMenu> firstMenuList = workerPowerControlService.findFirstMenu(Integer.valueOf(wid));
+			System.out.println(wid+"----------------wid-----------------------");
 
 			if (firstMenuList != null)
 			{

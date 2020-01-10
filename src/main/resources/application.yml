@@ -1,10 +1,10 @@
 
-
 server:
   port: 8080
   servlet:
     context-path: /ChildSchool
-
+#  tomcat:
+#    connection-timeout: 18000000
 spring:
   thymeleaf:
     cache: false
@@ -34,9 +34,6 @@ spring:
     #防御sql注入的filter:wall
     connection-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000 #通过connectProperties属性来打开mergeSql功能；慢SQL记录
     use-global-data-source-stat: true #合并多个DruidDataSource的监控数据
-
-
-
   mvc:
     view:
       prefix: /WEB-INF/jsp/
@@ -49,3 +46,6 @@ spring:
 mybatis:
   config-location: classpath:SqlMapConfig.xml
   mapper-locations: classpath:/mapper/*.xml
+
+
+

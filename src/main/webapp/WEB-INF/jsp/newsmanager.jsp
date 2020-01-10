@@ -47,13 +47,14 @@
 			<div class="layui-inline">
 				发布时间：
 				<div class="layui-input-inline">
-					<input type="text" class="layui-input" id="startDate" placeholder="yyyy-MM-dd HH:mm:ss" >
+					<input type="text" class="layui-input" id="startDate" placeholder="yyyy-MM-dd HH:mm:ss">
 				</div>
 				至
 				<div class="layui-input-inline">
-					<input type="text" class="layui-input" id="endDate" name="endDate" placeholder="yyyy-MM-dd HH:mm:ss" >
+					<input type="text" class="layui-input" id="endDate" name="endDate"
+					       placeholder="yyyy-MM-dd HH:mm:ss">
 				</div>
-<%--				<br>--%>
+				<%--				<br>--%>
 				&nbsp;标题：
 				<div class="layui-input-inline">
 					<input type="text" class="layui-input" id="ntitle" name="title" style="width: 150px">
@@ -92,7 +93,7 @@
 
 
 <script type="text/html" id="barDemo">
-<%--	<a class="layui-btn layui-btn-xs" lay-event="see">查看</a>--%>
+	<%--	<a class="layui-btn layui-btn-xs" lay-event="see">查看</a>--%>
 	<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="update">修改</a>
 	<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
 </script>
@@ -122,8 +123,8 @@
 			, id: 'demo'
 			, cols: [[ //表头
 				{type: 'numbers', title: '序号', align: 'center'}
-				, {field: 'nid', title: '新闻id',align: 'center',hide:true}
-				, {field: 'ntitle', title: '标题',align: 'center'}
+				, {field: 'nid', title: '新闻id', align: 'center', hide: true}
+				, {field: 'ntitle', title: '标题', align: 'center'}
 				, {field: 'nconntext', title: '内容', align: 'center'}
 				, {field: 'ndate', title: '发布时间', align: 'center'}
 				, {field: 'wName', title: '发布人', align: 'center'}
@@ -157,8 +158,6 @@
 			var $ = layui.$
 				, form = layui.form
 				, table = layui.table;
-
-
 
 
 			//监听搜索
@@ -205,7 +204,7 @@
 							//发布人
 							var wid = ${sessionScope.wid};
 							//新闻id
-							var nid=data.nid;
+							var nid = data.nid;
 
 							//标题
 							var ntitle = $(layero).find('iframe')[0].contentWindow.ntitle.value;
@@ -213,14 +212,14 @@
 
 							//内容
 							var nconntext = $(layero).find('iframe')[0].contentWindow.nconntext.value;
-							if (ntitle.length===0){
+							if (ntitle.length === 0) {
 								layer.msg("请输入标题！");
-							}else if (nconntext.length===0){
+							} else if (nconntext.length === 0) {
 								layer.msg("请输入新闻内容！");
 							} else {
 								var ob = {
 									wid: wid,
-									nid:nid,
+									nid: nid,
 									ntitle: ntitle,
 									nconntext: nconntext
 								};
@@ -233,11 +232,11 @@
 									async: true,//异步操作
 									success: function (data) {//成功的方法  msg为返回数据
 
-										if (data==="Ok") {
+										if (data === "Ok") {
 											layer.msg("修改成功！");
 											table.reload('demo');
 											layer.close(index);
-										}else {
+										} else {
 											layer.msg("修改失败！");
 										}
 									},
@@ -276,17 +275,17 @@
 								//msg字符串切割得到list和
 
 								//未查询到数据时执行
-								if (data==="Ok") {
+								if (data === "Ok") {
 									layer.msg("删除成功");
-									var index=table.cache.demo;
-									if(index.length===1){
+									var index = table.cache.demo;
+									if (index.length === 1) {
 										table.reload('demo', {
 											page: {
 												curr: 1
 											}
 										});
 
-									}else {
+									} else {
 										table.reload('demo');
 									}
 
@@ -309,7 +308,7 @@
 
 			//新增
 			var active = {
-				 add: function () {
+				add: function () {
 					layer.open({
 						type: 2
 						, title: '新增新闻'
@@ -327,9 +326,9 @@
 							//内容
 							var nconntext = $(layero).find('iframe')[0].contentWindow.nconntext.value;
 
-							if (nctitle.length===0){
+							if (nctitle.length === 0) {
 								layer.msg("请输入标题！");
-							}else if (nconntext.length===0){
+							} else if (nconntext.length === 0) {
 								layer.msg("请输入新闻内容！");
 							} else {
 								var ob = {
@@ -345,11 +344,11 @@
 									dataType: "text",//希望返回的数据类型
 									async: true,//异步操作
 									success: function (data) {//成功的方法  msg为返回数据
-										if (data==="Ok") {
+										if (data === "Ok") {
 											layer.msg("新增成功！");
 											table.reload('demo');
 											layer.close(index);
-										}else {
+										} else {
 											layer.msg("新增失败！");
 										}
 									},
@@ -378,11 +377,11 @@
 		//常规用法
 		laydate.render({
 			elem: '#startDate'
-			,type: 'datetime'
+			, type: 'datetime'
 		});
 		laydate.render({
 			elem: '#endDate'
-			,type: 'datetime'
+			, type: 'datetime'
 		});
 	});
 

@@ -44,7 +44,10 @@ public class YjjBookReadService
 		return bookReadMapper.checkBook(bookName);
 	}
 
-	//新增书籍 by 严俊杰
+	/**
+	 * 新增书籍 by 严俊杰
+	 */
+
 	@Transactional
 	public int addBook(Boolean status, YjjTblReadbook readbook, YjjTblBookPage bookPage)
 	{
